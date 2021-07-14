@@ -1,5 +1,5 @@
 # stuff with token and api key 😱
-util/config.py
+main/util/config.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

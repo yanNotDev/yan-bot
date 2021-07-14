@@ -1,0 +1,3 @@
+# RENAME ME TO config.py
+token = "bot token here"
+key = "hypixel api key here"

@@ -170,15 +170,32 @@ class skyblock(commands.Cog):
         msg = await ctx.send(embed=embed)
         mcuuid = uuid(ign)
         if profile is None:
-            request = requests.get(f"https://api.slothpixel.me/api/skyblock/profile/{mcuuid}?key={key}")
+            request = requests.get(f"https://hypixel-api.senither.com/v1/profiles/{mcuuid}/latest?key={key}")
         else:
-            request = requests.get(f"https://api.slothpixel.me/api/skyblock/profile/{mcuuid}/{profile}?key={key}")
+            request = requests.get(f"https://hypixel-api.senither.com/v1/profiles/{mcuuid}/{profile}?key={key}")
         r = request.json()
 
-        ign = r["members"][mcuuid]["player"]["username"]
-        fruit = r["cute_name"]
+        ign = r["data"]["username"]
+        fruit = r["data"]["name"]
+        asl = round(r["data"]["skills"]["average_skills"], 2)
+        weight = round(r["data"]["weight"], 2)
+        zombie = int(r["data"]["slayers"]["bosses"]["revenant"]["level"])
+        spider = int(r["data"]["slayers"]["bosses"]["tarantula"]["level"])
+        wolf = int(r["data"]["slayers"]["bosses"]["sven"]["level"])
+        enderman = int(r["data"]["slayers"]["bosses"]["enderman"]["level"])
+        coins = round(r["data"]["coins"]["total"])
+        cata = int(r["data"]["dungeons"]["types"]["catacombs"]["level"])
 
-        embed=Embed(title=f"Stats for {ign} ({fruit})")
+        embed=Embed(title=f"Stats for {ign} ({fruit})", colour=ctx.guild.me.color)
+        embed.add_field(name="Skill Average", value=asl, inline=True)
+        embed.add_field(name="Catacombs Level", value=cata, inline=True)
+        embed.add_field(name="Weight", value=weight, inline=True)
+        embed.add_field(name="Coins", value=coins, inline=True)
+        embed.add_field(name="Revenant", value=zombie, inline=True)
+        embed.add_field(name="Tarantula", value=spider, inline=True)
+        embed.add_field(name="Sven", value=wolf, inline=True)
+        embed.add_field(name="Voidgloom Serpah", value=enderman, inline=True)
+        embed.set_footer(text="Made by yan#0069", icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif")
 
 
         await msg.edit(embed=embed)

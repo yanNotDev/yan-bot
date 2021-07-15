@@ -27,8 +27,9 @@ async def on_command_error(ctx, error):
     if isinstance(error, commands.NotOwner):
         await ctx.reply("Only my owner can use this command!")
 
+
 bot.load_extension("jishaku")
-bot.load_extension("help")
-bot.load_extension("sb")
+bot.load_extension("cogs.help")
+bot.load_extension("cogs.sb")
 
 bot.run(token)

@@ -3,6 +3,8 @@ from discord.ext import commands
 #from dislash import *
 from util.config import token
 
+intents = discord.Intents.default()
+intents.members = True
 
 bot = commands.Bot(
     command_prefix="y!",
@@ -12,6 +14,7 @@ bot = commands.Bot(
         roles=False,
         replied_user=False,
         ),
+    intents=intents
 )
 
 #slash = SlashClient(bot)

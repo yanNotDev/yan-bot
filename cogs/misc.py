@@ -7,7 +7,7 @@ class help(commands.Cog):
         self.bot = bot
         self.bot.remove_command("help")
 
-    @commands.command(name="help")
+    @commands.command()
     async def help(self, ctx, cmd=None):
         embed=Embed(description="_ _", colour=ctx.guild.me.color)
         if cmd is None:

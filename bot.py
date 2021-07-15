@@ -29,7 +29,7 @@ async def on_command_error(ctx, error):
 
 
 bot.load_extension("jishaku")
-bot.load_extension("cogs.help")
+bot.load_extension("cogs.misc")
 bot.load_extension("cogs.sb")
 
 bot.run(token)

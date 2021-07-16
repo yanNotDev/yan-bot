@@ -13,11 +13,11 @@ class skyblock(commands.Cog):
         self.bot = bot
 
 
-    @commands.command(name="rates", aliases=["r"])
+    @commands.command(aliases=["r"])
     async def rates(self, ctx, ign, profile=None):
         embed=Embed(description="If this message doesn't update within a few seconds, make sure all your API is on.", colour=ctx.guild.me.color)
         embed.add_field(name="loading aaaa", value="_ _", inline=False)
-        embed.set_footer(text="Made by yan#0069")
+        embed.set_footer(text="Made by yan#0069", icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif")
         msg = await ctx.send(embed=embed)
         mcuuid = uuid(ign)
         if profile is None:
@@ -162,11 +162,11 @@ class skyblock(commands.Cog):
         await msg.edit(embed=embed)
 
 
-    @commands.command(name="stats", aliases=["s"])
+    @commands.command(aliases=["s"])
     async def stats(self, ctx, ign, profile=None):
         embed=Embed(description="If this message doesn't update within a few seconds, sorry :cry:", colour=ctx.guild.me.color)
         embed.add_field(name="HYPIXEL WHY are you so sLOW", value="_ _", inline=False)
-        embed.set_footer(text="Made by yan#0069")
+        embed.set_footer(text="Made by yan#0069", icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif")
         msg = await ctx.send(embed=embed)
         mcuuid = uuid(ign)
         if profile is None:
@@ -177,18 +177,54 @@ class skyblock(commands.Cog):
 
         ign = r["data"]["username"]
         fruit = r["data"]["name"]
-        asl = round(r["data"]["skills"]["average_skills"], 2)
-        weight = round(r["data"]["weight"], 2)
-        zombie = int(r["data"]["slayers"]["bosses"]["revenant"]["level"])
-        spider = int(r["data"]["slayers"]["bosses"]["tarantula"]["level"])
-        wolf = int(r["data"]["slayers"]["bosses"]["sven"]["level"])
-        enderman = int(r["data"]["slayers"]["bosses"]["enderman"]["level"])
-        coins = round(r["data"]["coins"]["total"])
-        cata = int(r["data"]["dungeons"]["types"]["catacombs"]["level"])
+
+        print(f"fetched {ign}'s data: {request}")
+
+        if r["data"]["skills"]["apiEnabled"] is True:
+            asl = round(r["data"]["skills"]["average_skills"], 2)
+        elif r["data"]["skills"]["apiEnabled"] is False:
+            asl = "API off"
+        else:
+            asl = "?"
+
+        try:
+            weight = round(r["data"]["weight"], 2)
+        except KeyError:
+            weight = "?"
+        try:
+            zombie = int(r["data"]["slayers"]["bosses"]["revenant"]["level"])
+        except KeyError:
+            zombie = "?"
+        try:
+            spider = int(r["data"]["slayers"]["bosses"]["tarantula"]["level"])
+        except KeyError:
+            spider = "?"
+        try:
+            wolf = int(r["data"]["slayers"]["bosses"]["sven"]["level"])
+        except KeyError:
+            wolf = "?"
+        try:
+            enderman = int(r["data"]["slayers"]["bosses"]["enderman"]["level"])
+        except KeyError:
+            enderman = "?"
+        try:
+            coins = round(r["data"]["coins"]["total"])
+        except KeyError:
+            coins = "?"
+        try:
+            cata = int(r["data"]["dungeons"]["types"]["catacombs"]["level"])
+            secrets = r["data"]["dungeons"]["secrets_found"]
+        except TypeError:
+            cata = "?"
+            secrets = "?"
+
+        print(asl, weight, zombie, spider, wolf, enderman, coins, cata, secrets)
 
         embed=Embed(title=f"Stats for {ign} ({fruit})", colour=ctx.guild.me.color)
+        embed.set_thumbnail(url=f"https://crafatar.com/renders/body/{mcuuid}?overlay=true")
         embed.add_field(name="Skill Average", value=asl, inline=True)
         embed.add_field(name="Catacombs Level", value=cata, inline=True)
+        embed.add_field(name="Secrets", value=secrets, inline=True)
         embed.add_field(name="Weight", value=weight, inline=True)
         embed.add_field(name="Coins", value=coins, inline=True)
         embed.add_field(name="Revenant", value=zombie, inline=True)

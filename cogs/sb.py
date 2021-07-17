@@ -186,11 +186,12 @@ class skyblock(commands.Cog):
             asl = "API off"
         else:
             asl = "?"
-
         try:
-            weight = round(r["data"]["weight"], 2)
+            weight = "{:,}".format(int(r["data"]["weight"]))
+            overflow = "{:,}".format(int(r["data"]["weight_overflow"]))
         except KeyError:
             weight = "?"
+            overflow = "?"
         try:
             zombie = int(r["data"]["slayers"]["bosses"]["revenant"]["level"])
         except KeyError:
@@ -208,29 +209,28 @@ class skyblock(commands.Cog):
         except KeyError:
             enderman = "?"
         try:
-            coins = round(r["data"]["coins"]["total"])
+            coins = "{:,}".format(int(r["data"]["coins"]["total"]))
         except KeyError:
             coins = "?"
         try:
             cata = int(r["data"]["dungeons"]["types"]["catacombs"]["level"])
-            secrets = r["data"]["dungeons"]["secrets_found"]
+            secrets = "{:,}".format(r["data"]["dungeons"]["secrets_found"])
         except TypeError:
             cata = "?"
             secrets = "?"
+
+
 
         print(asl, weight, zombie, spider, wolf, enderman, coins, cata, secrets)
 
         embed=Embed(title=f"Stats for {ign} ({fruit})", colour=ctx.guild.me.color)
         embed.set_thumbnail(url=f"https://crafatar.com/renders/body/{mcuuid}?overlay=true")
         embed.add_field(name="Skill Average", value=asl, inline=True)
-        embed.add_field(name="Catacombs Level", value=cata, inline=True)
+        embed.add_field(name="Cata Level", value=cata, inline=True)
         embed.add_field(name="Secrets", value=secrets, inline=True)
-        embed.add_field(name="Weight", value=weight, inline=True)
+        embed.add_field(name="Weight + Overflow", value=f"{weight} + {overflow}", inline=True)
         embed.add_field(name="Coins", value=coins, inline=True)
-        embed.add_field(name="Revenant", value=zombie, inline=True)
-        embed.add_field(name="Tarantula", value=spider, inline=True)
-        embed.add_field(name="Sven", value=wolf, inline=True)
-        embed.add_field(name="Voidgloom Serpah", value=enderman, inline=True)
+        embed.add_field(name="Slayers", value=f"{zombie}/{spider}/{wolf}/{enderman}", inline=True)
         embed.set_footer(text="Made by yan#0069", icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif")
 
 

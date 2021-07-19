@@ -4,7 +4,7 @@ from discord.ext import commands
 from math import log10
 from re import sub
 from util.config import key
-from util.skill import lvcheck
+from util.skill import *
 from util.uuid import uuid
 
 
@@ -236,6 +236,16 @@ class skyblock(commands.Cog):
 
         await msg.edit(embed=embed)
 
+    @commands.command(aliases=["c", "cata"])
+    async def catacombs(self, ctx, start, end):
+        required = catadiff(start, end); required = "{:,}".format(required)
+
+        f1 = 80; f2 = 160; f3 = 400; f4 = 1420; f5 = 2400; f6 = 5000; f7 = 20000; m1 = 10000; m2 = 15000; m3 = 60000
+
+        embed=Embed(description=f"{required} xp is required to get from Catacombs {start} to {end}.", colour=ctx.guild.me.color)
+        embed.set_footer(text="Made by yan#0069", icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif")
+
+        await ctx.send(embed=embed)
 
 
 def setup(bot: commands.Bot):

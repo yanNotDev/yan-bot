@@ -36,7 +36,7 @@ class help(commands.Cog):
                 description="Shows a player's general skyblock stats.",
                 colour=ctx.guild.me.color,
             )
-            embed.add_field(name="Usage", value="y!rates <ign> [profile]")
+            embed.add_field(name="Usage", value="y!stats <ign> [profile]")
             embed.add_field(name="Aliases", value="`stats`, `s`")
             embed.set_footer(
                 text="Made by yan#0069",

@@ -39,7 +39,7 @@ class help(commands.Cog):
 
         elif cmd in ["catacombs", "cata", "c"]:
             embed=Embed(title="Catacombs", description="Checks xp required to get from one Catacombs level to another.", colour=ctx.guild.me.color)
-            embed.add_field(name="Usage", value="y!rates <lv1> <lv2")
+            embed.add_field(name="Usage", value="y!rates <lv1> <lv2> [xp from each run]")
             embed.add_field(name="Aliases", value="`catacombs`, `cata`, `c`")
             embed.set_footer(text="Made by yan#0069", icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif")
 

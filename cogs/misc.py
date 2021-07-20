@@ -39,7 +39,7 @@ class help(commands.Cog):
 
         elif cmd in ["catacombs", "cata", "c"]:
             embed=Embed(title="Catacombs", description="Checks xp required to get from one Catacombs level to another.", colour=ctx.guild.me.color)
-            embed.add_field(name="Usage", value="y!rates <lv1> <lv2> [xp from each run]")
+            embed.add_field(name="Usage", value="y!cata <lv1> <lv2> [xp from each run]")
             embed.add_field(name="Aliases", value="`catacombs`, `cata`, `c`")
             embed.set_footer(text="Made by yan#0069", icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif")
 
@@ -51,7 +51,7 @@ class help(commands.Cog):
 
     @commands.command()
     async def info(self, ctx):
-        embed=Embed(title="yan", description="idk why i made this use if you want to", colour=ctx.guild.me.color)
+        embed=Embed(title="yan", description="A skyblock bot. Since I'm bad, you can expect a lot of bugs (please report them).", colour=ctx.guild.me.color)
         embed.set_thumbnail(url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif")
         embed.add_field(name="cool stats", value=f"**Servers**: {len(self.bot.guilds)}\n**Users**: {len(self.bot.users)}\n**Ping**: {round(self.bot.latency * 1000)}ms", inline=True)
         embed.add_field(name="links", value=f"[**Bot Invite**](https://discord.com/oauth2/authorize?client_id=862232441044860938&permissions=278528&scope=bot%20applications.commands)\n[**Server**](https://discord.gg/hcazeVMrSN)\n[**Source Code**](https://github.com/yanNotDev/yan-bot)")

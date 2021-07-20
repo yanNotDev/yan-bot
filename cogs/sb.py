@@ -186,6 +186,25 @@ class skyblock(commands.Cog):
         )
         await msg.edit(embed=embed)
 
+    @commands.command(aliases=["mr", "manrates"])
+    async def manualrates(self, ctx, ff):
+        wart_coins = 3 * (2 * (1 + int(ff) / 100))
+        wart_coins_per_hour = "{:,.1f}".format(wart_coins * 20 * 60 * 60)
+
+        embed = Embed(
+            title=f"Rates for {ff} farming fortune",
+            colour=ctx.guild.me.color,
+        )
+        embed.add_field(
+            name="<:Warts:862984331677138955> Warts (NPC)",
+            value=f"{wart_coins_per_hour}/hour",
+        )
+        embed.set_footer(
+            text="Made by yan#0069",
+            icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
+        )
+        await ctx.send(embed=embed)
+
     @commands.command(aliases=["s"])
     async def stats(self, ctx, ign, profile=None):
         embed = Embed(
@@ -297,7 +316,7 @@ class skyblock(commands.Cog):
 
     @commands.command(aliases=["cs"])
     async def calcskill(self, ctx, start, end):
-        required = "{:,}".format(lvdiff(start, end))
+        required = "{:,}".format(catadiff(start, end))
 
         embed = Embed(
             description=f"{required} xp is required to get from Level {start} to {end}.",

@@ -13,7 +13,7 @@ class help(commands.Cog):
         if cmd is None:
             embed.add_field(
                 name="Skyblock",
-                value="`rates`, `stats`, `calcskill`, `calccata`",
+                value="`rates`, `manrates`, `stats`, `calcskill`, `calccata`",
                 inline=False,
             )
             embed.add_field(name="Miscellaneous", value="`help`, `info`", inline=False)
@@ -27,6 +27,19 @@ class help(commands.Cog):
             )
             embed.add_field(name="Usage", value="y!rates <ign> [profile]")
             embed.add_field(name="Aliases", value="`rates`, `r`")
+            embed.set_footer(
+                text="Made by yan#0069",
+                icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
+            )
+
+        elif cmd in ["manualrates", "manrates", "mr"]:
+            embed = Embed(
+                title="Manual Rates",
+                description="Calculate coins per hour from farming.",
+                colour=ctx.guild.me.color,
+            )
+            embed.add_field(name="Usage", value="y!mr <farming fortune>")
+            embed.add_field(name="Aliases", value="`manualrates`, `manrates`, `mr`")
             embed.set_footer(
                 text="Made by yan#0069",
                 icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",

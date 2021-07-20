@@ -12,23 +12,31 @@ class skyblock(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-
     @commands.command(aliases=["r"])
     async def rates(self, ctx, ign, profile=None):
-        embed=Embed(description="If this message doesn't update within a few seconds, make sure all your API is on.", colour=ctx.guild.me.color)
+        embed = Embed(
+            description="If this message doesn't update within a few seconds, make sure all your API is on.",
+            colour=ctx.guild.me.color,
+        )
         embed.add_field(name="loading aaaa", value="_ _", inline=False)
-        embed.set_footer(text="Made by yan#0069", icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif")
+        embed.set_footer(
+            text="Made by yan#0069",
+            icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
+        )
         msg = await ctx.send(embed=embed)
         mcuuid = uuid(ign)
         if profile is None:
-            request = requests.get(f"https://api.slothpixel.me/api/skyblock/profile/{mcuuid}?key={key}")
+            request = requests.get(
+                f"https://api.slothpixel.me/api/skyblock/profile/{mcuuid}?key={key}"
+            )
         else:
-            request = requests.get(f"https://api.slothpixel.me/api/skyblock/profile/{mcuuid}/{profile}?key={key}")
+            request = requests.get(
+                f"https://api.slothpixel.me/api/skyblock/profile/{mcuuid}/{profile}?key={key}"
+            )
         r = request.json()
 
-
-# general ff
-    # fortune from farming level
+        # general ff
+        # fortune from farming level
         total_xp = r["members"][mcuuid]["skills"]["farming"]["xp"]
         try:
             cap = r["members"][mcuuid]["jacob2"]["perks"]["farming_level_cap"] + 50
@@ -37,13 +45,13 @@ class skyblock(commands.Cog):
 
         farming_level = lvcheck(total_xp, cap)
 
-    # fortune from anita bonus
+        # fortune from anita bonus
         try:
             anita = r["members"][mcuuid]["jacob2"]["perks"]["double_drops"]
         except KeyError:
             anita = 0
 
-    # fortune from elephant
+        # fortune from elephant
         try:
             pet_name = r["members"][mcuuid]["active_pet"]["name"]
             pet_rarity = r["members"][mcuuid]["active_pet"]["rarity"]
@@ -56,14 +64,14 @@ class skyblock(commands.Cog):
         else:
             pet_level = 0
 
-# fortune from general hoe
+        # fortune from general hoe
         gen_hoe = 0
 
         try:
             hoe = r["members"][mcuuid]["inventory"][0]["attributes"]["id"]
         except KeyError:
             await ctx.reply("You must place your hoe in your first hotbar slot!")
-   # hoe reforge
+        # hoe reforge
         try:
             reforge = r["members"][mcuuid]["inventory"][0]["attributes"]["modifier"]
         except KeyError:
@@ -86,21 +94,25 @@ class skyblock(commands.Cog):
                 gen_hoe += 7
             elif rarity == "common":
                 gen_hoe += 5
-    # harvesting
+        # harvesting
         try:
-            harvesting = r["members"][mcuuid]["inventory"][0]["attributes"]["enchantments"]["harvesting"]
+            harvesting = r["members"][mcuuid]["inventory"][0]["attributes"][
+                "enchantments"
+            ]["harvesting"]
         except KeyError:
             harvesting = 0
         for i in range(harvesting):
             gen_hoe += 12.5
-   # cultivating
+        # cultivating
         try:
-            cultivating = r["members"][mcuuid]["inventory"][0]["attributes"]["enchantments"]["cultivating"]
+            cultivating = r["members"][mcuuid]["inventory"][0]["attributes"][
+                "enchantments"
+            ]["cultivating"]
         except KeyError:
             cultivating = 0
         for i in range(cultivating):
             gen_hoe += 1
-    # farming for dummies
+        # farming for dummies
         ffd = 0
         for i in range(36):
             try:
@@ -108,7 +120,7 @@ class skyblock(commands.Cog):
             except KeyError:
                 ffd += 0
 
-    # wart hoe fortune
+        # wart hoe fortune
         wart_hoe = 0
         # hoe rarity
         if hoe == "THEORETICAL_HOE_WARTS_1":
@@ -119,7 +131,9 @@ class skyblock(commands.Cog):
             wart_hoe += 50
         # turbo warts
         try:
-            turbo_warts = r["members"][mcuuid]["inventory"][0]["attributes"]["enchantments"]["turbo_warts"]
+            turbo_warts = r["members"][mcuuid]["inventory"][0]["attributes"][
+                "enchantments"
+            ]["turbo_warts"]
         except KeyError:
             turbo_warts = 0
         for i in range(turbo_warts):
@@ -141,38 +155,58 @@ class skyblock(commands.Cog):
                         counter = line
             except KeyError:
                 counter = 0
-            counter = sub('§[0-9a-fk-or]', '', counter); counter = int(sub('[^-0-9\/]+', '', counter))
+            counter = sub("§[0-9a-fk-or]", "", counter)
+            counter = int(sub("[^-0-9\/]+", "", counter))
 
             counter = int(log10(counter) + 1) - 4
             wart_hoe += counter * 16
 
-
         ff = (farming_level * 4) + (anita * 2) + (pet_level * 1.8) + gen_hoe + ffd
         wart_ff = ff + wart_hoe
 
-        wart_coins = 3 * (2 * (1 + wart_ff/100))
+        wart_coins = 3 * (2 * (1 + wart_ff / 100))
         wart_coins_per_hour = "{:,.1f}".format(wart_coins * 20 * 60 * 60)
 
         ign = r["members"][mcuuid]["player"]["username"]
         fruit = r["cute_name"]
 
-        embed=Embed(title=f"Rates for {ign} ({fruit})", description=f"{wart_ff} total farming fortune", colour=ctx.guild.me.color)
-        embed.add_field(name="<:Warts:862984331677138955> Warts (NPC)", value=f"{wart_coins_per_hour}/hour", inline=True)
-        embed.set_footer(text="Made by yan#0069", icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif")
+        embed = Embed(
+            title=f"Rates for {ign} ({fruit})",
+            description=f"{wart_ff} total farming fortune",
+            colour=ctx.guild.me.color,
+        )
+        embed.add_field(
+            name="<:Warts:862984331677138955> Warts (NPC)",
+            value=f"{wart_coins_per_hour}/hour",
+            inline=True,
+        )
+        embed.set_footer(
+            text="Made by yan#0069",
+            icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
+        )
         await msg.edit(embed=embed)
-
 
     @commands.command(aliases=["s"])
     async def stats(self, ctx, ign, profile=None):
-        embed=Embed(description="If this message doesn't update within a few seconds, sorry :cry:", colour=ctx.guild.me.color)
+        embed = Embed(
+            description="If this message doesn't update within a few seconds, sorry :cry:",
+            colour=ctx.guild.me.color,
+        )
         embed.add_field(name="HYPIXEL WHY are you so sLOW", value="_ _", inline=False)
-        embed.set_footer(text="Made by yan#0069", icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif")
+        embed.set_footer(
+            text="Made by yan#0069",
+            icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
+        )
         msg = await ctx.send(embed=embed)
         mcuuid = uuid(ign)
         if profile is None:
-            request = requests.get(f"https://hypixel-api.senither.com/v1/profiles/{mcuuid}/latest?key={key}")
+            request = requests.get(
+                f"https://hypixel-api.senither.com/v1/profiles/{mcuuid}/latest?key={key}"
+            )
         else:
-            request = requests.get(f"https://hypixel-api.senither.com/v1/profiles/{mcuuid}/{profile}?key={key}")
+            request = requests.get(
+                f"https://hypixel-api.senither.com/v1/profiles/{mcuuid}/{profile}?key={key}"
+            )
         r = request.json()
 
         ign = r["data"]["username"]
@@ -219,20 +253,26 @@ class skyblock(commands.Cog):
             cata = "?"
             secrets = "?"
 
-
-
         print(asl, weight, zombie, spider, wolf, enderman, coins, cata, secrets)
 
-        embed=Embed(title=f"Stats for {ign} ({fruit})", colour=ctx.guild.me.color)
-        embed.set_thumbnail(url=f"https://crafatar.com/renders/body/{mcuuid}?overlay=true")
+        embed = Embed(title=f"Stats for {ign} ({fruit})", colour=ctx.guild.me.color)
+        embed.set_thumbnail(
+            url=f"https://crafatar.com/renders/body/{mcuuid}?overlay=true"
+        )
         embed.add_field(name="Skill Average", value=asl, inline=True)
         embed.add_field(name="Cata Level", value=cata, inline=True)
         embed.add_field(name="Secrets", value=secrets, inline=True)
-        embed.add_field(name="Weight + Overflow", value=f"{weight} + {overflow}", inline=True)
+        embed.add_field(
+            name="Weight + Overflow", value=f"{weight} + {overflow}", inline=True
+        )
         embed.add_field(name="Coins", value=coins, inline=True)
-        embed.add_field(name="Slayers", value=f"{zombie}/{spider}/{wolf}/{enderman}", inline=True)
-        embed.set_footer(text="Made by yan#0069", icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif")
-
+        embed.add_field(
+            name="Slayers", value=f"{zombie}/{spider}/{wolf}/{enderman}", inline=True
+        )
+        embed.set_footer(
+            text="Made by yan#0069",
+            icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
+        )
 
         await msg.edit(embed=embed)
 
@@ -241,11 +281,17 @@ class skyblock(commands.Cog):
         required_int = catadiff(start, end)
         required = "{:,}".format(required_int)
 
-        embed=Embed(description=f"{required} xp is required to get from Catacombs {start} to {end}.", colour=ctx.guild.me.color)
+        embed = Embed(
+            description=f"{required} xp is required to get from Catacombs {start} to {end}.",
+            colour=ctx.guild.me.color,
+        )
         if xp is not None:
-            runs = "{:,}".format(ceil(required_int/int(xp)))
+            runs = "{:,}".format(ceil(required_int / int(xp)))
             embed.add_field(name=f"Runs required to reach Catacombs {end}", value=runs)
-        embed.set_footer(text="Made by yan#0069", icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif")
+        embed.set_footer(
+            text="Made by yan#0069",
+            icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
+        )
 
         await ctx.send(embed=embed)
 

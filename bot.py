@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-#from dislash import *
+# from dislash import *
 from util.config import token
 
 intents = discord.Intents.default()
@@ -13,17 +13,21 @@ bot = commands.Bot(
         everyone=False,
         roles=False,
         replied_user=False,
-        ),
-    intents=intents
+    ),
+    intents=intents,
 )
 
-#slash = SlashClient(bot)
-#guilds = [802883640286773269, 860747004459745300, 860319342881144853, 812449183415795712, 836279047486439505]
+# slash = SlashClient(bot)
+# guilds = [802883640286773269, 860747004459745300, 860319342881144853, 812449183415795712, 836279047486439505]
+
 
 @bot.event
 async def on_ready():
     print("yan")
-    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="y!help"))
+    await bot.change_presence(
+        activity=discord.Activity(type=discord.ActivityType.watching, name="y!help")
+    )
+
 
 @bot.event
 async def on_command_error(ctx, error):

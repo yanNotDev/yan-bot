@@ -12,7 +12,9 @@ class help(commands.Cog):
         embed = Embed(description="_ _", colour=ctx.guild.me.color)
         if cmd is None:
             embed.add_field(
-                name="Skyblock", value="`rates`, `stats`, `cata`", inline=False
+                name="Skyblock",
+                value="`rates`, `stats`, `calcskill`, `calccata`",
+                inline=False,
             )
             embed.add_field(name="Miscellaneous", value="`help`, `info`", inline=False)
             embed.set_footer(text='Use "y!help command" for more help on that command.')
@@ -43,6 +45,32 @@ class help(commands.Cog):
                 icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
             )
 
+        elif cmd in ["calcskill", "cs"]:
+            embed = Embed(
+                title="CalcSkill",
+                description="Checks xp for the 7 main skills required to get from level to another.",
+                colour=ctx.guild.me.color,
+            )
+            embed.add_field(name="Usage", value="y!cs <lv1> <lv2>")
+            embed.add_field(name="Aliases", value="`calcskill`, `cs`")
+            embed.set_footer(
+                text="Made by yan#0069",
+                icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
+            )
+
+        elif cmd in ["calccata", "cc"]:
+            embed = Embed(
+                title="CalcCata",
+                description="Checks xp required to get from one Catacombs level to another.",
+                colour=ctx.guild.me.color,
+            )
+            embed.add_field(name="Usage", value="y!cc <lv1> <lv2> [xp from each run]")
+            embed.add_field(name="Aliases", value="`calccata`, `cc`")
+            embed.set_footer(
+                text="Made by yan#0069",
+                icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
+            )
+
         elif cmd == "help":
             embed = Embed(title="Help", description="Displays the help message.")
             embed.add_field(name="Usage", value="y!rates help [command]")
@@ -58,19 +86,6 @@ class help(commands.Cog):
                 colour=ctx.guild.me.color,
             )
             embed.add_field(name="Usage", value="y!info")
-            embed.set_footer(
-                text="Made by yan#0069",
-                icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
-            )
-
-        elif cmd in ["catacombs", "cata", "c"]:
-            embed = Embed(
-                title="Catacombs",
-                description="Checks xp required to get from one Catacombs level to another.",
-                colour=ctx.guild.me.color,
-            )
-            embed.add_field(name="Usage", value="y!cata <lv1> <lv2> [xp from each run]")
-            embed.add_field(name="Aliases", value="`catacombs`, `cata`, `c`")
             embed.set_footer(
                 text="Made by yan#0069",
                 icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",

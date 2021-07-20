@@ -23,7 +23,7 @@ bot = commands.Bot(
 @bot.event
 async def on_ready():
     print("yan")
-    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="yan"))
+    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="y!help"))
 
 @bot.event
 async def on_command_error(ctx, error):

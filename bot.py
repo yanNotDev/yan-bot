@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from os import listdir
 # from dislash import *
 from util.config import token
 
@@ -36,7 +37,8 @@ async def on_command_error(ctx, error):
 
 
 bot.load_extension("jishaku")
-bot.load_extension("cogs.misc")
-bot.load_extension("cogs.sb")
+for filename in listdir("./cogs"):
+    if filename.endswith(".py"):
+        bot.load_extension(f"cogs.{filename[:-3]}")
 
 bot.run(token)

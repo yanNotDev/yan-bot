@@ -113,7 +113,7 @@ class help(commands.Cog):
     async def info(self, ctx):
         embed = Embed(
             title="yan",
-            description="A skyblock bot. Since I'm bad, you can expect a lot of bugs (please report them).",
+            description="A skyblock bot. Since I'm bad, you can expect a lot of bugs (please report them by dm'ing me).",
             colour=ctx.guild.me.color,
         )
         embed.set_thumbnail(

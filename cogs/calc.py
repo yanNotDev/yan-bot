@@ -1,7 +1,7 @@
 from discord.ext import commands
 from discord import Embed
 from math import ceil
-from util.skill import catadiff, lvdiff
+from util.skill import catadiff, lvdiff, slayerdiff
 
 
 class Calc(commands.Cog):
@@ -33,6 +33,28 @@ class Calc(commands.Cog):
 
         embed = Embed(
             description=f"{required} xp is required to get from Level {start} to {end}.",
+            colour=ctx.guild.me.color,
+        )
+        embed.set_footer(
+            text="Made by yan#0069",
+            icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
+        )
+
+        await ctx.send(embed=embed)
+
+    @commands.command(aliases=["csl"])
+    async def calcslayer(self, ctx, start, end, type):
+        required = "{:,}".format(slayerdiff(start, end, type))
+
+        if type in ["zombie", "revenant", "rev", "r"]:
+            type = "Revenant"
+        elif type in ["spider", "tarantula", "tara", "t"]:
+            type = "Tarantula"
+        elif type in ["wolf", "sven", "s", "enderman", "eman", "e", "voidbloom", "v"]:
+            type = "Sven/Enderman"
+ 
+        embed = Embed(
+            description=f"{required} xp is required to get from {type} {start} to {end}.",
             colour=ctx.guild.me.color,
         )
         embed.set_footer(

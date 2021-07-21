@@ -50,3 +50,17 @@ def catadiff(start, end):
     begin = table[int(start)]
     finish = table[int(end)]
     return finish - begin
+
+
+def slayerdiff(start, end, slayer):
+    slayer = slayer.lower()
+    if slayer in ["zombie", "revenant", "rev", "r"]:
+        table = [0, 5, 15, 200, 1000]
+    elif slayer in ["spider", "tarantula", "tara", "t"]:
+        table = [0, 5, 25, 200, 1000]
+    elif slayer in ["wolf", "sven", "s", "enderman", "eman", "e", "voidbloom", "v"]:
+        table = [0, 10, 30, 250, 1500]
+    table.extend([5000, 20000, 100000, 400000, 1000000])
+    begin = table[int(start)]
+    finish = table[int(end)]
+    return finish - begin

@@ -13,7 +13,7 @@ class help(commands.Cog):
         if cmd is None:
             embed.add_field(
                 name="Skyblock",
-                value="`rates`, `manrates`, `stats`, `calcskill`, `calccata`",
+                value="`rates`, `manrates`, `stats`, `calcskill`, `calccata`, `calcslayer`",
                 inline=False,
             )
             embed.add_field(name="Miscellaneous", value="`help`, `info`", inline=False)
@@ -83,6 +83,20 @@ class help(commands.Cog):
                 text="Made by yan#0069",
                 icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
             )
+
+        elif cmd in ["calcslayer", "csl"]:
+            embed = Embed(
+                title="CalcSlayer",
+                description="Checks xp required to get from one slayer level to another.",
+                colour=ctx.guild.me.color,
+            )
+            embed.add_field(name="Usage", value="y!cc <lv1> <lv2> <slayer type>")
+            embed.add_field(name="Aliases", value="`calcslayer`, `csl`")
+            embed.set_footer(
+                text="Made by yan#0069",
+                icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
+            )
+
 
         elif cmd == "help":
             embed = Embed(title="Help", description="Displays the help message.")

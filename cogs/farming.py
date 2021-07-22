@@ -1,11 +1,12 @@
 import requests
-from discord import Embed
+from discord import Embed, Colour
 from discord.ext import commands
 from math import log10
 from re import sub
 from util.config import key
 from util.skill import lvcheck
 from util.uuid import uuid
+
 
 class Farming(commands.Cog):
     def __init__(self, bot):
@@ -14,7 +15,7 @@ class Farming(commands.Cog):
     @commands.command(aliases=["r"])
     async def rates(self, ctx, ign, profile=None):
         embed = Embed(
-            description="If this message doesn't update within a few seconds, make sure all your API is on.",
+            description="If this message doesn't update within a few seconds, make sure all your API is on and your hoe is in your first hotbar slot.",
             colour=ctx.guild.me.color,
         )
         embed.add_field(name="loading aaaa", value="_ _", inline=False)
@@ -69,7 +70,23 @@ class Farming(commands.Cog):
         try:
             hoe = r["members"][mcuuid]["inventory"][0]["attributes"]["id"]
         except KeyError:
-            await ctx.reply("You must place your hoe in your first hotbar slot!")
+            embed = Embed(
+                title="Error",
+                description="You must place your hoe in your first hotbar slot!",
+                colour=Colour.red,
+            )
+            embed.set_footer(
+                text="sorry im bad at this ok",
+                icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
+            )
+            await msg.edit(embed=embed)
+
+            embed.set_footer(
+                text="sorry im bad at this ok",
+                icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
+            )
+            await msg.edit(embed=embed)
+
         # hoe reforge
         try:
             reforge = r["members"][mcuuid]["inventory"][0]["attributes"]["modifier"]
@@ -202,7 +219,8 @@ class Farming(commands.Cog):
             text="Made by yan#0069",
             icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
         )
-        await ctx.send(embed=embed) 
+        await ctx.send(embed=embed)
+
 
 def setup(bot):
     bot.add_cog(Farming(bot))

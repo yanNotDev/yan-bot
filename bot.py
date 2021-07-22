@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 from os import listdir
+
 # from dislash import *
 from util.config import token
 
@@ -34,6 +35,8 @@ async def on_ready():
 async def on_command_error(ctx, error):
     if isinstance(error, commands.NotOwner):
         await ctx.reply("Only my owner can use this command!")
+    else:
+        print(error)
 
 
 bot.load_extension("jishaku")

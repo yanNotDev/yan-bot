@@ -119,6 +119,7 @@ class help(commands.Cog):
             )
 
         else:
+            await ctx.reply("That's not a command!")
             return
 
         await ctx.send(embed=embed)

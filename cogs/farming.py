@@ -1,5 +1,5 @@
 import requests
-from discord import Embed, Colour
+from discord import Embed, Colour, colour
 from discord.ext import commands
 from math import log10
 from re import sub
@@ -13,7 +13,15 @@ class Farming(commands.Cog):
         self.bot = bot
 
     @commands.command(aliases=["r"])
-    async def rates(self, ctx, ign, profile=None):
+    async def rates(self, ctx, ign=None, profile=None):
+        if ign is None:
+            await ctx.reply("You must enter an ign! (and optionally, a profile)\neg `y!r minikloon banana`")
+            return
+        mcuuid = uuid(ign)
+        if mcuuid == "IgnError":
+            await ctx.reply("Invalid IGN!")
+            return
+
         embed = Embed(
             description="If this message doesn't update within a few seconds, make sure all your API is on and your hoe is in your first hotbar slot.",
             colour=ctx.guild.me.color,
@@ -23,8 +31,8 @@ class Farming(commands.Cog):
             text="Made by yan#0069",
             icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
         )
-        msg = await ctx.send(embed=embed)
-        mcuuid = uuid(ign)
+        msg = await ctx.reply(embed=embed)
+
         if profile is None:
             request = requests.get(
                 f"https://api.slothpixel.me/api/skyblock/profile/{mcuuid}?key={key}"
@@ -34,6 +42,34 @@ class Farming(commands.Cog):
                 f"https://api.slothpixel.me/api/skyblock/profile/{mcuuid}/{profile}?key={key}"
             )
         r = request.json()
+
+        try:
+            if r["error"] == "Profile not found!":
+                embed = Embed(description="Invalid profile!", colour=ctx.guild.me.color)
+                embed.set_footer(
+                    text="Made by yan#0069",
+                    icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
+                )
+                await msg.edit(embed=embed)
+                return
+
+            elif (
+                r["error"]
+                == "undefined is not iterable (cannot read property Symbol(Symbol.iterator))"
+            ):
+                embed = Embed(
+                    description="um i dont think this guy has played skyblock",
+                    colour=ctx.guild.me.color,
+                )
+                embed.set_footer(
+                    text="Made by yan#0069",
+                    icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
+                )
+                await msg.edit(embed=embed)
+                return
+
+        except KeyError:
+            pass
 
         # general ff
         # fortune from farming level
@@ -181,7 +217,7 @@ class Farming(commands.Cog):
         wart_ff = ff + wart_hoe
 
         wart_coins = 3 * (2 * (1 + wart_ff / 100))
-        wart_coins_per_hour = "{:,.1f}".format(wart_coins * 20 * 60 * 60)
+        wart_coins_per_hour = "{:,.1f}".format(wart_coins * 72000)
 
         ign = r["members"][mcuuid]["player"]["username"]
         fruit = r["cute_name"]
@@ -203,23 +239,35 @@ class Farming(commands.Cog):
         await msg.edit(embed=embed)
 
     @commands.command(aliases=["mr", "manrates"])
-    async def manualrates(self, ctx, ff):
-        wart_coins = 3 * (2 * (1 + int(ff) / 100))
-        wart_coins_per_hour = "{:,.1f}".format(wart_coins * 20 * 60 * 60)
+    async def manualrates(self, ctx, ff=None):
+        try:
+            if ff is None:
+                await ctx.reply(
+                    "You must enter a valid integer! (no letters, decimals, etc)\neg y!mr 348"
+                )
+                return
 
-        embed = Embed(
-            title=f"Rates for {ff} farming fortune",
-            colour=ctx.guild.me.color,
-        )
-        embed.add_field(
-            name="<:Warts:862984331677138955> Warts (NPC)",
-            value=f"{wart_coins_per_hour}/hour",
-        )
-        embed.set_footer(
-            text="Made by yan#0069",
-            icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
-        )
-        await ctx.send(embed=embed)
+            ff = int(ff.replace(",", ""))
+            wart_coins = 3 * (2 * (1 + ff / 100))
+            wart_coins_per_hour = "{:,.1f}".format(wart_coins * 20 * 60 * 60)
+            ff = "{:,}".format(ff)
+            embed = Embed(
+                title=f"Rates for {ff} farming fortune",
+                colour=ctx.guild.me.color,
+            )
+            embed.add_field(
+                name="<:Warts:862984331677138955> Warts (NPC)",
+                value=f"{wart_coins_per_hour}/hour",
+            )
+            embed.set_footer(
+                text="Made by yan#0069",
+                icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
+            )
+            await ctx.reply(embed=embed)
+        except ValueError:
+            await ctx.reply(
+                "You must enter a valid integer! (no letters, decimals, etc)"
+            )
 
 
 def setup(bot):

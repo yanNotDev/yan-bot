@@ -10,7 +10,17 @@ class Stats(commands.Cog):
         self.bot = bot
 
     @commands.command(aliases=["s"])
-    async def stats(self, ctx, ign, profile=None):
+    async def stats(self, ctx, ign=None, profile=None):
+        if ign is None:
+            await ctx.reply(
+                "You must enter an ign! (and optionally, a profile)\neg `y!s minikloon banana`"
+            )
+            return
+        mcuuid = uuid(ign)
+        if mcuuid == "IgnError":
+            await ctx.reply("Invalid IGN!")
+            return
+
         embed = Embed(
             description="If this message doesn't update within a few seconds, sorry :cry:",
             colour=ctx.guild.me.color,
@@ -20,8 +30,8 @@ class Stats(commands.Cog):
             text="Made by yan#0069",
             icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
         )
-        msg = await ctx.send(embed=embed)
-        mcuuid = uuid(ign)
+        msg = await ctx.reply(embed=embed)
+
         if profile is None:
             request = requests.get(
                 f"https://hypixel-api.senither.com/v1/profiles/{mcuuid}/latest?key={key}"
@@ -31,6 +41,33 @@ class Stats(commands.Cog):
                 f"https://hypixel-api.senither.com/v1/profiles/{mcuuid}/{profile}?key={key}"
             )
         r = request.json()
+
+        try:
+            if r["reason"] == "Failed to find a profile using the given strategy":
+                embed = Embed(description="Invalid profile!", colour=ctx.guild.me.color)
+                embed.set_footer(
+                    text="Made by yan#0069",
+                    icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
+                )
+                await msg.edit(embed=embed)
+                return
+
+            elif r["reason"].startswith(
+                "Found no SkyBlock profiles for a user with a UUID of '"
+            ):
+                embed = Embed(
+                    description="um i dont think this guy has played skyblock",
+                    colour=ctx.guild.me.color,
+                )
+                embed.set_footer(
+                    text="Made by yan#0069",
+                    icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
+                )
+                await msg.edit(embed=embed)
+                return
+
+        except KeyError:
+            pass
 
         ign = r["data"]["username"]
         fruit = r["data"]["name"]

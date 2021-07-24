@@ -1,6 +1,8 @@
+import json
+from os import listdir
+
 import discord
 from discord.ext import commands
-from os import listdir
 
 # from dislash import *
 from util.config import token
@@ -8,8 +10,16 @@ from util.config import token
 intents = discord.Intents.default()
 intents.members = True
 
+
+def get_prefix(bot, msg):
+    with open("json/prefixes.json", "r") as f:
+        prefixes = json.load(f)
+
+    return prefixes[str(msg.guild.id)]
+
+
 bot = commands.Bot(
-    command_prefix="y!",
+    command_prefix=get_prefix,
     allowed_mentions=discord.AllowedMentions(
         users=True,
         everyone=False,
@@ -29,6 +39,28 @@ async def on_ready():
     await bot.change_presence(
         activity=discord.Activity(type=discord.ActivityType.watching, name="y!help")
     )
+
+
+@bot.event
+async def on_guild_join(guild):
+    with open("json/prefixes.json", "r") as f:
+        prefixes = json.load(f)
+
+    prefixes[str(guild.id)] = "y!"
+
+    with open("json/prefixes.json", "w") as f:
+        json.dump(prefixes, f, indent=4)
+
+
+@bot.event
+async def on_guild_remove(guild):
+    with open("json/prefixes.json", "r") as f:
+        prefixes = json.load(f)
+
+    prefixes.pop(str(guild.id))
+
+    with open("json/prefixes.json", "w") as f:
+        json.dump(prefixes, f, indent=4)
 
 
 @bot.event

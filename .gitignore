@@ -4,6 +4,9 @@ config.py
 # testing stuff
 test.py
 
+# json stuff
+json/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

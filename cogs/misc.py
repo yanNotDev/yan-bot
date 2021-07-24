@@ -16,6 +16,7 @@ class help(commands.Cog):
                 value="`rates`, `manrates`, `stats`, `calcskill`, `calccata`, `calcslayer`",
                 inline=False,
             )
+            embed.add_field(name="Admin", value="`prefix`", inline=False)
             embed.add_field(name="Miscellaneous", value="`help`, `info`", inline=False)
             embed.set_footer(text='Use "y!help command" for more help on that command.')
 
@@ -97,9 +98,24 @@ class help(commands.Cog):
                 icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
             )
 
+        elif cmd == "prefix":
+            embed = Embed(
+                title="Prefix",
+                description="Change the prefix. Prefix becomes `y!` if the command is ran without arguments.",
+                colour=ctx.guild.me.color,
+            )
+            embed.add_field(name="Usage", value="y!prefix <prefix>")
+            embed.set_footer(
+                text="Made by yan#0069",
+                icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
+            )
 
         elif cmd == "help":
-            embed = Embed(title="Help", description="Displays the help message.")
+            embed = Embed(
+                title="Help",
+                description="Displays the help message.",
+                colour=ctx.guild.me.color,
+            )
             embed.add_field(name="Usage", value="y!rates help [command]")
             embed.set_footer(
                 text="Made by yan#0069",

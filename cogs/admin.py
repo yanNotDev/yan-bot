@@ -43,7 +43,7 @@ class Admin(commands.Cog):
                         f"yan you dont have manage perms here but i changed the prefix to `{prefix}` anyway since ur bot owner"
                     )
                 else:
-                    await ctx.reply(f"Prefix changed to the `{prefix}`")
+                    await ctx.reply(f"Prefix changed to `{prefix}`")
         else:
             await ctx.reply("Missing manage server permissions!")
 

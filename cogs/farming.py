@@ -1,8 +1,9 @@
-import requests
-from discord import Embed, Colour, colour
-from discord.ext import commands
 from math import log10
 from re import sub
+
+import requests
+from discord import Colour, Embed
+from discord.ext import commands
 from util.config import key
 from util.skill import lvcheck
 from util.uuid import uuid
@@ -15,7 +16,9 @@ class Farming(commands.Cog):
     @commands.command(aliases=["r"])
     async def rates(self, ctx, ign=None, profile=None):
         if ign is None:
-            await ctx.reply("You must enter an ign! (and optionally, a profile)\neg `y!r minikloon banana`")
+            await ctx.reply(
+                f"You must enter an ign! (and optionally, a profile)\neg `{ctx.prefix}r minikloon banana`"
+            )
             return
         mcuuid = uuid(ign)
         if mcuuid == "IgnError":
@@ -243,7 +246,7 @@ class Farming(commands.Cog):
         try:
             if ff is None:
                 await ctx.reply(
-                    "You must enter a valid integer! (no letters, decimals, etc)\neg y!mr 348"
+                    f"You must enter a valid integer! (no letters, decimals, etc)\neg `{ctx.prefix}mr 348`"
                 )
                 return
 

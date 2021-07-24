@@ -18,7 +18,9 @@ class help(commands.Cog):
             )
             embed.add_field(name="Admin", value="`prefix`", inline=False)
             embed.add_field(name="Miscellaneous", value="`help`, `info`", inline=False)
-            embed.set_footer(text='Use "y!help command" for more help on that command.')
+            embed.set_footer(
+                text=f'Use "{ctx.prefix}help command" for more help on that command.'
+            )
 
         elif cmd in ["rates", "r"]:
             embed = Embed(
@@ -26,7 +28,7 @@ class help(commands.Cog):
                 description="Calculate coins per hour from farming.",
                 colour=ctx.guild.me.color,
             )
-            embed.add_field(name="Usage", value="y!rates <ign> [profile]")
+            embed.add_field(name="Usage", value=f"{ctx.prefix}rates <ign> [profile]")
             embed.add_field(name="Aliases", value="`rates`, `r`")
             embed.set_footer(
                 text="Made by yan#0069",
@@ -39,7 +41,7 @@ class help(commands.Cog):
                 description="Calculate coins per hour from farming.",
                 colour=ctx.guild.me.color,
             )
-            embed.add_field(name="Usage", value="y!mr <farming fortune>")
+            embed.add_field(name="Usage", value=f"{ctx.prefix}mr <farming fortune>")
             embed.add_field(name="Aliases", value="`manualrates`, `manrates`, `mr`")
             embed.set_footer(
                 text="Made by yan#0069",
@@ -52,7 +54,7 @@ class help(commands.Cog):
                 description="Shows a player's general skyblock stats.",
                 colour=ctx.guild.me.color,
             )
-            embed.add_field(name="Usage", value="y!stats <ign> [profile]")
+            embed.add_field(name="Usage", value=f"{ctx.prefix}stats <ign> [profile]")
             embed.add_field(name="Aliases", value="`stats`, `s`")
             embed.set_footer(
                 text="Made by yan#0069",
@@ -65,7 +67,7 @@ class help(commands.Cog):
                 description="Checks xp for the 7 main skills required to get from level to another.",
                 colour=ctx.guild.me.color,
             )
-            embed.add_field(name="Usage", value="y!cs <lv1> <lv2>")
+            embed.add_field(name="Usage", value=f"{ctx.prefix}cs <lv1> <lv2>")
             embed.add_field(name="Aliases", value="`calcskill`, `cs`")
             embed.set_footer(
                 text="Made by yan#0069",
@@ -78,7 +80,9 @@ class help(commands.Cog):
                 description="Checks xp required to get from one Catacombs level to another.",
                 colour=ctx.guild.me.color,
             )
-            embed.add_field(name="Usage", value="y!cc <lv1> <lv2> [xp from each run]")
+            embed.add_field(
+                name="Usage", value=f"{ctx.prefix}cc <lv1> <lv2> [xp from each run]"
+            )
             embed.add_field(name="Aliases", value="`calccata`, `cc`")
             embed.set_footer(
                 text="Made by yan#0069",
@@ -91,7 +95,9 @@ class help(commands.Cog):
                 description="Checks xp required to get from one slayer level to another.",
                 colour=ctx.guild.me.color,
             )
-            embed.add_field(name="Usage", value="y!cc <lv1> <lv2> <slayer type>")
+            embed.add_field(
+                name="Usage", value=f"{ctx.prefix}cc <lv1> <lv2> <slayer type>"
+            )
             embed.add_field(name="Aliases", value="`calcslayer`, `csl`")
             embed.set_footer(
                 text="Made by yan#0069",
@@ -104,7 +110,7 @@ class help(commands.Cog):
                 description="Change the prefix. Prefix becomes `y!` if the command is ran without arguments.",
                 colour=ctx.guild.me.color,
             )
-            embed.add_field(name="Usage", value="y!prefix <prefix>")
+            embed.add_field(name="Usage", value=f"{ctx.prefix}prefix <prefix>")
             embed.set_footer(
                 text="Made by yan#0069",
                 icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
@@ -116,7 +122,7 @@ class help(commands.Cog):
                 description="Displays the help message.",
                 colour=ctx.guild.me.color,
             )
-            embed.add_field(name="Usage", value="y!rates help [command]")
+            embed.add_field(name="Usage", value=f"{ctx.prefix}rates help [command]")
             embed.set_footer(
                 text="Made by yan#0069",
                 icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
@@ -128,7 +134,7 @@ class help(commands.Cog):
                 description="Displays general info about the bot.",
                 colour=ctx.guild.me.color,
             )
-            embed.add_field(name="Usage", value="y!info")
+            embed.add_field(name="Usage", value=f"{ctx.prefix}info")
             embed.set_footer(
                 text="Made by yan#0069",
                 icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",

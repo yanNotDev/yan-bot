@@ -1,6 +1,7 @@
-from discord.ext import commands
-from discord import Embed
 from math import ceil
+
+from discord import Embed
+from discord.ext import commands
 from util.skill import catadiff, lvdiff, slayerdiff
 
 
@@ -13,7 +14,7 @@ class Calc(commands.Cog):
         try:
             if start is None or end is None:
                 await ctx.reply(
-                    "You must enter the current and desired Catacombs level! (and optionally how much xp you get from each run)\neg `y!cc 1 10 10,000`"
+                    f"You must enter the current and desired Catacombs level! (and optionally how much xp you get from each run)\neg `{ctx.prefix}cc 1 10 10,000`"
                 )
                 return
             if start.isnumeric() is False or end.isnumeric() is False:
@@ -24,7 +25,7 @@ class Calc(commands.Cog):
             required_int = catadiff(start, end)
         except IndexError:
             await ctx.reply(
-                "You must enter the current and desired Catacombs level from 0 to 50! (and optionally how much xp you get from each run)\neg `y!cc 1 10 10,000`"
+                f"You must enter the current and desired Catacombs level from 0 to 50! (and optionally how much xp you get from each run)\neg `{ctx.prefix}cc 1 10 10,000`"
             )
             return
 
@@ -54,7 +55,7 @@ class Calc(commands.Cog):
         try:
             if start is None or end is None:
                 await ctx.reply(
-                    "You must enter the current and desired skill level!\neg `y!cs 1 10`"
+                    f"You must enter the current and desired skill level!\neg `{ctx.prefix}cs 1 10`"
                 )
                 return
             if start.isnumeric() is False or end.isnumeric() is False:
@@ -65,7 +66,7 @@ class Calc(commands.Cog):
             required = "{:,}".format(lvdiff(start, end))
         except IndexError:
             await ctx.reply(
-                "You must enter the current and desired skill level from 0 to 50!\neg `y!cs 1 10`"
+                f"You must enter the current and desired skill level from 0 to 50!\neg `{ctx.prefix}cs 1 10`"
             )
             return
 
@@ -85,7 +86,7 @@ class Calc(commands.Cog):
         try:
             if start is None or end is None:
                 await ctx.reply(
-                    "You must enter the current and desired slayer level, and the type!\neg `y!csl 2 5 rev`"
+                    f"You must enter the current and desired slayer level, and the type!\neg `{ctx.prefix}csl 2 5 rev`"
                 )
                 return
             if start.isnumeric() is False or end.isnumeric() is False:
@@ -96,11 +97,13 @@ class Calc(commands.Cog):
             required = slayerdiff(start, end, type)
         except IndexError:
             await ctx.reply(
-                "You must enter the current and desired slayer level from 0 to 9, and the type!\neg `y!csl 2 5 rev`"
+                f"You must enter the current and desired slayer level from 0 to 9, and the type!\neg `{ctx.prefix}csl 2 5 rev`"
             )
             return
         if required == "SlayerError":
-            await ctx.reply("That's not a valid slayer type!\neg `y!csl 2 5 rev/tara/sven/eman`")
+            await ctx.reply(
+                f"That's not a valid slayer type!\neg `{ctx.prefix}csl 2 5 rev/tara/sven/eman`"
+            )
             return
 
         required_str = "{:,}".format(required)

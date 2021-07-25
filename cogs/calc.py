@@ -66,7 +66,7 @@ class Calc(commands.Cog):
             required = "{:,}".format(lvdiff(start, end))
         except IndexError:
             await ctx.reply(
-                f"You must enter the current and desired skill level from 0 to 50!\neg `{ctx.prefix}cs 1 10`"
+                f"You must enter the current and desired skill level from 0 to 60!\neg `{ctx.prefix}cs 1 10`"
             )
             return
 

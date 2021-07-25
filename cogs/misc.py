@@ -107,7 +107,7 @@ class help(commands.Cog):
         elif cmd == "prefix":
             embed = Embed(
                 title="Prefix",
-                description="Change the prefix. Prefix becomes `y!` if the command is ran without arguments.",
+                description="Change the prefix. Prefix becomes `y!` if the command is ran without arguments. If you want a prefix to have a space at the end, surround it in quotes.",
                 colour=ctx.guild.me.color,
             )
             embed.add_field(name="Usage", value=f"{ctx.prefix}prefix <prefix>")

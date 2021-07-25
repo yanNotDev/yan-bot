@@ -2,7 +2,7 @@ from discord import Embed
 from discord.ext import commands
 
 
-class help(commands.Cog):
+class Misc(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.bot.remove_command("help")
@@ -174,4 +174,4 @@ class help(commands.Cog):
 
 
 def setup(bot: commands.Bot):
-    bot.add_cog(help(bot))
+    bot.add_cog(Misc(bot))

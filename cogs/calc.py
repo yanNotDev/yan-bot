@@ -82,11 +82,11 @@ class Calc(commands.Cog):
         await ctx.reply(embed=embed)
 
     @commands.command(aliases=["csl"])
-    async def calcslayer(self, ctx, start=None, end=None, type=None):
+    async def calcslayer(self, ctx, start=None, end=None, type=None, aatrox=None):
         try:
             if start is None or end is None:
                 await ctx.reply(
-                    f"You must enter the current and desired slayer level, and the type!\neg `{ctx.prefix}csl 2 5 rev`"
+                    f"You must enter the current and desired slayer level, and the type (and optionally Aatrox perk)!\neg `{ctx.prefix}csl 2 5 rev aatrox`"
                 )
                 return
             if start.isnumeric() is False or end.isnumeric() is False:
@@ -115,15 +115,47 @@ class Calc(commands.Cog):
         elif type in ["wolf", "sven", "s", "enderman", "eman", "e", "voidbloom", "v"]:
             type = "Sven/Enderman"
 
+        if aatrox is None or aatrox.lower() in ["false", "f", "no", "n"]:
+            t1_xp, t1_cost = 5, 2000
+            t2_xp, t2_cost = 25, 7500
+            t3_xp, t3_cost = 100, 20000
+            t4_xp, t4_cost = 500, 50000
+            t5_xp, t5_cost = 1500, 100000
+        elif aatrox.lower() in ["true", "t", "yes", "y", "aatrox", "a"]:
+            t1_xp, t1_cost = 6.25, 1000
+            t2_xp, t2_cost = 31.25, 3750
+            t3_xp, t3_cost = 125, 10000
+            t4_xp, t4_cost = 625, 25000
+            t5_xp, t5_cost = 1875, 50000
+
         embed = Embed(
             description=f"{required_str} xp is required to get from {type} {start} to {end}.",
             colour=ctx.guild.me.color,
         )
-        embed.add_field(name="T1", value=ceil(required / 5), inline=False)
-        embed.add_field(name="T2", value=ceil(required / 25), inline=False)
-        embed.add_field(name="T3", value=ceil(required / 100), inline=False)
-        embed.add_field(name="T4", value=ceil(required / 500), inline=False)
-        embed.add_field(name="T5", value=ceil(required / 1500), inline=False)
+
+        t1 = ceil(required / t1_xp)
+        t1_total_cost = "{:,}".format(t1 * t1_cost)
+
+        t2 = ceil(required / t2_xp)
+        t2_total_cost = "{:,}".format(t2 * t2_cost)
+
+        t3 = ceil(required / t3_xp)
+        t3_total_cost = "{:,}".format(t3 * t3_cost)
+        
+        t4 = ceil(required / t4_xp)
+        t4_total_cost = "{:,}".format(t4 * t4_cost)
+
+
+        embed.add_field(name="T1", value=f"{t1} ({t1_total_cost} coins)", inline=False)
+        embed.add_field(name="T2", value=f"{t2} ({t2_total_cost} coins)", inline=False)
+        embed.add_field(name="T3", value=f"{t3} ({t3_total_cost} coins)", inline=False)
+        embed.add_field(name="T4", value=f"{t4} ({t4_total_cost} coins)", inline=False)
+        if type == "Revenant":
+            t5 = ceil(required / t5_xp)
+            t5_total_cost = "{:,}".format(t5 * t5_cost)
+            embed.add_field(
+                name="T5", value=f"{t5} ({t5_total_cost} coins)", inline=False
+            )
         embed.set_footer(
             text="Made by yan#0069",
             icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",

@@ -96,7 +96,7 @@ class Misc(commands.Cog):
                 colour=ctx.guild.me.color,
             )
             embed.add_field(
-                name="Usage", value=f"{ctx.prefix}cc <lv1> <lv2> <slayer type>"
+                name="Usage", value=f"{ctx.prefix}cc <lv1> <lv2> <slayer type> [aatrox]"
             )
             embed.add_field(name="Aliases", value="`calcslayer`, `csl`")
             embed.set_footer(

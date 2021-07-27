@@ -1,6 +1,5 @@
-import json
-
 from discord.ext import commands
+from util.config import default_prefix
 
 
 class Admin(commands.Cog):
@@ -13,37 +12,20 @@ class Admin(commands.Cog):
             ctx.author.guild_permissions.manage_guild
             or ctx.author.id == 270141848000004097
         ):
-            with open("json/prefixes.json", "r") as f:
-                prefixes = json.load(f)
-
             if prefix is None:
-                prefixes[str(ctx.guild.id)] = "y!"
-            else:
-                prefixes[str(ctx.guild.id)] = prefix
+                prefix = default_prefix
 
-            with open("json/prefixes.json", "w") as f:
-                json.dump(prefixes, f, indent=4)
+            await self.bot.db.execute(
+                'UPDATE guilds SET prefix = $1 WHERE "guild_id" = $2',
+                prefix,
+                ctx.guild.id,
+            )
 
-            if prefix is None:
-                if (
-                    ctx.author.id == 270141848000004097
-                    and ctx.author.guild_permissions.manage_guild is False
-                ):
-                    await ctx.reply(
-                        "yan you dont have manage perms here but i changed the prefix to `y!` anyway since ur bot owner"
-                    )
-                else:
-                    await ctx.reply("Prefix changed back to the default `y!`")
+            if prefix == default_prefix:
+                await ctx.reply(f"Changed prefix back to the default `{prefix}`")
             else:
-                if (
-                    ctx.author.id == 270141848000004097
-                    and ctx.author.guild_permissions.manage_guild is False
-                ):
-                    await ctx.reply(
-                        f"yan you dont have manage perms here but i changed the prefix to `{prefix}` anyway since ur bot owner"
-                    )
-                else:
-                    await ctx.reply(f"Prefix changed to `{prefix}`")
+                await ctx.reply(f"Prefix changed to `{prefix}`")
+
         else:
             await ctx.reply("Missing manage server permissions!")
 

@@ -1,21 +1,35 @@
-import json
+import datetime
+import traceback
 from os import listdir
 
+import asyncpg
 import discord
 from discord.ext import commands
 
 # from dislash import *
-from util.config import token
+from util.config import *
 
 intents = discord.Intents.default()
 intents.members = True
 
 
-def get_prefix(bot, msg):
-    with open("json/prefixes.json", "r") as f:
-        prefixes = json.load(f)
+async def get_prefix(bot, message):
+    if not message.guild:
+        return commands.when_mentioned_or(default_prefix)(bot, message)
 
-    return prefixes[str(msg.guild.id)]
+    prefix = await bot.db.fetch(
+        "SELECT prefix FROM guilds WHERE guild_id = $1", message.guild.id
+    )
+    if len(prefix) == 0:
+        await bot.db.execute(
+            "INSERT INTO guilds(guild_id, prefix) VALUES ($1, $2)",
+            message.guild.id,
+            default_prefix,
+        )
+        prefix = default_prefix
+    else:
+        prefix = prefix[0].get("prefix")
+    return commands.when_mentioned_or(prefix)(bot, message)
 
 
 bot = commands.Bot(
@@ -33,6 +47,11 @@ bot = commands.Bot(
 # guilds = [802883640286773269, 860747004459745300, 860319342881144853, 812449183415795712, 836279047486439505]
 
 
+async def create_db_pool():
+    bot.db = await asyncpg.create_pool(dsn=f"postgres://{username}:{password}@{host}:{port}/{db_name}")
+    print("Successfully connected to PostGreSQL database.")
+
+
 @bot.event
 async def on_ready():
     print("yan")
@@ -42,33 +61,29 @@ async def on_ready():
 
 
 @bot.event
-async def on_guild_join(guild):
-    with open("json/prefixes.json", "r") as f:
-        prefixes = json.load(f)
-
-    prefixes[str(guild.id)] = "y!"
-
-    with open("json/prefixes.json", "w") as f:
-        json.dump(prefixes, f, indent=4)
-
-
-@bot.event
-async def on_guild_remove(guild):
-    with open("json/prefixes.json", "r") as f:
-        prefixes = json.load(f)
-
-    prefixes.pop(str(guild.id))
-
-    with open("json/prefixes.json", "w") as f:
-        json.dump(prefixes, f, indent=4)
-
-
-@bot.event
 async def on_command_error(ctx, error):
     if isinstance(error, commands.NotOwner):
         await ctx.reply("Only my owner can use this command!")
     else:
-        print(error)
+        e = discord.Embed(title="Command Error", colour=0xCC3366)
+        e.add_field(name="Name", value=ctx.command.qualified_name)
+        e.add_field(name="Author", value=f"{ctx.author} (ID: {ctx.author.id})")
+
+        fmt = f"Channel: {ctx.channel} (ID: {ctx.channel.id})"
+        if ctx.guild:
+            fmt = f"{fmt}\nGuild: {ctx.guild} (ID: {ctx.guild.id})"
+
+        e.add_field(name="Location", value=fmt, inline=False)
+
+        exc = "".join(
+            traceback.format_exception(
+                type(error), error, error.__traceback__, chain=False
+            )
+        )
+        e.description = f"```py\n{exc}\n```"
+        e.timestamp = datetime.datetime.utcnow()
+        ch = bot.get_channel(860749453513981962)
+        await ch.send(embed=e)
 
 
 bot.load_extension("jishaku")
@@ -76,4 +91,5 @@ for filename in listdir("./cogs"):
     if filename.endswith(".py"):
         bot.load_extension(f"cogs.{filename[:-3]}")
 
+bot.loop.run_until_complete(create_db_pool())
 bot.run(token)

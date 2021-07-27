@@ -1,3 +1,9 @@
 # RENAME ME TO config.py
 token = "bot token here"
 key = "hypixel api key here"
+default_prefix = ""
+username = ""
+password = ""
+host = "localhost"
+port = "5432"
+db_name = ""

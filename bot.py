@@ -49,12 +49,12 @@ bot = commands.Bot(
 
 async def create_db_pool():
     bot.db = await asyncpg.create_pool(dsn=f"postgres://{username}:{password}@{host}:{port}/{db_name}")
-    print("Successfully connected to PostGreSQL database.")
+    print(f"Successfully connected to PostGreSQL database ({db_name}).")
 
 
 @bot.event
 async def on_ready():
-    print("yan")
+    print("yan-bot is ready aaaaa")
     await bot.change_presence(
         activity=discord.Activity(type=discord.ActivityType.watching, name="y!help")
     )

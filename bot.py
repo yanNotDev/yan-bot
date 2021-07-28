@@ -59,6 +59,9 @@ async def on_ready():
         activity=discord.Activity(type=discord.ActivityType.watching, name="y!help")
     )
 
+@bot.event
+async def on_guild_remove(guild):
+    await bot.db.execute('DELETE FROM guilds WHERE guild_id = $1', guild.id)
 
 @bot.event
 async def on_command_error(ctx, error):

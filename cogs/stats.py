@@ -17,7 +17,7 @@ class Stats(commands.Cog):
             )
             return
         mcuuid = uuid(ign)
-        if mcuuid == "IgnError":
+        if mcuuid == 204:
             await ctx.reply("Invalid IGN!")
             return
 

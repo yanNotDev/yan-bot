@@ -6,5 +6,5 @@ def uuid(ign):
     if request.status_code == 200:
         r = request.json()
         return r["id"]
-    elif request.status_code == 204:
-        return "IgnError"
+    else:
+        return request.status_code

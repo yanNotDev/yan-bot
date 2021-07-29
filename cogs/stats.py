@@ -16,7 +16,7 @@ class Stats(commands.Cog):
                 "You must enter an ign! (and optionally, a profile)\neg `y!s minikloon banana`"
             )
             return
-        mcuuid = uuid(self.bot, ign)
+        mcuuid = await uuid(self.bot, ign)
         if mcuuid == 204:
             await ctx.reply("Invalid IGN!")
             return

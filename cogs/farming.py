@@ -20,7 +20,7 @@ class Farming(commands.Cog):
                 f"You must enter an ign! (and optionally, a profile)\neg `{ctx.prefix}r minikloon banana`"
             )
             return
-        mcuuid = uuid(ign)
+        mcuuid = uuid(self.bot, ign)
         if mcuuid == 204:
             await ctx.reply("Invalid IGN!")
             return

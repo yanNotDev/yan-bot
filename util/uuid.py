@@ -1,10 +1,24 @@
 import requests
 
 
-def uuid(ign):
-    request = requests.get(f"https://api.mojang.com/users/profiles/minecraft/{ign}")
-    if request.status_code == 200:
-        r = request.json()
-        return r["id"]
-    else:
-        return request.status_code
+async def uuid(bot, ign):
+    try:
+        mcuuid = await bot.db.fetch("SELECT uuid FROM uuids WHERE ign = $1", ign)
+        if len(mcuuid) == 0:
+            raise KeyError
+        mcuuid = mcuuid[0].get("uuid")
+        return mcuuid
+
+    except KeyError:
+        request = requests.get(f"https://api.mojang.com/users/profiles/minecraft/{ign}")
+        if request.status_code == 200:
+            r = request.json()
+
+            mcuuid = r["id"]
+            await bot.db.execute(
+                "INSERT INTO uuids (ign, uuid) VALUES($1, $2) ON CONFLICT (uuid) DO UPDATE SET ign = $1",
+                ign, mcuuid)
+            return mcuuid
+
+        else:
+            return request.status_code

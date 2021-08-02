@@ -13,7 +13,9 @@ async def uuid(bot, ign):
         mcuuid = r["id"]
         await bot.db.execute(
             "INSERT INTO uuids (ign, uuid) VALUES($1, $2) ON CONFLICT (uuid) DO UPDATE SET ign = $1",
-            ign, mcuuid)
+            ign,
+            mcuuid,
+        )
         return mcuuid
     else:
         return request.status_code

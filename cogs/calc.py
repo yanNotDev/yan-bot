@@ -1,3 +1,4 @@
+import json
 from math import ceil
 
 from discord import Embed
@@ -141,10 +142,9 @@ class Calc(commands.Cog):
 
         t3 = ceil(required / t3_xp)
         t3_total_cost = "{:,}".format(t3 * t3_cost)
-        
+
         t4 = ceil(required / t4_xp)
         t4_total_cost = "{:,}".format(t4 * t4_cost)
-
 
         embed.add_field(name="T1", value=f"{t1} ({t1_total_cost} coins)", inline=False)
         embed.add_field(name="T2", value=f"{t2} ({t2_total_cost} coins)", inline=False)
@@ -158,6 +158,56 @@ class Calc(commands.Cog):
             )
         embed.set_footer(
             text="Made by yan#0069",
+            icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
+        )
+
+        await ctx.reply(embed=embed)
+
+    @commands.command(aliases=["fl", "f"])
+    async def fragloot(self, ctx, runs=None):
+        if runs is None or runs == 1:
+            runs = 1
+            embed = Embed(
+                title="Average loot from one fragrun", colour=ctx.guild.me.color
+            )
+        else:
+            runs = int(runs)
+            embed = Embed(
+                title=f"Average loot from {runs} fragruns", colour=ctx.guild.me.color
+            )
+
+        runs = runs / 8
+
+        with open("util/lbin/lowestbin.json", "r") as f:
+            f = json.load(f)
+            HANDLE = f["GIANT_FRAGMENT_DIAMOND"]
+            ROCK = f["GIANT_FRAGMENT_BOULDER"]
+            LASR = f["GIANT_FRAGMENT_LASER"]
+            LASSO = f["GIANT_FRAGMENT_BIGFOOT"]
+
+        handle_profit = round(HANDLE * runs)
+        rock_profit = round(ROCK * runs)
+        lasr_profit = round(LASR * runs)
+        lasso_profit = round(LASSO * runs)
+
+        total_profit = "{:,}".format(
+            round(handle_profit + rock_profit + lasr_profit + lasso_profit)
+        )
+        handle_profit = "{:,}".format(handle_profit)
+        rock_profit = "{:,}".format(rock_profit)
+        lasr_profit = "{:,}".format(lasr_profit)
+        lasso_profit = "{:,}".format(lasso_profit)
+
+        embed.add_field(
+            name="Diamante's Handle", value=f"x{runs} ({handle_profit} coins)"
+        )
+        embed.add_field(name="Jolly Pink Rock", value=f"x{runs} ({rock_profit} coins)")
+        embed.add_field(name="L.A.S.R.'s Eye", value=f"x{runs} ({lasr_profit} coins)")
+        embed.add_field(name="Bigfoot's Lasso", value=f"x{runs} ({lasso_profit} coins)")
+        embed.add_field(name="Total", value=f"{total_profit} coins")
+
+        embed.set_footer(
+            text="Made by yan#0069 • Lowest BINs update every 2 minutes",
             icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
         )
 

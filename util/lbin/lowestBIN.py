@@ -56,12 +56,13 @@ def update_json():
         try:
             auctions += getPage["auctions"]
         except KeyError as k:
-            print(k)
-        if page == pages["totalPages"] or page % 20 == 0:
-            print(str(page) + "/" + str(pages["totalPages"]) + " pages")
+            pass
+            # print(k)
+        # if page == pages["totalPages"] or page % 20 == 0:
+            # print(str(page) + "/" + str(pages["totalPages"]) + " pages")
 
     items = []
-    totalItems = 0
+    # totalItems = 0
 
     for auction in auctions:
         try:
@@ -69,13 +70,13 @@ def update_json():
                 items.append(
                     [decode_nbt(auction["item_bytes"]), auction["starting_bid"]]
                 )
-                totalItems += 1
-                if totalItems % 5000 == 0:
-                    print(str(totalItems) + "/? items")
+                # totalItems += 1
+                # if totalItems % 5000 == 0:
+                #     print(str(totalItems) + "/? items")
         except KeyError:
             pass
 
-    print(str(totalItems) + "/" + str(totalItems) + " items")
+    # print(str(totalItems) + "/" + str(totalItems) + " items")
     """
   def load_items(auction):
       try:
@@ -134,5 +135,5 @@ def update_json():
 
     print("--- %s seconds ---" % (time.time() - start_time))
 
-
-update_json()
+while True:
+    update_json()

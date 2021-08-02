@@ -32,6 +32,8 @@ async def get_prefix(bot, message):
     return commands.when_mentioned_or(prefix)(bot, message)
 
 
+activity = discord.Activity(name="y!help", type=discord.ActivityType.watching)
+
 bot = commands.Bot(
     command_prefix=get_prefix,
     allowed_mentions=discord.AllowedMentions(
@@ -41,6 +43,7 @@ bot = commands.Bot(
         replied_user=False,
     ),
     intents=intents,
+    activity=activity,
 )
 
 # slash = SlashClient(bot)
@@ -48,20 +51,21 @@ bot = commands.Bot(
 
 
 async def create_db_pool():
-    bot.db = await asyncpg.create_pool(dsn=f"postgres://{username}:{password}@{host}:{port}/{db_name}")
+    bot.db = await asyncpg.create_pool(
+        dsn=f"postgres://{username}:{password}@{host}:{port}/{db_name}"
+    )
     print(f"Successfully connected to PostGreSQL database ({db_name}).")
 
 
 @bot.event
 async def on_ready():
     print("yan-bot is ready aaaaa")
-    await bot.change_presence(
-        activity=discord.Activity(type=discord.ActivityType.watching, name="y!help")
-    )
+
 
 @bot.event
 async def on_guild_remove(guild):
-    await bot.db.execute('DELETE FROM guilds WHERE guild_id = $1', guild.id)
+    await bot.db.execute("DELETE FROM guilds WHERE guild_id = $1", guild.id)
+
 
 @bot.event
 async def on_command_error(ctx, error):

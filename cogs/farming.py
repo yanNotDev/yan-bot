@@ -236,7 +236,7 @@ class Farming(commands.Cog):
             inline=True,
         )
         embed.set_footer(
-            text="Made by yan#0069",
+            text="Made by yan#0069 • Inaccurate? Make sure your hoe is in your first slot",
             icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
         )
         await msg.edit(embed=embed)

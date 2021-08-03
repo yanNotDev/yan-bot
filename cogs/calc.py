@@ -171,7 +171,10 @@ class Calc(commands.Cog):
                 title="Average loot from one fragrun", colour=ctx.guild.me.color
             )
         else:
-            runs = int(runs)
+            try:
+                runs = int(runs)
+            except ValueError:
+                await ctx.reply(f"That's not a valid number!\neg `{ctx.prefix}fl 10`")
             embed = Embed(
                 title=f"Average loot from {runs} fragruns", colour=ctx.guild.me.color
             )

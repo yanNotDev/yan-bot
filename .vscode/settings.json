@@ -1,6 +1,3 @@
 {
-    "python.analysis.extraPaths": [
-        "./main"
-    ],
     "python.formatting.provider": "black"
 }

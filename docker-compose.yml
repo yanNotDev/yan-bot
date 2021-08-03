@@ -1,8 +1,0 @@
-version: '3.4'
-
-services:
-  yan:
-    image: yan
-    build:
-      context: .
-      dockerfile: ./Dockerfile

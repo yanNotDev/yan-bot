@@ -15,6 +15,7 @@ import time
 
 import nbt
 from requests import get
+from util.config import key
 
 
 def decode_nbt(raw):
@@ -49,17 +50,17 @@ def decode_nbt(raw):
 def update_json():
     start_time = time.time()
     auctions = []
-    pages = get("https://api.hypixel.net/skyblock/auctions").json()
+    pages = get(f"https://api.hypixel.net/skyblock/auctions?key={key}").json()
 
     for page in range(pages["totalPages"] + 1):  # range(1): #
-        getPage = get(f"https://api.hypixel.net/skyblock/auctions?page={page}").json()
+        getPage = get(f"https://api.hypixel.net/skyblock/auctions?page={page}&key={key}").json()
         try:
             auctions += getPage["auctions"]
         except KeyError as k:
             pass
             # print(k)
         # if page == pages["totalPages"] or page % 20 == 0:
-            # print(str(page) + "/" + str(pages["totalPages"]) + " pages")
+        # print(str(page) + "/" + str(pages["totalPages"]) + " pages")
 
     items = []
     # totalItems = 0
@@ -98,7 +99,7 @@ def update_json():
 
     sortedItems = dict(sorted(items, key=lambda x: int(x[1]), reverse=True))
 
-    # bazaar = get("https://api.hypixel.net/skyblock/bazaar").json()["products"]
+    # bazaar = get(f"https://api.hypixel.net/skyblock/bazaar?key={key}").json()["products"]
     # HPB = ', "HOT_POTATO_BOOK": ' + str(
     #     round(
     #         (
@@ -134,6 +135,7 @@ def update_json():
         json.dump(sortedItems, f, indent=4)
 
     print("--- %s seconds ---" % (time.time() - start_time))
+
 
 while True:
     update_json()

@@ -139,3 +139,4 @@ def update_json():
 
 while True:
     update_json()
+    time.sleep(100)

@@ -1,7 +1,11 @@
 import requests
 
 
-async def uuid(bot, ign):
+def lower(arg):
+    return arg.lower()
+
+
+async def uuid(bot, ign: lower):
     mcuuid = await bot.db.fetchval("SELECT uuid FROM uuids WHERE ign = $1", ign)
     if mcuuid is not None:
         return mcuuid

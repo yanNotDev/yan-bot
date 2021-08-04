@@ -15,8 +15,7 @@ import time
 
 import nbt
 from requests import get
-from util.config import key
-
+from config import key
 
 def decode_nbt(raw):
     data = nbt.nbt.NBTFile(fileobj=io.BytesIO(base64.b64decode(raw)))

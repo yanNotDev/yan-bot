@@ -2,6 +2,7 @@ from math import log10
 from re import sub
 
 import requests
+from bot import blc
 from discord import Colour, Embed
 from discord.ext import commands
 from util.config import key
@@ -14,6 +15,7 @@ class Farming(commands.Cog):
         self.bot = bot
 
     @commands.command(aliases=["r"])
+    @commands.check(blc)
     async def rates(self, ctx, ign=None, profile=None):
         if ign is None:
             await ctx.reply(
@@ -242,6 +244,7 @@ class Farming(commands.Cog):
         await msg.edit(embed=embed)
 
     @commands.command(aliases=["mr", "manrates"])
+    @commands.check(blc)
     async def manualrates(self, ctx, ff=None):
         try:
             if ff is None:

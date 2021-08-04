@@ -1,3 +1,4 @@
+from bot import blc
 import json
 from math import ceil
 
@@ -164,6 +165,7 @@ class Calc(commands.Cog):
         await ctx.reply(embed=embed)
 
     @commands.command(aliases=["fl", "f"])
+    @commands.check(blc)
     async def fragloot(self, ctx, runs=None):
         if runs is None or runs == 1:
             runs = 1

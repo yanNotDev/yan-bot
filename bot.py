@@ -6,7 +6,6 @@ import asyncpg
 import discord
 from discord.ext import commands
 
-# from dislash import *
 from util.config import *
 
 intents = discord.Intents.default()
@@ -46,9 +45,6 @@ bot = commands.Bot(
     activity=activity,
 )
 
-# slash = SlashClient(bot)
-# guilds = [802883640286773269, 860747004459745300, 860319342881144853, 812449183415795712, 836279047486439505]
-
 
 async def create_db_pool():
     bot.db = await asyncpg.create_pool(
@@ -72,7 +68,7 @@ async def on_command_error(ctx, error):
     if isinstance(error, commands.NotOwner):
         await ctx.reply("Only my owner can use this command!")
     else:
-        e = discord.Embed(title="Command Error", colour=0xCC3366)
+        e = discord.Embed(title="Command Error", colour=ctx.guild.me.color)
         e.add_field(name="Name", value=ctx.command.qualified_name)
         e.add_field(name="Author", value=f"{ctx.author} (ID: {ctx.author.id})")
 
@@ -91,6 +87,17 @@ async def on_command_error(ctx, error):
         e.timestamp = datetime.datetime.utcnow()
         ch = bot.get_channel(860749453513981962)
         await ch.send(embed=e)
+
+
+async def blc(ctx):
+    blacklisted_channel = await bot.db.fetch(
+        "SELECT exists (SELECT id FROM channels WHERE id = $1)",
+        ctx.channel.id,
+    )
+    if not ctx.author.guild_permissions.manage_channels:
+        return not blacklisted_channel[0].get("exists")
+    else:
+        return True
 
 
 bot.load_extension("jishaku")

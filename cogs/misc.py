@@ -1,5 +1,7 @@
+from bot import blc
 from discord import Embed
 from discord.ext import commands
+from util.config import default_prefix
 
 
 class Misc(commands.Cog):
@@ -8,6 +10,7 @@ class Misc(commands.Cog):
         self.bot.remove_command("help")
 
     @commands.command()
+    @commands.check(blc)
     async def help(self, ctx, cmd=None):
         embed = Embed(description="_ _", colour=ctx.guild.me.color)
         if cmd is None:
@@ -16,7 +19,7 @@ class Misc(commands.Cog):
                 value="`rates`, `manrates`, `stats`, `calcskill`, `calccata`, `calcslayer`, `fragloot`",
                 inline=False,
             )
-            embed.add_field(name="Admin", value="`prefix`", inline=False)
+            embed.add_field(name="Admin", value="`prefix`, `blacklist`", inline=False)
             embed.add_field(name="Miscellaneous", value="`help`, `info`", inline=False)
             embed.set_footer(
                 text=f'Use "{ctx.prefix}help command" for more help on that command.'
@@ -120,10 +123,25 @@ class Misc(commands.Cog):
         elif cmd == "prefix":
             embed = Embed(
                 title="Prefix",
-                description="Change the prefix. Prefix becomes `y!` if the command is ran without arguments. If you want a prefix to have a space at the end, surround it in quotes.",
+                description=f"Change the prefix. Prefix becomes `{default_prefix}` if the command is ran without arguments. If you want a prefix to have a space at the end, surround it in quotes.",
                 colour=ctx.guild.me.color,
             )
-            embed.add_field(name="Usage", value=f"{ctx.prefix}prefix <prefix>")
+            embed.add_field(name="Usage", value=f"{ctx.prefix}prefix [prefix]")
+            embed.set_footer(
+                text="Made by yan#0069",
+                icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
+            )
+
+        elif cmd in ["bl", "blc", "blacklist", "blacklistchannel"]:
+            embed = Embed(
+                title="Blacklist channel",
+                description="Blacklists the bot from a channel. Only people with manage channels permission can run commands here. If the channel is already blacklisted, it will be unblacklisted.",
+                colour=ctx.guild.me.color,
+            )
+            embed.add_field(name="Usage", value=f"{ctx.prefix}bl <channel>")
+            embed.add_field(
+                name="Aliases", value="`bl`, `blc`, `blacklist`, `blacklistchannel`"
+            )
             embed.set_footer(
                 text="Made by yan#0069",
                 icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
@@ -160,6 +178,7 @@ class Misc(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command()
+    @commands.check(blc)
     async def info(self, ctx):
         embed = Embed(
             title="yan",

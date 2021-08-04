@@ -1,4 +1,5 @@
 import requests
+from bot import blc
 from discord import Embed
 from discord.ext import commands
 from util.config import key
@@ -10,6 +11,7 @@ class Stats(commands.Cog):
         self.bot = bot
 
     @commands.command(aliases=["s"])
+    @commands.check(blc)
     async def stats(self, ctx, ign=None, profile=None):
         if ign is None:
             await ctx.reply(

@@ -49,10 +49,10 @@ def decode_nbt(raw):
 def update_json():
     start_time = time.time()
     auctions = []
-    pages = get(f"https://api.hypixel.net/skyblock/auctions?key={key}").json()
+    pages = get(f"https://api.hypixel.net/skyblock/auctions").json()
 
     for page in range(pages["totalPages"] + 1):  # range(1): #
-        getPage = get(f"https://api.hypixel.net/skyblock/auctions?page={page}&key={key}").json()
+        getPage = get(f"https://api.hypixel.net/skyblock/auctions?page={page}").json()
         try:
             auctions += getPage["auctions"]
         except KeyError as k:

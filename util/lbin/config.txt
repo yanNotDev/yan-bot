@@ -1,2 +1,0 @@
-# rename me to config.py and cd in this directory (yeah)
-key=""

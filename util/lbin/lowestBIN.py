@@ -15,7 +15,6 @@ import time
 
 import nbt
 from requests import get
-from config import key
 
 def decode_nbt(raw):
     data = nbt.nbt.NBTFile(fileobj=io.BytesIO(base64.b64decode(raw)))
@@ -49,7 +48,7 @@ def decode_nbt(raw):
 def update_json():
     start_time = time.time()
     auctions = []
-    pages = get(f"https://api.hypixel.net/skyblock/auctions").json()
+    pages = get("https://api.hypixel.net/skyblock/auctions").json()
 
     for page in range(pages["totalPages"] + 1):  # range(1): #
         getPage = get(f"https://api.hypixel.net/skyblock/auctions?page={page}").json()
@@ -98,7 +97,7 @@ def update_json():
 
     sortedItems = dict(sorted(items, key=lambda x: int(x[1]), reverse=True))
 
-    # bazaar = get(f"https://api.hypixel.net/skyblock/bazaar?key={key}").json()["products"]
+    # bazaar = get("https://api.hypixel.net/skyblock/bazaar").json()["products"]
     # HPB = ', "HOT_POTATO_BOOK": ' + str(
     #     round(
     #         (

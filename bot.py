@@ -68,6 +68,7 @@ async def on_command_error(ctx, error):
     if isinstance(error, commands.NotOwner):
         await ctx.reply("Only my owner can use this command!")
     else:
+        print(error)
         e = discord.Embed(title="Command Error", colour=ctx.guild.me.color)
         e.add_field(name="Name", value=ctx.command.qualified_name)
         e.add_field(name="Author", value=f"{ctx.author} (ID: {ctx.author.id})")
@@ -90,6 +91,9 @@ async def on_command_error(ctx, error):
 
 
 async def blc(ctx):
+    if ctx.author.id == 270141848000004097:
+        return True
+
     blacklisted_channel = await bot.db.fetch(
         "SELECT exists (SELECT id FROM channels WHERE id = $1)",
         ctx.channel.id,

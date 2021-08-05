@@ -138,6 +138,14 @@ class Stats(commands.Cog):
 
         await msg.edit(embed=embed)
 
+    @commands.command(aliases=["uuid"])
+    async def mcuuid(self, ctx, ign):
+        id = await uuid(self.bot, ign)
+        if id == 204:
+            await ctx.reply("Invalid IGN!")
+        else:
+            await ctx.reply(f"{ign} has the uuid `{id}`")
+
 
 def setup(bot: commands.Bot):
     bot.add_cog(Stats(bot))

@@ -19,6 +19,7 @@ class Misc(commands.Cog):
                 value="`rates`, `manrates`, `stats`, `calcskill`, `calccata`, `calcslayer`, `fragloot`",
                 inline=False,
             )
+            embed.add_field(name="Minecraft", value="`mcuuid`", inline=False)
             embed.add_field(name="Admin", value="`prefix`, `blacklist`", inline=False)
             embed.add_field(name="Miscellaneous", value="`help`, `info`", inline=False)
             embed.set_footer(
@@ -115,6 +116,19 @@ class Misc(commands.Cog):
             )
             embed.add_field(name="Usage", value=f"{ctx.prefix}fl <number of runs>")
             embed.add_field(name="Aliases", value="`fragloot`, `fl`")
+            embed.set_footer(
+                text="Made by yan#0069",
+                icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
+            )
+
+        elif cmd in ["mcuuid", "uuid"]:
+            embed = Embed(
+                title="MCuuid",
+                description="Get's the UUID of someone's Minecraft IGN.",
+                colour=ctx.guild.me.color,
+            )
+            embed.add_field(name="Usage", value=f"{ctx.prefix}uuid <ign>")
+            embed.add_field(name="Aliases", value="`mcuuid`, `uuid`")
             embed.set_footer(
                 text="Made by yan#0069",
                 icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",

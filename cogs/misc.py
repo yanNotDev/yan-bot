@@ -111,10 +111,10 @@ class Misc(commands.Cog):
         elif cmd in ["fragloot", "fl"]:
             embed = Embed(
                 title="FragLoot",
-                description="Calculates average profit from fragrunning. Defaults to 1 if number of runs isn't specified.",
+                description="Calculates average profit from fragrunning. Defaults to 1 if number of runs isn't specified. You can optionally supply the time you finish 1 run in.",
                 colour=ctx.guild.me.color,
             )
-            embed.add_field(name="Usage", value=f"{ctx.prefix}fl <number of runs>")
+            embed.add_field(name="Usage", value=f"{ctx.prefix}fl <number of runs> [time in minutes for 1 run]")
             embed.add_field(name="Aliases", value="`fragloot`, `fl`")
             embed.set_footer(
                 text="Made by yan#0069",

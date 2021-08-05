@@ -166,9 +166,8 @@ class Calc(commands.Cog):
 
     @commands.command(aliases=["fl", "f"])
     @commands.check(blc)
-    async def fragloot(self, ctx, runs=None):
-        if runs is None or runs == 1:
-            runs = 1
+    async def fragloot(self, ctx, runs=1, time=None):
+        if runs == 1:
             embed = Embed(
                 title="Average loot from one fragrun", colour=ctx.guild.me.color
             )
@@ -177,6 +176,7 @@ class Calc(commands.Cog):
                 runs = int(runs)
             except ValueError:
                 await ctx.reply(f"That's not a valid number!\neg `{ctx.prefix}fl 10`")
+                return
             embed = Embed(
                 title=f"Average loot from {runs} fragruns", colour=ctx.guild.me.color
             )
@@ -195,9 +195,24 @@ class Calc(commands.Cog):
         lasr_profit = round(LASR * runs)
         lasso_profit = round(LASSO * runs)
 
-        total_profit = "{:,}".format(
-            round(handle_profit + rock_profit + lasr_profit + lasso_profit)
-        )
+        total_profit = handle_profit + rock_profit + lasr_profit + lasso_profit
+        if time is not None:
+            try:
+                time = float(time)
+            except ValueError:
+                await ctx.reply(
+                    f"You must enter a valid time in minutes!\neg `{ctx.prefix}fl 10 2.5`"
+                )
+                return
+
+            profit_per_hour = "{:,}".format(
+                round((HANDLE / 8 + ROCK / 8 + LASR / 8 + LASSO / 8) * 60 / time)
+            )
+            embed.add_field(
+                name="Coins per hour", value=f"{profit_per_hour}/hour", inline=False
+            )
+
+        total_profit = "{:,}".format(total_profit)
         handle_profit = "{:,}".format(handle_profit)
         rock_profit = "{:,}".format(rock_profit)
         lasr_profit = "{:,}".format(lasr_profit)

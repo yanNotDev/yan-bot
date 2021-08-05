@@ -67,6 +67,8 @@ async def on_guild_remove(guild):
 async def on_command_error(ctx, error):
     if isinstance(error, commands.NotOwner):
         await ctx.reply("Only my owner can use this command!")
+    elif isinstance(error, commands.ChannelNotFound):
+        await ctx.reply("Invalid channel!")
     else:
         print(error)
         e = discord.Embed(title="Command Error", colour=ctx.guild.me.color)

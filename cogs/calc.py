@@ -164,7 +164,7 @@ class Calc(commands.Cog):
 
         await ctx.reply(embed=embed)
 
-    @commands.command(aliases=["fl", "f"])
+    @commands.command(aliases=["fl", "fragrun", "fr"])
     @commands.check(blc)
     async def fragloot(self, ctx, runs=1, time=None):
         if runs == 1:

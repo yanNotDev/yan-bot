@@ -108,14 +108,14 @@ class Misc(commands.Cog):
                 icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
             )
 
-        elif cmd in ["fragloot", "fl"]:
+        elif cmd in ["fragloot", "fl", "fragrun", "fr"]:
             embed = Embed(
                 title="FragLoot",
                 description="Calculates average profit from fragrunning. Defaults to 1 if number of runs isn't specified. You can optionally supply the time you finish 1 run in.",
                 colour=ctx.guild.me.color,
             )
             embed.add_field(name="Usage", value=f"{ctx.prefix}fl <number of runs> [time in minutes for 1 run]")
-            embed.add_field(name="Aliases", value="`fragloot`, `fl`")
+            embed.add_field(name="Aliases", value="`fragloot`, `fl`, `fragrun`, `fr`")
             embed.set_footer(
                 text="Made by yan#0069",
                 icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",

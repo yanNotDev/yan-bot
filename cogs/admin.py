@@ -1,4 +1,3 @@
-from bot import blacklist
 from discord.channel import TextChannel
 from discord.ext import commands
 from util.config import default_prefix
@@ -9,7 +8,6 @@ class Admin(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    @commands.check(blacklist)
     async def prefix(self, ctx, prefix=None):
         if (
             ctx.author.guild_permissions.manage_guild
@@ -33,7 +31,6 @@ class Admin(commands.Cog):
             await ctx.reply("Missing manage server permissions!")
 
     @commands.command(aliases=["bl", "blc", "blacklist"])
-    @commands.check(blacklist)
     async def blacklistchannel(self, ctx, channel: TextChannel = None):
         if (
             ctx.author.guild_permissions.manage_channels

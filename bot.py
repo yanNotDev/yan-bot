@@ -91,7 +91,7 @@ async def on_command_error(ctx, error):
         ch = bot.get_channel(860749453513981962)
         await ch.send(embed=e)
 
-
+@bot.check
 async def blacklist(ctx):
     if ctx.author.id == 270141848000004097:
         return True

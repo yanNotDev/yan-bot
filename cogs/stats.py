@@ -1,5 +1,5 @@
 import requests
-from bot import blc
+from bot import blacklist
 from discord import Embed
 from discord.ext import commands
 from util.config import key
@@ -11,7 +11,7 @@ class Stats(commands.Cog):
         self.bot = bot
 
     @commands.command(aliases=["s"])
-    @commands.check(blc)
+    @commands.check(blacklist)
     async def stats(self, ctx, ign=None, profile=None):
         if ign is None:
             await ctx.reply(
@@ -139,6 +139,7 @@ class Stats(commands.Cog):
         await msg.edit(embed=embed)
 
     @commands.command(aliases=["uuid"])
+    @commands.check(blacklist)
     async def mcuuid(self, ctx, ign):
         id = await uuid(self.bot, ign)
         if id == 204:

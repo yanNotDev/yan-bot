@@ -1,4 +1,4 @@
-from bot import blc
+from bot import blacklist
 from discord import Embed
 from discord.ext import commands
 from util.config import default_prefix
@@ -10,7 +10,7 @@ class Misc(commands.Cog):
         self.bot.remove_command("help")
 
     @commands.command()
-    @commands.check(blc)
+    @commands.check(blacklist)
     async def help(self, ctx, cmd=None):
         embed = Embed(description="_ _", colour=ctx.guild.me.color)
         if cmd is None:
@@ -192,7 +192,7 @@ class Misc(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command()
-    @commands.check(blc)
+    @commands.check(blacklist)
     async def info(self, ctx):
         embed = Embed(
             title="yan",

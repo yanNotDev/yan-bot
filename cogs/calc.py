@@ -1,4 +1,4 @@
-from bot import blc
+from bot import blacklist
 import json
 from math import ceil
 
@@ -12,6 +12,7 @@ class Calc(commands.Cog):
         self.bot = bot
 
     @commands.command(aliases=["cc"])
+    @commands.check(blacklist)
     async def calccata(self, ctx, start=None, end=None, xp=None):
         try:
             if start is None or end is None:
@@ -53,6 +54,7 @@ class Calc(commands.Cog):
         await ctx.reply(embed=embed)
 
     @commands.command(aliases=["cs"])
+    @commands.check(blacklist)
     async def calcskill(self, ctx, start=None, end=None):
         try:
             if start is None or end is None:
@@ -84,6 +86,7 @@ class Calc(commands.Cog):
         await ctx.reply(embed=embed)
 
     @commands.command(aliases=["csl"])
+    @commands.check(blacklist)
     async def calcslayer(self, ctx, start=None, end=None, type=None, aatrox=None):
         try:
             if start is None or end is None:
@@ -165,7 +168,7 @@ class Calc(commands.Cog):
         await ctx.reply(embed=embed)
 
     @commands.command(aliases=["fl", "fragrun", "fr"])
-    @commands.check(blc)
+    @commands.check(blacklist)
     async def fragloot(self, ctx, runs=1, time=None):
         if runs == 1:
             embed = Embed(

@@ -69,27 +69,30 @@ async def on_command_error(ctx, error):
         await ctx.reply("Only my owner can use this command!")
     elif isinstance(error, commands.ChannelNotFound):
         await ctx.reply("Invalid channel!")
+    elif isinstance(error, commands.CheckFailure):
+        return
     else:
         print(error)
-        e = discord.Embed(title="Command Error", colour=ctx.guild.me.color)
-        e.add_field(name="Name", value=ctx.command.qualified_name)
-        e.add_field(name="Author", value=f"{ctx.author} (ID: {ctx.author.id})")
+        embed = discord.Embed(title="Command Error", colour=ctx.guild.me.color)
+        embed.add_field(name="Name", value=ctx.command.qualified_name)
+        embed.add_field(name="Author", value=f"{ctx.author} (ID: {ctx.author.id})")
 
         fmt = f"Channel: {ctx.channel} (ID: {ctx.channel.id})"
         if ctx.guild:
             fmt = f"{fmt}\nGuild: {ctx.guild} (ID: {ctx.guild.id})"
 
-        e.add_field(name="Location", value=fmt, inline=False)
+        embed.add_field(name="Location", value=fmt, inline=False)
 
         exc = "".join(
             traceback.format_exception(
                 type(error), error, error.__traceback__, chain=False
             )
         )
-        e.description = f"```py\n{exc}\n```"
-        e.timestamp = datetime.datetime.utcnow()
-        ch = bot.get_channel(860749453513981962)
-        await ch.send(embed=e)
+        embed.description = f"```py\n{exc}\n```"
+        embed.timestamp = datetime.datetime.utcnow()
+        channel = bot.get_channel(860749453513981962)
+        await channel.send(embed=embed)
+
 
 @bot.check
 async def blacklist(ctx):

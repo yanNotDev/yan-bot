@@ -1,6 +1,8 @@
 import json
 from math import ceil
+from statistics import mean
 
+import util.bits as bits
 from discord import Embed
 from discord.ext import commands
 from util.skill import catadiff, lvdiff, slayerdiff
@@ -227,6 +229,156 @@ class Calc(commands.Cog):
         embed.set_footer(
             text="Made by yan#0069 • Lowest BINs update every 2 minutes",
             icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
+        )
+
+        await ctx.reply(embed=embed)
+
+    @commands.command(aliases=["bit", "b"])
+    async def bits(self, ctx):
+        embed = Embed(title="Bits to coins", colour=ctx.guild.me.color)
+
+        with open("util/lbin/lowestbin.json", "r") as f:
+            f = json.load(f)
+
+            GOD_POTION = f["GOD_POTION"]
+            KAT_FLOWER = f["KAT_FLOWER"]
+            HEAT_CORE = f["HEAT_CORE"]
+            HYPER_CATALYST_UPGRADE = f["HYPER_CATALYST_UPGRADE"]
+            ULTIMATE_CARROT_CANDY_UPGRADE = f["ULTIMATE_CARROT_CANDY_UPGRADE"]
+            COLOSSAL_EXP_BOTTLE_UPGRADE = f["COLOSSAL_EXP_BOTTLE_UPGRADE"]
+            JUMBO_BACKPACK_UPGRADE = f["JUMBO_BACKPACK_UPGRADE"]
+            MINION_STORAGE_EXPANDER = f["MINION_STORAGE_EXPANDER"]
+            HOLOGRAM = f["HOLOGRAM"]
+            BUILDERS_WAND = f["BUILDERS_WAND"]
+            BLOCK_ZAPPER = f["BLOCK_ZAPPER"]
+            BITS_TALISMAN = f["BITS_TALISMAN"]
+            AUTOPET_RULES_2 = f["AUTOPET_RULES_2"]
+            KISMET_FEATHER = f["KISMET_FEATHER"]
+
+            EXPERTISE = f["ENCHANTED_BOOK-EXPERTISE1"]
+            COMPACT = f["ENCHANTED_BOOK-COMPACT1"]
+            CULTIVATING = f["ENCHANTED_BOOK-CULTIVATING1"]
+
+            ENRICHMENT_SWAPPER = f["TALISMAN_ENRICHMENT_SWAPPER"]
+            ENRICHMENT_DEFENSE = f["TALISMAN_ENRICHMENT_DEFENSE"]
+            ENRICHMENT_MAGIC_FIND = f["TALISMAN_ENRICHMENT_MAGIC_FIND"]
+            ENRICHMENT_FEROCITY = f["TALISMAN_ENRICHMENT_FEROCITY"]
+            ENRICHMENT_CRITICAL_DAMAGE = f["TALISMAN_ENRICHMENT_CRITICAL_DAMAGE"]
+            ENRICHMENT_CRITICAL_CHANCE = f["TALISMAN_ENRICHMENT_CRITICAL_CHANCE"]
+            ENRICHMENT_WALK_SPEED = f["TALISMAN_ENRICHMENT_WALK_SPEED"]
+            ENRICHMENT_ATTACK_SPEED = f["TALISMAN_ENRICHMENT_ATTACK_SPEED"]
+            ENRICHMENT_HEALTH = f["TALISMAN_ENRICHMENT_HEALTH"]
+            ENRICHMENT_INTELLIGENCE = f["TALISMAN_ENRICHMENT_INTELLIGENCE"]
+            ENRICHMENT_SEA_CREATURE_CHANCE = f[
+                "TALISMAN_ENRICHMENT_SEA_CREATURE_CHANCE"
+            ]
+            ENRICHMENT_STRENGTH = f["TALISMAN_ENRICHMENT_STRENGTH"]
+
+        god_potion = round(GOD_POTION / bits.god_potion)
+        kat_flower = round(KAT_FLOWER / bits.kat_flower)
+        heat_core = round(HEAT_CORE / bits.heat_core)
+        hyper_catalyst_upgrade = round(
+            HYPER_CATALYST_UPGRADE / bits.hyper_catalyst_upgrade
+        )
+        ultimate_carrot_candy_upgrade = round(
+            ULTIMATE_CARROT_CANDY_UPGRADE / bits.ultimate_carrot_candy_upgrade
+        )
+        colossal_exp_bottle_upgrade = round(
+            COLOSSAL_EXP_BOTTLE_UPGRADE / bits.colossal_exp_bottle_upgrade
+        )
+        jumbo_backpack_upgrade = round(
+            JUMBO_BACKPACK_UPGRADE / bits.jumbo_backpack_upgrade
+        )
+        minion_storage_expander = round(
+            MINION_STORAGE_EXPANDER / bits.minion_storage_expander
+        )
+        hologram = round(HOLOGRAM / bits.hologram)
+        builders_wand = round(BUILDERS_WAND / bits.builders_wand)
+        block_zapper = round(BLOCK_ZAPPER / bits.block_zapper)
+        bits_talisman = round(BITS_TALISMAN / bits.bits_talisman)
+        autopet_rules_2 = round(AUTOPET_RULES_2 / bits.autopet_rules_2)
+        kismet_feather = round(KISMET_FEATHER / bits.kismet_feather)
+
+        expertise = round(EXPERTISE / bits.books)
+        compact = round(COMPACT / bits.books)
+        cultivating = round(CULTIVATING / bits.books)
+
+        enrichment_swapper = round(
+            ENRICHMENT_SWAPPER / bits.talisman_enrichment_swapper
+        )
+        enrichment_defense = round(ENRICHMENT_DEFENSE / bits.enrichments)
+        enrichment_magic_find = round(ENRICHMENT_MAGIC_FIND / bits.enrichments)
+        enrichment_ferocity = round(ENRICHMENT_FEROCITY / bits.enrichments)
+        enrichment_critical_damage = round(
+            ENRICHMENT_CRITICAL_DAMAGE / bits.enrichments
+        )
+        enrichment_critical_chance = round(
+            ENRICHMENT_CRITICAL_CHANCE / bits.enrichments
+        )
+        enrichment_walk_speed = round(ENRICHMENT_WALK_SPEED / bits.enrichments)
+        enrichment_attack_speed = round(ENRICHMENT_ATTACK_SPEED / bits.enrichments)
+        enrichment_health = round(ENRICHMENT_HEALTH / bits.enrichments)
+        enrichment_intelligence = round(ENRICHMENT_INTELLIGENCE / bits.enrichments)
+        enrichment_sea_creature_chance = round(
+            ENRICHMENT_SEA_CREATURE_CHANCE / bits.enrichments
+        )
+        enrichment_strength = round(ENRICHMENT_STRENGTH / bits.enrichments)
+
+        enrichment_average = round(
+            mean(
+                [
+                    enrichment_defense,
+                    enrichment_magic_find,
+                    enrichment_ferocity,
+                    enrichment_critical_damage,
+                    enrichment_critical_chance,
+                    enrichment_walk_speed,
+                    enrichment_attack_speed,
+                    enrichment_health,
+                    enrichment_intelligence,
+                    enrichment_sea_creature_chance,
+                    enrichment_strength,
+                ]
+            )
+        )
+
+        embed.add_field(name="God Potion", value=f"{god_potion} coins per bit")
+        embed.add_field(name="Kat Flower", value=f"{kat_flower} coins per bit")
+        embed.add_field(name="Heat Core", value=f"{heat_core} coins per bit")
+        embed.add_field(
+            name="Hyper Catalyst Upgrade",
+            value=f"{hyper_catalyst_upgrade} coins per bit",
+        )
+        embed.add_field(
+            name="Ultimate Carrot Candy",
+            value=f"{ultimate_carrot_candy_upgrade} coins per bit",
+        )
+        embed.add_field(
+            name="Colossal XP Bottle",
+            value=f"{colossal_exp_bottle_upgrade} coins per bit",
+        )
+        embed.add_field(
+            name="Jumbo BP", value=f"{jumbo_backpack_upgrade} coins per bit"
+        )
+        embed.add_field(
+            name="Minion Storage Expander",
+            value=f"{minion_storage_expander} coins per bit",
+        )
+        embed.add_field(name="Hologram", value=f"{hologram} coins per bit")
+        embed.add_field(name="Builder's Wand", value=f"{builders_wand} coins per bit")
+        embed.add_field(name="Block Zapper", value=f"{block_zapper} coins per bit")
+        embed.add_field(name="Bits Talisman", value=f"{bits_talisman} coins per bit")
+        embed.add_field(name="AutoPet Rule", value=f"{autopet_rules_2} coins per bit")
+        embed.add_field(name="Kismet Feather", value=f"{kismet_feather} coins per bit")
+        embed.add_field(name="Expertise Book", value=f"{expertise} coins per bit")
+        embed.add_field(name="Compact Book", value=f"{compact} coins per bit")
+        embed.add_field(name="Cultivating Book", value=f"{cultivating} coins per bit")
+        embed.add_field(
+            name="Enrichment Swapper", value=f"{enrichment_swapper} coins per bit"
+        )
+        embed.add_field(
+            name="All enrichments (average)",
+            value=f"{enrichment_average} coins per bit",
         )
 
         await ctx.reply(embed=embed)

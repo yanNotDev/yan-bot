@@ -57,7 +57,7 @@ def slayerdiff(start, end, slayer):
         table = [0, 5, 15, 200, 1000]
     elif slayer in ["spider", "tarantula", "tara", "t"]:
         table = [0, 5, 25, 200, 1000]
-    elif slayer in ["wolf", "sven", "s", "enderman", "eman", "e", "voidbloom", "v"]:
+    elif slayer in ["wolf", "sven", "s", "enderman", "eman", "e", "voidgloom", "v"]:
         table = [0, 10, 30, 250, 1500]
     else:
         return "SlayerError"

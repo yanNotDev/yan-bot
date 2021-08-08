@@ -4,7 +4,7 @@ from re import sub
 import requests
 from discord import Colour, Embed
 from discord.ext import commands
-from util.config import key
+from util.config import key, footer_text
 from util.skill import lvcheck
 from util.uuid import uuid
 
@@ -30,10 +30,7 @@ class Farming(commands.Cog):
             colour=ctx.guild.me.color,
         )
         embed.add_field(name="loading aaaa", value="_ _", inline=False)
-        embed.set_footer(
-            text="Made by yan#0069",
-            icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
-        )
+        embed.set_footer(**footer_text)
         msg = await ctx.reply(embed=embed)
 
         if profile is None:
@@ -49,10 +46,7 @@ class Farming(commands.Cog):
         try:
             if r["error"] == "Profile not found!":
                 embed = Embed(description="Invalid profile!", colour=ctx.guild.me.color)
-                embed.set_footer(
-                    text="Made by yan#0069",
-                    icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
-                )
+                embed.set_footer(**footer_text)
                 await msg.edit(embed=embed)
                 return
 
@@ -64,10 +58,7 @@ class Farming(commands.Cog):
                     description="um i dont think this guy has played skyblock",
                     colour=ctx.guild.me.color,
                 )
-                embed.set_footer(
-                    text="Made by yan#0069",
-                    icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
-                )
+                embed.set_footer(**footer_text)
                 await msg.edit(embed=embed)
                 return
 
@@ -262,10 +253,7 @@ class Farming(commands.Cog):
                 name="<:Warts:862984331677138955> Warts (NPC)",
                 value=f"{wart_coins_per_hour}/hour",
             )
-            embed.set_footer(
-                text="Made by yan#0069",
-                icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
-            )
+            embed.set_footer(**footer_text)
             await ctx.reply(embed=embed)
         except ValueError:
             await ctx.reply(

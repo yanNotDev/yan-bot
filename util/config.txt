@@ -7,3 +7,11 @@ password = ""
 host = "localhost"
 port = "5432"
 db_name = ""
+footer_text = {
+    "text": "",
+    "icon_url": "",
+}
+lbin_footer_text = {
+    "text": "",
+    "icon_url": "",
+}

@@ -1,6 +1,6 @@
 from discord import Embed
 from discord.ext import commands
-from util.config import default_prefix
+from util.config import default_prefix, footer_text
 
 
 class Misc(commands.Cog):
@@ -14,14 +14,14 @@ class Misc(commands.Cog):
         if cmd is None:
             embed.add_field(
                 name="Skyblock",
-                value="`rates`, `manrates`, `stats`, `calcskill`, `calccata`, `calcslayer`, `fragloot`",
+                value="`rates`, `manrates`, `stats`, `calcskill`, `calccata`, `calcslayer`, `fragloot`, `bits`",
                 inline=False,
             )
             embed.add_field(name="Minecraft", value="`mcuuid`", inline=False)
             embed.add_field(name="Admin", value="`prefix`, `blacklist`", inline=False)
             embed.add_field(name="Miscellaneous", value="`help`, `info`", inline=False)
             embed.set_footer(
-                text=f'Use "{ctx.prefix}help command" for more help on that command.'
+                text=f'Use "{ctx.prefix}help <command>" for more help on that command • Arguments with <> are mandatory, [] are optional'
             )
 
         elif cmd in ["rates", "r"]:
@@ -32,10 +32,6 @@ class Misc(commands.Cog):
             )
             embed.add_field(name="Usage", value=f"{ctx.prefix}rates <ign> [profile]")
             embed.add_field(name="Aliases", value="`rates`, `r`")
-            embed.set_footer(
-                text="Made by yan#0069",
-                icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
-            )
 
         elif cmd in ["manualrates", "manrates", "mr"]:
             embed = Embed(
@@ -45,10 +41,6 @@ class Misc(commands.Cog):
             )
             embed.add_field(name="Usage", value=f"{ctx.prefix}mr <farming fortune>")
             embed.add_field(name="Aliases", value="`manualrates`, `manrates`, `mr`")
-            embed.set_footer(
-                text="Made by yan#0069",
-                icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
-            )
 
         elif cmd in ["stats", "s"]:
             embed = Embed(
@@ -58,10 +50,6 @@ class Misc(commands.Cog):
             )
             embed.add_field(name="Usage", value=f"{ctx.prefix}stats <ign> [profile]")
             embed.add_field(name="Aliases", value="`stats`, `s`")
-            embed.set_footer(
-                text="Made by yan#0069",
-                icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
-            )
 
         elif cmd in ["calcskill", "cs"]:
             embed = Embed(
@@ -71,10 +59,6 @@ class Misc(commands.Cog):
             )
             embed.add_field(name="Usage", value=f"{ctx.prefix}cs <lv1> <lv2>")
             embed.add_field(name="Aliases", value="`calcskill`, `cs`")
-            embed.set_footer(
-                text="Made by yan#0069",
-                icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
-            )
 
         elif cmd in ["calccata", "cc"]:
             embed = Embed(
@@ -86,10 +70,6 @@ class Misc(commands.Cog):
                 name="Usage", value=f"{ctx.prefix}cc <lv1> <lv2> [xp from each run]"
             )
             embed.add_field(name="Aliases", value="`calccata`, `cc`")
-            embed.set_footer(
-                text="Made by yan#0069",
-                icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
-            )
 
         elif cmd in ["calcslayer", "csl"]:
             embed = Embed(
@@ -101,10 +81,6 @@ class Misc(commands.Cog):
                 name="Usage", value=f"{ctx.prefix}cc <lv1> <lv2> <slayer type> [aatrox]"
             )
             embed.add_field(name="Aliases", value="`calcslayer`, `csl`")
-            embed.set_footer(
-                text="Made by yan#0069",
-                icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
-            )
 
         elif cmd in ["fragloot", "fl", "fragrun", "fr"]:
             embed = Embed(
@@ -112,12 +88,32 @@ class Misc(commands.Cog):
                 description="Calculates average profit from fragrunning. Defaults to 1 if number of runs isn't specified. You can optionally supply the time you finish 1 run in.",
                 colour=ctx.guild.me.color,
             )
-            embed.add_field(name="Usage", value=f"{ctx.prefix}fl <number of runs> [time in minutes for 1 run]")
+            embed.add_field(
+                name="Usage",
+                value=f"{ctx.prefix}fl <number of runs> [time in minutes for 1 run]",
+            )
             embed.add_field(name="Aliases", value="`fragloot`, `fl`, `fragrun`, `fr`")
             embed.set_footer(
                 text="Made by yan#0069",
                 icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
             )
+
+        elif cmd in ["bits", "bit", "b"]:
+            embed = Embed(
+                title="Bits",
+                description="Calculates coins per bit for all auctionable items",
+                colour=ctx.guild.me.color,
+            )
+            embed.add_field(
+                name="Usage",
+                value=f"{ctx.prefix}bits",
+            )
+            embed.add_field(name="Aliases", value="`bits`, `bit`, `b`")
+            embed.set_footer(
+                text="Made by yan#0069",
+                icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
+            )
+
 
         elif cmd in ["mcuuid", "uuid"]:
             embed = Embed(
@@ -127,10 +123,6 @@ class Misc(commands.Cog):
             )
             embed.add_field(name="Usage", value=f"{ctx.prefix}uuid <ign>")
             embed.add_field(name="Aliases", value="`mcuuid`, `uuid`")
-            embed.set_footer(
-                text="Made by yan#0069",
-                icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
-            )
 
         elif cmd == "prefix":
             embed = Embed(
@@ -139,10 +131,6 @@ class Misc(commands.Cog):
                 colour=ctx.guild.me.color,
             )
             embed.add_field(name="Usage", value=f"{ctx.prefix}prefix [prefix]")
-            embed.set_footer(
-                text="Made by yan#0069",
-                icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
-            )
 
         elif cmd in ["bl", "blc", "blacklist", "blacklistchannel"]:
             embed = Embed(
@@ -153,10 +141,6 @@ class Misc(commands.Cog):
             embed.add_field(name="Usage", value=f"{ctx.prefix}bl <channel>")
             embed.add_field(
                 name="Aliases", value="`bl`, `blc`, `blacklist`, `blacklistchannel`"
-            )
-            embed.set_footer(
-                text="Made by yan#0069",
-                icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
             )
 
         elif cmd == "help":
@@ -178,14 +162,13 @@ class Misc(commands.Cog):
                 colour=ctx.guild.me.color,
             )
             embed.add_field(name="Usage", value=f"{ctx.prefix}info")
-            embed.set_footer(
-                text="Made by yan#0069",
-                icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
-            )
 
         else:
             await ctx.reply("That's not a command!")
             return
+
+        if cmd is not None:
+            embed.set_footer(**footer_text)
 
         await ctx.send(embed=embed)
 
@@ -208,10 +191,7 @@ class Misc(commands.Cog):
             name="links",
             value=f"[**Bot Invite**](https://discord.com/oauth2/authorize?client_id=862232441044860938&permissions=278528&scope=bot%20applications.commands)\n[**Server**](https://discord.gg/hcazeVMrSN)\n[**Source Code**](https://github.com/yanNotDev/yan-bot)",
         )
-        embed.set_footer(
-            text="Made by yan#0069",
-            icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
-        )
+        embed.set_footer(**footer_text)
 
         await ctx.send(embed=embed)
 

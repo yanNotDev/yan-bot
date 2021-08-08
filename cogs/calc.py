@@ -5,6 +5,7 @@ from statistics import mean
 import util.bits as bits
 from discord import Embed
 from discord.ext import commands
+from util.config import footer_text, lbin_footer_text
 from util.skill import catadiff, lvdiff, slayerdiff
 
 
@@ -46,10 +47,7 @@ class Calc(commands.Cog):
                     "That doesn't seem like a valid number. Remove any letters!"
                 )
             embed.add_field(name=f"Runs required to reach Catacombs {end}", value=runs)
-        embed.set_footer(
-            text="Made by yan#0069",
-            icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
-        )
+        embed.set_footer(**footer_text)
 
         await ctx.reply(embed=embed)
 
@@ -77,10 +75,7 @@ class Calc(commands.Cog):
             description=f"{required} xp is required to get from Level {start} to {end}.",
             colour=ctx.guild.me.color,
         )
-        embed.set_footer(
-            text="Made by yan#0069",
-            icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
-        )
+        embed.set_footer(**footer_text)
 
         await ctx.reply(embed=embed)
 
@@ -158,10 +153,7 @@ class Calc(commands.Cog):
             embed.add_field(
                 name="T5", value=f"{t5} ({t5_total_cost} coins)", inline=False
             )
-        embed.set_footer(
-            text="Made by yan#0069",
-            icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
-        )
+        embed.set_footer(**footer_text)
 
         await ctx.reply(embed=embed)
 
@@ -226,10 +218,7 @@ class Calc(commands.Cog):
         embed.add_field(name="Bigfoot's Lasso", value=f"x{runs} ({lasso_profit} coins)")
         embed.add_field(name="Total", value=f"{total_profit} coins")
 
-        embed.set_footer(
-            text="Made by yan#0069 • Lowest BINs update every 2 minutes",
-            icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
-        )
+        embed.set_footer(**lbin_footer_text)
 
         await ctx.reply(embed=embed)
 
@@ -380,6 +369,8 @@ class Calc(commands.Cog):
             name="All enrichments (average)",
             value=f"{enrichment_average} coins per bit",
         )
+
+        embed.set_footer(**lbin_footer_text)
 
         await ctx.reply(embed=embed)
 

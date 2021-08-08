@@ -87,7 +87,7 @@ class Calc(commands.Cog):
                     f"You must enter the current and desired slayer level, and the type (and optionally Aatrox perk)!\neg `{ctx.prefix}csl 2 5 rev aatrox`"
                 )
                 return
-            if start.isnumeric() is False or end.isnumeric() is False:
+            if not start.isnumeric() or not end.isnumeric():
                 await ctx.reply(
                     "That doesn't seem like a valid number. Remove any non-digit!"
                 )
@@ -110,7 +110,7 @@ class Calc(commands.Cog):
             type = "Revenant"
         elif type in ["spider", "tarantula", "tara", "t"]:
             type = "Tarantula"
-        elif type in ["wolf", "sven", "s", "enderman", "eman", "e", "voidbloom", "v"]:
+        elif type in ["wolf", "sven", "s", "enderman", "eman", "e", "voidgloom", "v"]:
             type = "Sven/Enderman"
 
         if aatrox is None or aatrox.lower() in ["false", "f", "no", "n"]:
@@ -125,6 +125,9 @@ class Calc(commands.Cog):
             t3_xp, t3_cost = 125, 10000
             t4_xp, t4_cost = 625, 25000
             t5_xp, t5_cost = 1875, 50000
+        else:
+            await ctx.reply(f"Hmm, you didn't specify whether or not Aatrox is active properly.\neg `{ctx.prefix}csl 2 5 rev a`")
+            return
 
         embed = Embed(
             description=f"{required_str} xp is required to get from {type} {start} to {end}.",

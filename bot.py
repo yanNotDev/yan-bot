@@ -4,6 +4,7 @@ from os import listdir
 
 import asyncpg
 import discord
+from discord.audit_logs import _transform_verification_level
 from discord.ext import commands
 
 from util.config import *
@@ -56,6 +57,25 @@ async def create_db_pool():
 @bot.event
 async def on_ready():
     print("yan-bot is ready aaaaa")
+
+
+@bot.event
+async def on_guild_join(guild):
+    for channel in guild.text_channels:
+        if channel.permissions_for(guild.me).send_messages:
+            embed = discord.Embed(
+                title="hi i am yan bot",
+                description="`y!help`, `y!help command_name` for help on that command\n\
+btw u can change prefix `y!help prefix`, commands are very cool please check them out and pls dont kick 😢",
+                color=guild.me.colour,
+            )
+            embed.add_field(
+                name="_ _",
+                value="remember that you can do y!bl #channel and only mods can run commands in that channel then, do the command again to revert it",
+            )
+
+            await channel.send(embed=embed)
+        break
 
 
 @bot.event

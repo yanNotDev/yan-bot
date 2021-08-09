@@ -5,32 +5,30 @@ from statistics import mean
 import util.bits as bits
 from discord import Embed
 from discord.ext import commands
-from util.config import footer_text, lbin_footer_text
+from discord_slash import SlashContext, cog_ext
+from discord_slash.utils.manage_commands import create_choice, create_option
+from util.config import footer_text, guilds, lbin_footer_text
 from util.skill import catadiff, lvdiff, slayerdiff
 
 
-class Calc(commands.Cog):
+class SlashCalc(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(aliases=["cc"])
-    async def calccata(self, ctx, start=None, end=None, xp=None):
+    @cog_ext.cog_slash(
+        description="Checks xp required to get from one Catacombs level to another.",
+        # guild_ids=guilds,
+        options=[
+            create_option("start", "Starting level", 4, True),
+            create_option("end", "Ending level", 4, True),
+            create_option("xp", "XP per floor", 10, False),
+        ],
+    )
+    async def calccata(self, ctx: SlashContext, start, end, xp=None):
         try:
-            if start is None or end is None:
-                await ctx.reply(
-                    f"You must enter the current and desired Catacombs level! (and optionally how much xp you get from each run)\neg `{ctx.prefix}cc 1 10 10,000`"
-                )
-                return
-            if start.isnumeric() is False or end.isnumeric() is False:
-                await ctx.reply(
-                    "That doesn't seem like a valid number. Remove any non-digit!"
-                )
-                return
             required_int = catadiff(start, end)
         except IndexError:
-            await ctx.reply(
-                f"You must enter the current and desired Catacombs level from 0 to 50! (and optionally how much xp you get from each run)\neg `{ctx.prefix}cc 1 10 10,000`"
-            )
+            await ctx.send("You can't enter a level higher than 50!", hidden=True)
             return
 
         required = "{:,}".format(required_int)
@@ -40,35 +38,25 @@ class Calc(commands.Cog):
             colour=ctx.guild.me.color,
         )
         if xp is not None:
-            try:
-                runs = "{:,}".format(ceil(required_int / float(xp.replace(",", ""))))
-            except ValueError:
-                await ctx.reply(
-                    "That doesn't seem like a valid number. Remove any letters!"
-                )
+            runs = "{:,}".format(ceil(required_int / xp))
             embed.add_field(name=f"Runs required to reach Catacombs {end}", value=runs)
         embed.set_footer(**footer_text)
 
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
 
-    @commands.command(aliases=["cs"])
-    async def calcskill(self, ctx, start=None, end=None):
+    @cog_ext.cog_slash(
+        description="Checks xp required to get from one level to another, for the 7 main skills.",
+        # guild_ids=guilds,
+        options=[
+            create_option("start", "Starting level", 4, True),
+            create_option("end", "Ending level", 4, True),
+        ],
+    )
+    async def calcskill(self, ctx, start, end):
         try:
-            if start is None or end is None:
-                await ctx.reply(
-                    f"You must enter the current and desired skill level!\neg `{ctx.prefix}cs 1 10`"
-                )
-                return
-            if start.isnumeric() is False or end.isnumeric() is False:
-                await ctx.reply(
-                    "That doesn't seem like a valid number. Remove any non-digit!"
-                )
-                return
             required = "{:,}".format(lvdiff(start, end))
         except IndexError:
-            await ctx.reply(
-                f"You must enter the current and desired skill level from 0 to 60!\neg `{ctx.prefix}cs 1 10`"
-            )
+            await ctx.send("You can't enter a level higher than 60!", hidden=True)
             return
 
         embed = Embed(
@@ -77,59 +65,57 @@ class Calc(commands.Cog):
         )
         embed.set_footer(**footer_text)
 
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
 
-    @commands.command(aliases=["csl"])
-    async def calcslayer(self, ctx, start=None, end=None, type=None, aatrox=None):
+    @cog_ext.cog_slash(
+        description="Checks xp required to get from one slayer level to another.",
+        # guild_ids=guilds,
+        options=[
+            create_option("start", "Starting level", 4, True),
+            create_option("end", "Ending level", 4, True),
+            create_option(
+                "type",
+                "Type",
+                3,
+                True,
+                choices=[
+                    create_choice("rev", "Revenant"),
+                    create_choice("tara", "Tarantula"),
+                    create_choice("wolf", "Sven"),
+                    create_choice("eman", "Voidgloom"),
+                ],
+            ),
+            create_option("aatrox", "Is Aatrox active", 5, False),
+        ],
+    )
+    async def calcslayer(self, ctx, start, end, type, aatrox=None):
         try:
-            if start is None or end is None:
-                await ctx.reply(
-                    f"You must enter the current and desired slayer level, and the type (and optionally Aatrox perk)!\neg `{ctx.prefix}csl 2 5 rev aatrox`"
-                )
-                return
-            if not start.isnumeric() or not end.isnumeric():
-                await ctx.reply(
-                    "That doesn't seem like a valid number. Remove any non-digit!"
-                )
-                return
             required = slayerdiff(start, end, type)
         except IndexError:
-            await ctx.reply(
-                f"You must enter the current and desired slayer level from 0 to 9, and the type!\neg `{ctx.prefix}csl 2 5 rev`"
-            )
-            return
-        if required == "SlayerError":
-            await ctx.reply(
-                f"That's not a valid slayer type!\neg `{ctx.prefix}csl 2 5 rev/tara/sven/eman`"
-            )
+            await ctx.send("Slayer level can only be from 0 to 9!", hidden=True)
             return
 
         required_str = "{:,}".format(required)
 
-        if type in ["zombie", "revenant", "rev", "r"]:
+        if type == "rev":
             type = "Revenant"
-        elif type in ["spider", "tarantula", "tara", "t"]:
+        elif type == "tara":
             type = "Tarantula"
-        elif type in ["wolf", "sven", "s", "enderman", "eman", "e", "voidgloom", "v"]:
+        elif type in ["wolf", "eman"]:
             type = "Sven/Enderman"
 
-        if aatrox is None or aatrox.lower() in ["false", "f", "no", "n"]:
+        if aatrox is None or aatrox is False:
             t1_xp, t1_cost = 5, 2000
             t2_xp, t2_cost = 25, 7500
             t3_xp, t3_cost = 100, 20000
             t4_xp, t4_cost = 500, 50000
             t5_xp, t5_cost = 1500, 100000
-        elif aatrox.lower() in ["true", "t", "yes", "y", "aatrox", "a"]:
+        elif aatrox is True:
             t1_xp, t1_cost = 6.25, 1000
             t2_xp, t2_cost = 31.25, 3750
             t3_xp, t3_cost = 125, 10000
             t4_xp, t4_cost = 625, 25000
             t5_xp, t5_cost = 1875, 50000
-        else:
-            await ctx.reply(
-                f"Hmm, you didn't specify whether or not Aatrox is active properly.\neg `{ctx.prefix}csl 2 5 rev a`"
-            )
-            return
 
         embed = Embed(
             description=f"{required_str} xp is required to get from {type} {start} to {end}.",
@@ -160,20 +146,22 @@ class Calc(commands.Cog):
             )
         embed.set_footer(**footer_text)
 
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
 
-    @commands.command(aliases=["fl", "fragrun", "fr"])
-    async def fragloot(self, ctx, runs=1, time=None):
+    @cog_ext.cog_slash(
+        description="Calculates average profit from fragrunning.",
+        # guild_ids=guilds,
+        options=[
+            create_option("runs", "Number of fragruns", 4, True),
+            create_option("time", "Time in minutes to finish 1 fragrun", 10, False),
+        ],
+    )
+    async def fragloot(self, ctx, runs, time=None):
         if runs == 1:
             embed = Embed(
                 title="Average loot from one fragrun", colour=ctx.guild.me.color
             )
         else:
-            try:
-                runs = int(runs)
-            except ValueError:
-                await ctx.reply(f"That's not a valid number!\neg `{ctx.prefix}fl 10`")
-                return
             embed = Embed(
                 title=f"Average loot from {runs} fragruns", colour=ctx.guild.me.color
             )
@@ -194,14 +182,6 @@ class Calc(commands.Cog):
 
         total_profit = handle_profit + rock_profit + lasr_profit + lasso_profit
         if time is not None:
-            try:
-                time = float(time)
-            except ValueError:
-                await ctx.reply(
-                    f"You must enter a valid time in minutes!\neg `{ctx.prefix}fl 10 2.5`"
-                )
-                return
-
             profit_per_hour = "{:,}".format(
                 round((HANDLE / 8 + ROCK / 8 + LASR / 8 + LASSO / 8) * 60 / time)
             )
@@ -225,9 +205,12 @@ class Calc(commands.Cog):
 
         embed.set_footer(**lbin_footer_text)
 
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
 
-    @commands.command(aliases=["bit", "b"])
+    @cog_ext.cog_slash(
+        description="Calculates coins per bit for all auctionable items.",
+        # guild_ids=guilds
+    )
     async def bits(self, ctx):
         embed = Embed(title="Bits to coins", colour=ctx.guild.me.color)
 
@@ -377,8 +360,8 @@ class Calc(commands.Cog):
 
         embed.set_footer(**lbin_footer_text)
 
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
 
 
-def setup(bot):
-    bot.add_cog(Calc(bot))
+def setup(bot: commands.Bot):
+    bot.add_cog(SlashCalc(bot))

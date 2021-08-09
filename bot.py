@@ -4,8 +4,8 @@ from os import listdir
 
 import asyncpg
 import discord
-from discord.audit_logs import _transform_verification_level
 from discord.ext import commands
+from discord_slash import SlashCommand
 
 from util.config import *
 
@@ -45,7 +45,7 @@ bot = commands.Bot(
     intents=intents,
     activity=activity,
 )
-
+slash = SlashCommand(bot, sync_commands=True, sync_on_cog_reload=True)
 
 async def create_db_pool():
     bot.db = await asyncpg.create_pool(
@@ -133,6 +133,10 @@ bot.load_extension("jishaku")
 for filename in listdir("./cogs"):
     if filename.endswith(".py"):
         bot.load_extension(f"cogs.{filename[:-3]}")
+for filename in listdir("./slash-cogs"):
+    if filename.endswith(".py"):
+        bot.load_extension(f"slash-cogs.{filename[:-3]}")
+
 
 bot.loop.run_until_complete(create_db_pool())
 bot.run(token)

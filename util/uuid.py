@@ -1,14 +1,24 @@
 import requests
+from asyncpg.exceptions import NotNullViolationError
 
 
-def lower(arg):
-    return arg.lower()
+async def uuid(bot, id, ign=None):
+    if ign is None:
+        mcuuid = await bot.db.fetchval("SELECT uuid FROM users WHERE id = $1", id)
+        if mcuuid is not None:
+            return mcuuid
+    else:
+        ign = ign.lower()
+        try:
+            mcuuid = await bot.db.fetchval("SELECT uuid FROM uuids WHERE ign = $1", ign)
+        except NotNullViolationError:
+            pass
 
-
-async def uuid(bot, ign: lower):
-    mcuuid = await bot.db.fetchval("SELECT uuid FROM uuids WHERE ign = $1", ign)
     if mcuuid is not None:
         return mcuuid
+
+    if ign is None:
+        return KeyError
 
     request = requests.get(f"https://api.mojang.com/users/profiles/minecraft/{ign}")
     if request.status_code == 200:

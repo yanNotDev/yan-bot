@@ -11,14 +11,15 @@ class Stats(commands.Cog):
 
     @commands.command(aliases=["s"])
     async def stats(self, ctx, ign=None, profile=None):
-        if ign is None:
-            await ctx.reply(
-                "You must enter an ign! (and optionally, a profile)\neg `y!s minikloon banana`"
-            )
-            return
-        mcuuid = await uuid(self.bot, ign)
+        mcuuid = await uuid(self.bot, ctx.author.id,ign)
         if mcuuid == 204:
             await ctx.reply("Invalid IGN!")
+            return
+        elif mcuuid == KeyError:
+            await ctx.reply(
+                f"You must enter an ign (and optionally, a profile)!\neg `{ctx.prefix}s minikloon banana`\n\
+If you're too lazy to do that, do `{ctx.prefix}help bind`"
+            )
             return
 
         embed = Embed(
@@ -137,12 +138,22 @@ class Stats(commands.Cog):
         await msg.edit(embed=embed)
 
     @commands.command(aliases=["uuid"])
-    async def mcuuid(self, ctx, ign):
-        id = await uuid(self.bot, ign)
+    async def mcuuid(self, ctx, ign=None):
+        id = await uuid(self.bot, ctx.author.id, ign)
         if id == 204:
             await ctx.reply("Invalid IGN!")
+        elif id == KeyError:
+            await ctx.reply(
+                f"You must enter an ign!\neg `{ctx.prefix}uuid minikloon`\n\
+If you're too lazy to do that, do `{ctx.prefix}help link`"
+            )
+            return
         else:
-            await ctx.reply(f"{ign} has the uuid `{id}`")
+            if ign is None:
+                msg = f"You have the UUID `{id}`"
+            else:
+                msg = f"{ign} has the UUID `{id}`"
+            await ctx.reply(msg)
 
 
 def setup(bot: commands.Bot):

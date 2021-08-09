@@ -1,9 +1,10 @@
 from discord.channel import TextChannel
 from discord.ext import commands
 from util.config import default_prefix
+from util.uuid import uuid
 
 
-class Admin(commands.Cog):
+class Database(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
@@ -63,6 +64,24 @@ class Admin(commands.Cog):
         else:
             await ctx.reply("Missing manage channel permissions!")
 
+    @commands.command(aliases=["bind"])
+    async def link(self, ctx, ign=None):
+        if ign is None:
+            await ctx.reply("You must specify an IGN to link your account to.")
+            return
+
+        mcuuid = await uuid(self.bot, ctx.author.id, ign.lower())
+
+        if mcuuid == 204:
+            await ctx.reply("That's not a valid IGN!")
+        else:
+            await self.bot.db.execute(
+                "INSERT INTO users(id, uuid) VALUES($1, $2) ON CONFLICT (id) DO UPDATE SET uuid = $2",
+                ctx.author.id,
+                mcuuid,
+            )
+            await ctx.reply(f"Linked {ctx.author.mention} to {ign}")
+
 
 def setup(bot):
-    bot.add_cog(Admin(bot))
+    bot.add_cog(Database(bot))

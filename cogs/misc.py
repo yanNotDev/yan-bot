@@ -17,7 +17,7 @@ class Misc(commands.Cog):
                 value="`rates`, `manrates`, `stats`, `calcskill`, `calccata`, `calcslayer`, `fragloot`, `bits`",
                 inline=False,
             )
-            embed.add_field(name="Minecraft", value="`mcuuid`", inline=False)
+            embed.add_field(name="Minecraft", value="`mcuuid`, `link`", inline=False)
             embed.add_field(name="Admin", value="`prefix`, `blacklist`", inline=False)
             embed.add_field(name="Miscellaneous", value="`help`, `info`", inline=False)
             embed.set_footer(
@@ -114,7 +114,6 @@ class Misc(commands.Cog):
                 icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
             )
 
-
         elif cmd in ["mcuuid", "uuid"]:
             embed = Embed(
                 title="MCuuid",
@@ -123,6 +122,15 @@ class Misc(commands.Cog):
             )
             embed.add_field(name="Usage", value=f"{ctx.prefix}uuid <ign>")
             embed.add_field(name="Aliases", value="`mcuuid`, `uuid`")
+
+        elif cmd in ["link", "bind"]:
+            embed = Embed(
+                title="Link",
+                description="Links your Discord account to a Minecraft account. Next time you don't specify an IGN for a command that needs one, it will default to your linked IGN.",
+                colour=ctx.guild.me.color,
+            )
+            embed.add_field(name="Usage", value=f"{ctx.prefix}link <ign>")
+            embed.add_field(name="Aliases", value="`link`, `bind`")
 
         elif cmd == "prefix":
             embed = Embed(

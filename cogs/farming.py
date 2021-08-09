@@ -15,14 +15,15 @@ class Farming(commands.Cog):
 
     @commands.command(aliases=["r"])
     async def rates(self, ctx, ign=None, profile=None):
-        if ign is None:
-            await ctx.reply(
-                f"You must enter an ign! (and optionally, a profile)\neg `{ctx.prefix}r minikloon banana`"
-            )
-            return
-        mcuuid = await uuid(self.bot, ign)
+        mcuuid = await uuid(self.bot, ctx.author.id, ign)
         if mcuuid == 204:
             await ctx.reply("Invalid IGN!")
+            return
+        elif mcuuid == KeyError:
+            await ctx.reply(
+                f"You must enter an ign (and optionally, a profile)!\neg `{ctx.prefix}r minikloon banana`\n\
+If you're too lazy to do that, do `{ctx.prefix}help link`"
+            )
             return
 
         embed = Embed(

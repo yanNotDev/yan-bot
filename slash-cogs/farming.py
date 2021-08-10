@@ -6,7 +6,7 @@ from discord import Colour, Embed
 from discord.ext import commands
 from discord_slash import cog_ext
 from discord_slash.utils.manage_commands import create_option
-from util.config import footer_text, guilds, key
+from util.config import footer_text, key
 from util.skill import lvcheck
 from util.uuid import uuid
 
@@ -17,7 +17,7 @@ class Farming(commands.Cog):
 
     @cog_ext.cog_slash(
         description="Calculate coins per hour from farming.",
-        guild_ids=guilds,
+        # guild_ids=guilds,
         options=[
             create_option("ign", "IGN", 3, False),
             create_option("profile", "IGN", 3, False),
@@ -244,7 +244,7 @@ class Farming(commands.Cog):
 
     @cog_ext.cog_slash(
         description="Calculate coins per hour from farming.",
-        guild_ids=guilds,
+        # guild_ids=guilds,
         options=[
             create_option("ff", "Farming Fortune", 4, True),
         ],

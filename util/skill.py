@@ -53,6 +53,7 @@ def catadiff(start, end):
 
 
 def slayerdiff(start, end, slayer):
+    slayer = slayer.lower()
     if slayer in ["zombie", "revenant", "rev", "r"]:
         table = [0, 5, 15, 200, 1000]
     elif slayer in ["spider", "tarantula", "tara", "t"]:

@@ -1,7 +1,9 @@
 import requests
 from discord import Embed
 from discord.ext import commands
-from util.config import key, footer_text
+from discord_slash import cog_ext
+from discord_slash.utils.manage_commands import create_option
+from util.config import guilds, key, footer_text
 from util.uuid import uuid
 
 
@@ -9,16 +11,23 @@ class Stats(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(aliases=["s"])
+    @cog_ext.cog_slash(
+        description="Shows a player's general skyblock stats.",
+        guild_ids=guilds,
+        options=[
+            create_option("ign", "IGN", 3, False),
+            create_option("profile", "Profile", 3, False),
+        ],
+    )
     async def stats(self, ctx, ign=None, profile=None):
         mcuuid = await uuid(self.bot, ctx.author.id, ign)
         if mcuuid == 204:
-            await ctx.reply("Invalid IGN!")
+            await ctx.send("Invalid IGN!", hidden=True)
             return
         elif mcuuid == KeyError:
-            await ctx.reply(
-                f"You must enter an ign (and optionally, a profile)!\neg `{ctx.prefix}s minikloon banana`\n\
-If you're too lazy to do that, do `{ctx.prefix}help bind`"
+            await ctx.send(
+                f"Looks like you didn't specify an IGN! If you don't want to specify an IGN, check out the link command or `/link`",
+                hidden=True,
             )
             return
 
@@ -28,7 +37,7 @@ If you're too lazy to do that, do `{ctx.prefix}help bind`"
         )
         embed.add_field(name="HYPIXEL WHY are you so sLOW", value="_ _", inline=False)
         embed.set_footer(**footer_text)
-        msg = await ctx.reply(embed=embed)
+        msg = await ctx.send(embed=embed)
 
         if profile is None:
             request = requests.get(
@@ -54,10 +63,7 @@ If you're too lazy to do that, do `{ctx.prefix}help bind`"
                     description="um i dont think this guy has played skyblock",
                     colour=ctx.guild.me.color,
                 )
-                embed.set_footer(
-                    text="Made by yan#0069",
-                    icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
-                )
+                embed.set_footer(**footer_text)
                 await msg.edit(embed=embed)
                 return
 
@@ -124,23 +130,28 @@ If you're too lazy to do that, do `{ctx.prefix}help bind`"
 
         await msg.edit(embed=embed)
 
-    @commands.command(aliases=["uuid"])
+    @cog_ext.cog_slash(
+        description="Get's the UUID of someone's Minecraft IGN.",
+        guild_ids=guilds,
+        options=[
+            create_option("ign", "IGN", 3, False),
+        ],
+    )
     async def mcuuid(self, ctx, ign=None):
         id = await uuid(self.bot, ctx.author.id, ign)
         if id == 204:
-            await ctx.reply("Invalid IGN!")
+            await ctx.send("Invalid IGN!", hidden=True)
         elif id == KeyError:
-            await ctx.reply(
-                f"You must enter an ign!\neg `{ctx.prefix}uuid minikloon`\n\
-If you're too lazy to do that, do `{ctx.prefix}help link`"
+            await ctx.send(
+                f"Looks like you didn't specify an IGN! If you don't want to specify an IGN, check out the link command or `/link`",
+                hidden=True,
             )
-            return
         else:
             if ign is None:
                 msg = f"You have the UUID `{id}`"
             else:
                 msg = f"{ign} has the UUID `{id}`"
-            await ctx.reply(msg)
+            await ctx.send(msg)
 
 
 def setup(bot: commands.Bot):

@@ -3,7 +3,7 @@ from discord import Embed
 from discord.ext import commands
 from discord_slash import cog_ext
 from discord_slash.utils.manage_commands import create_option
-from util.config import guilds, key, footer_text
+from util.config import footer_text, key
 from util.uuid import uuid
 
 
@@ -13,7 +13,7 @@ class Stats(commands.Cog):
 
     @cog_ext.cog_slash(
         description="Shows a player's general skyblock stats.",
-        guild_ids=guilds,
+        # guild_ids=guilds,
         options=[
             create_option("ign", "IGN", 3, False),
             create_option("profile", "Profile", 3, False),
@@ -132,7 +132,7 @@ class Stats(commands.Cog):
 
     @cog_ext.cog_slash(
         description="Get's the UUID of someone's Minecraft IGN.",
-        guild_ids=guilds,
+        # guild_ids=guilds,
         options=[
             create_option("ign", "IGN", 3, False),
         ],

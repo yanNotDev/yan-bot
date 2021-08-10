@@ -5,9 +5,9 @@ from statistics import mean
 import util.bits as bits
 from discord import Embed
 from discord.ext import commands
-from discord_slash import SlashContext, cog_ext
+from discord_slash import cog_ext
 from discord_slash.utils.manage_commands import create_choice, create_option
-from util.config import footer_text, guilds, lbin_footer_text
+from util.config import footer_text, lbin_footer_text
 from util.skill import catadiff, lvdiff, slayerdiff
 
 
@@ -24,7 +24,7 @@ class SlashCalc(commands.Cog):
             create_option("xp", "XP per floor", 10, False),
         ],
     )
-    async def calccata(self, ctx: SlashContext, start, end, xp=None):
+    async def calccata(self, ctx, start, end, xp=None):
         try:
             required_int = catadiff(start, end)
         except IndexError:
@@ -79,16 +79,15 @@ class SlashCalc(commands.Cog):
                 3,
                 True,
                 choices=[
-                    create_choice("rev", "Revenant"),
-                    create_choice("tara", "Tarantula"),
-                    create_choice("wolf", "Sven"),
-                    create_choice("eman", "Voidgloom"),
+                    create_choice("Revenant", "Revenant"),
+                    create_choice("Tarantula", "Tarantula"),
+                    create_choice("Sven/Voidgloom", "Sven/Voidgloom"),
                 ],
             ),
             create_option("aatrox", "Is Aatrox active", 5, False),
         ],
     )
-    async def calcslayer(self, ctx, start, end, type, aatrox=None):
+    async def calcslayer(self, ctx, start, end, type, aatrox=False):
         try:
             required = slayerdiff(start, end, type)
         except IndexError:
@@ -97,20 +96,13 @@ class SlashCalc(commands.Cog):
 
         required_str = "{:,}".format(required)
 
-        if type == "rev":
-            type = "Revenant"
-        elif type == "tara":
-            type = "Tarantula"
-        elif type in ["wolf", "eman"]:
-            type = "Sven/Enderman"
-
-        if aatrox is None or aatrox is False:
+        if not aatrox:
             t1_xp, t1_cost = 5, 2000
             t2_xp, t2_cost = 25, 7500
             t3_xp, t3_cost = 100, 20000
             t4_xp, t4_cost = 500, 50000
             t5_xp, t5_cost = 1500, 100000
-        elif aatrox is True:
+        elif aatrox:
             t1_xp, t1_cost = 6.25, 1000
             t2_xp, t2_cost = 31.25, 3750
             t3_xp, t3_cost = 125, 10000

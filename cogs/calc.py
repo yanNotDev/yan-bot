@@ -80,7 +80,7 @@ class Calc(commands.Cog):
         await ctx.reply(embed=embed)
 
     @commands.command(aliases=["csl"])
-    async def calcslayer(self, ctx, start=None, end=None, type=None, aatrox=None):
+    async def calcslayer(self, ctx, start=None, end=None, type=None, aatrox=False):
         try:
             if start is None or end is None:
                 await ctx.reply(
@@ -92,6 +92,7 @@ class Calc(commands.Cog):
                     "That doesn't seem like a valid number. Remove any non-digit!"
                 )
                 return
+            type = str(type.lower())
             required = slayerdiff(start, end, type)
         except IndexError:
             await ctx.reply(
@@ -113,7 +114,7 @@ class Calc(commands.Cog):
         elif type in ["wolf", "sven", "s", "enderman", "eman", "e", "voidgloom", "v"]:
             type = "Sven/Enderman"
 
-        if aatrox is None or aatrox.lower() in ["false", "f", "no", "n"]:
+        if aatrox is False or aatrox.lower() in ["false", "f", "no", "n"]:
             t1_xp, t1_cost = 5, 2000
             t2_xp, t2_cost = 25, 7500
             t3_xp, t3_cost = 100, 20000
@@ -163,7 +164,11 @@ class Calc(commands.Cog):
         await ctx.reply(embed=embed)
 
     @commands.command(aliases=["fl", "fragrun", "fr"])
-    async def fragloot(self, ctx, runs=1, time=None):
+    async def fragloot(self, ctx, runs=None, time=None):
+        if runs is None:
+            await ctx.reply(
+                f"You must specify the number of runs (and optionally time in minutes to finish a run)\neg `{ctx.prefix}fl 10 1.5`"
+            )
         if runs == 1:
             embed = Embed(
                 title="Average loot from one fragrun", colour=ctx.guild.me.color

@@ -2,6 +2,7 @@ from math import log10
 from re import sub
 
 import requests
+from bot import slash_blacklist
 from discord import Colour, Embed
 from discord.ext import commands
 from discord_slash import cog_ext
@@ -41,7 +42,8 @@ class Farming(commands.Cog):
         )
         embed.add_field(name="loading aaaa", value="_ _", inline=False)
         embed.set_footer(**footer_text)
-        msg = await ctx.reply(embed=embed)
+        hidden = await slash_blacklist(ctx)
+        msg = await ctx.send(embed=embed, hidden=hidden)
 
         if profile is None:
             request = requests.get(
@@ -262,7 +264,9 @@ class Farming(commands.Cog):
             value=f"{wart_coins_per_hour}/hour",
         )
         embed.set_footer(**footer_text)
-        await ctx.reply(embed=embed)
+
+        hidden = await slash_blacklist(ctx)
+        await ctx.send(embed=embed, hidden=hidden)
 
 
 def setup(bot):

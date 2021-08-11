@@ -1,4 +1,5 @@
 import requests
+from bot import slash_blacklist
 from discord import Embed
 from discord.ext import commands
 from discord_slash import cog_ext
@@ -37,7 +38,9 @@ class Stats(commands.Cog):
         )
         embed.add_field(name="HYPIXEL WHY are you so sLOW", value="_ _", inline=False)
         embed.set_footer(**footer_text)
-        msg = await ctx.send(embed=embed)
+
+        hidden = await slash_blacklist(ctx)
+        msg = await ctx.send(embed=embed, hidden=hidden)
 
         if profile is None:
             request = requests.get(
@@ -151,7 +154,8 @@ class Stats(commands.Cog):
                 msg = f"You have the UUID `{id}`"
             else:
                 msg = f"{ign} has the UUID `{id}`"
-            await ctx.send(msg)
+            hidden = await slash_blacklist(ctx)
+            await ctx.send(msg, hidden=hidden)
 
 
 def setup(bot: commands.Bot):

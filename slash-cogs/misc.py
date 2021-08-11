@@ -1,3 +1,4 @@
+from bot import slash_blacklist
 from discord import Embed
 from discord.ext import commands
 from discord_slash import cog_ext
@@ -42,6 +43,7 @@ class Misc(commands.Cog):
     )
     async def help(self, ctx, command=None):
         embed = Embed(description="_ _", colour=ctx.guild.me.color)
+        hidden = await slash_blacklist(ctx)
         if command is None:
             embed.add_field(
                 name="Skyblock",
@@ -74,7 +76,7 @@ class Misc(commands.Cog):
             ]
             action_row = create_actionrow(*buttons)
 
-            await ctx.send(embed=embed, components=[action_row])
+            await ctx.send(embed=embed, components=[action_row], hidden=hidden)
 
         elif command == "Rates":
             embed = Embed(
@@ -132,7 +134,7 @@ class Misc(commands.Cog):
             )
             embed.add_field(name="Aliases", value="`calcslayer`, `csl`")
 
-        elif command == "Fragrun": 
+        elif command == "Fragrun":
             embed = Embed(
                 title="FragLoot",
                 description="Calculates average profit from fragrunning. Defaults to 1 if number of runs isn't specified. You can optionally supply the time you finish 1 run in.",
@@ -223,7 +225,7 @@ class Misc(commands.Cog):
 
         if command is not None:
             embed.set_footer(**footer_text)
-            await ctx.send(embed=embed)
+            await ctx.send(embed=embed, hidden=hidden)
 
     @cog_ext.cog_slash(
         description="Displays general info about the bot.",
@@ -251,7 +253,8 @@ class Misc(commands.Cog):
         )
         embed.set_footer(**footer_text)
 
-        await ctx.send(embed=embed)
+        hidden = await slash_blacklist(ctx)
+        await ctx.send(embed=embed, hidden=hidden)
 
 
 def setup(bot: commands.Bot):

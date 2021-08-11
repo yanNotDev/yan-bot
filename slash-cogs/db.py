@@ -1,3 +1,4 @@
+from bot import slash_blacklist
 from discord.ext import commands
 from discord_slash import cog_ext
 from discord_slash.utils.manage_commands import create_option
@@ -35,11 +36,11 @@ class Database(commands.Cog):
                 prefix,
                 ctx.guild.id,
             )
-
+            hidden = await slash_blacklist(ctx)
             if prefix == default_prefix:
-                await ctx.send(f"Changed prefix back to the default `{prefix}`")
+                await ctx.send(f"Changed prefix back to the default `{prefix}`", hidden=hidden)
             else:
-                await ctx.send(f"Prefix changed to `{prefix}`")
+                await ctx.send(f"Prefix changed to `{prefix}`", hidden=hidden)
 
         else:
             await ctx.send("Missing manage server permissions!", hidden=True)
@@ -116,7 +117,9 @@ class Database(commands.Cog):
                 ctx.author.id,
                 mcuuid,
             )
-            await ctx.send(f"Linked {ctx.author.mention} to {ign}")
+
+            hidden = await slash_blacklist(ctx)
+            await ctx.send(f"Linked {ctx.author.mention} to {ign}", hidden=hidden)
 
 
 def setup(bot):

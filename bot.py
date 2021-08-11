@@ -67,7 +67,7 @@ async def on_guild_join(guild):
             embed = discord.Embed(
                 title="hi i am yan bot",
                 description="`y!help`, `y!help command_name` for help on that command\n\
-btw u can change prefix `y!help prefix`, commands are very cool please check them out and pls dont kick 😢",
+btw u can change prefix `y!help prefix`, commands are very cool (i have slash commands too) please check them out and pls dont kick 😢",
                 color=guild.me.colour,
             )
             embed.add_field(
@@ -117,15 +117,27 @@ async def on_command_error(ctx, error):
 
 @bot.check
 async def blacklist(ctx):
-    if ctx.author.id == 270141848000004097:
+    if (
+        ctx.author.id == 270141848000004097
+        or ctx.author.guild_permissions.manage_channels
+    ):
         return True
-
-    if not ctx.author.guild_permissions.manage_channels:
+    else:
         return not await bot.db.fetchval(
             "SELECT exists (SELECT id FROM channels WHERE id = $1)", ctx.channel.id
         )
+
+
+async def slash_blacklist(ctx):
+    if (
+        ctx.author.id == 270141848000004097
+        or ctx.author.guild_permissions.manage_channels
+    ):
+        return False
     else:
-        return True
+        return await bot.db.fetchval(
+            "SELECT exists (SELECT id FROM channels WHERE id = $1)", ctx.channel.id
+        )
 
 
 bot.load_extension("jishaku")

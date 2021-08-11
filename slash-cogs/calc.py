@@ -3,6 +3,7 @@ from math import ceil
 from statistics import mean
 
 import util.bits as bits
+from bot import slash_blacklist
 from discord import Embed
 from discord.ext import commands
 from discord_slash import cog_ext
@@ -42,7 +43,8 @@ class SlashCalc(commands.Cog):
             embed.add_field(name=f"Runs required to reach Catacombs {end}", value=runs)
         embed.set_footer(**footer_text)
 
-        await ctx.send(embed=embed)
+        hidden = await slash_blacklist(ctx)
+        await ctx.send(embed=embed, hidden=hidden)
 
     @cog_ext.cog_slash(
         description="Checks xp required to get from one level to another, for the 7 main skills.",
@@ -65,7 +67,8 @@ class SlashCalc(commands.Cog):
         )
         embed.set_footer(**footer_text)
 
-        await ctx.send(embed=embed)
+        hidden = await slash_blacklist(ctx)
+        await ctx.send(embed=embed, hidden=hidden)
 
     @cog_ext.cog_slash(
         description="Checks xp required to get from one slayer level to another.",
@@ -138,7 +141,8 @@ class SlashCalc(commands.Cog):
             )
         embed.set_footer(**footer_text)
 
-        await ctx.send(embed=embed)
+        hidden = await slash_blacklist(ctx)
+        await ctx.send(embed=embed, hidden=hidden)
 
     @cog_ext.cog_slash(
         description="Calculates average profit from fragrunning.",
@@ -197,7 +201,8 @@ class SlashCalc(commands.Cog):
 
         embed.set_footer(**lbin_footer_text)
 
-        await ctx.send(embed=embed)
+        hidden = await slash_blacklist(ctx)
+        await ctx.send(embed=embed, hidden=hidden)
 
     @cog_ext.cog_slash(
         description="Calculates coins per bit for all auctionable items.",
@@ -352,7 +357,8 @@ class SlashCalc(commands.Cog):
 
         embed.set_footer(**lbin_footer_text)
 
-        await ctx.send(embed=embed)
+        hidden = await slash_blacklist(ctx)
+        await ctx.send(embed=embed, hidden=hidden)
 
 
 def setup(bot: commands.Bot):

@@ -4,7 +4,7 @@ from discord_slash import cog_ext
 from discord_slash.model import ButtonStyle
 from discord_slash.utils.manage_commands import create_choice, create_option
 from discord_slash.utils.manage_components import create_actionrow, create_button
-from util.config import default_prefix, footer_text, guilds
+from util.config import default_prefix, footer_text
 
 
 class Misc(commands.Cog):
@@ -14,7 +14,7 @@ class Misc(commands.Cog):
 
     @cog_ext.cog_slash(
         description="Displays the help message.",
-        guild_ids=guilds,
+        # guild_ids=guilds,
         options=[
             create_option(
                 "command",
@@ -227,7 +227,7 @@ class Misc(commands.Cog):
 
     @cog_ext.cog_slash(
         description="Displays general info about the bot.",
-        guild_ids=guilds,
+        # guild_ids=guilds,
     )
     async def info(self, ctx):
         embed = Embed(

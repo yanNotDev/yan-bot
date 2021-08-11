@@ -269,7 +269,7 @@ class Calc(commands.Cog):
             ENRICHMENT_WALK_SPEED = f["TALISMAN_ENRICHMENT_WALK_SPEED"]
             ENRICHMENT_ATTACK_SPEED = f["TALISMAN_ENRICHMENT_ATTACK_SPEED"]
             ENRICHMENT_HEALTH = f["TALISMAN_ENRICHMENT_HEALTH"]
-            ENRICHMENT_INTELLIGENCE = f["TALISMAN_ENRICHMENT_INTELLIGENCE"]
+            # ENRICHMENT_INTELLIGENCE = f["TALISMAN_ENRICHMENT_INTELLIGENCE"]
             ENRICHMENT_SEA_CREATURE_CHANCE = f[
                 "TALISMAN_ENRICHMENT_SEA_CREATURE_CHANCE"
             ]
@@ -319,7 +319,7 @@ class Calc(commands.Cog):
         enrichment_walk_speed = round(ENRICHMENT_WALK_SPEED / bits.enrichments)
         enrichment_attack_speed = round(ENRICHMENT_ATTACK_SPEED / bits.enrichments)
         enrichment_health = round(ENRICHMENT_HEALTH / bits.enrichments)
-        enrichment_intelligence = round(ENRICHMENT_INTELLIGENCE / bits.enrichments)
+        # enrichment_intelligence = round(ENRICHMENT_INTELLIGENCE / bits.enrichments)
         enrichment_sea_creature_chance = round(
             ENRICHMENT_SEA_CREATURE_CHANCE / bits.enrichments
         )
@@ -336,7 +336,7 @@ class Calc(commands.Cog):
                     enrichment_walk_speed,
                     enrichment_attack_speed,
                     enrichment_health,
-                    enrichment_intelligence,
+                    # enrichment_intelligence,
                     enrichment_sea_creature_chance,
                     enrichment_strength,
                 ]

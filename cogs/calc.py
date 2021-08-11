@@ -261,19 +261,19 @@ class Calc(commands.Cog):
             CULTIVATING = f["ENCHANTED_BOOK-CULTIVATING1"]
 
             ENRICHMENT_SWAPPER = f["TALISMAN_ENRICHMENT_SWAPPER"]
-            ENRICHMENT_DEFENSE = f["TALISMAN_ENRICHMENT_DEFENSE"]
-            ENRICHMENT_MAGIC_FIND = f["TALISMAN_ENRICHMENT_MAGIC_FIND"]
-            ENRICHMENT_FEROCITY = f["TALISMAN_ENRICHMENT_FEROCITY"]
-            ENRICHMENT_CRITICAL_DAMAGE = f["TALISMAN_ENRICHMENT_CRITICAL_DAMAGE"]
-            ENRICHMENT_CRITICAL_CHANCE = f["TALISMAN_ENRICHMENT_CRITICAL_CHANCE"]
-            ENRICHMENT_WALK_SPEED = f["TALISMAN_ENRICHMENT_WALK_SPEED"]
-            ENRICHMENT_ATTACK_SPEED = f["TALISMAN_ENRICHMENT_ATTACK_SPEED"]
-            ENRICHMENT_HEALTH = f["TALISMAN_ENRICHMENT_HEALTH"]
+            # ENRICHMENT_DEFENSE = f["TALISMAN_ENRICHMENT_DEFENSE"]
+            # ENRICHMENT_MAGIC_FIND = f["TALISMAN_ENRICHMENT_MAGIC_FIND"]
+            # ENRICHMENT_FEROCITY = f["TALISMAN_ENRICHMENT_FEROCITY"]
+            # ENRICHMENT_CRITICAL_DAMAGE = f["TALISMAN_ENRICHMENT_CRITICAL_DAMAGE"]
+            # ENRICHMENT_CRITICAL_CHANCE = f["TALISMAN_ENRICHMENT_CRITICAL_CHANCE"]
+            # ENRICHMENT_WALK_SPEED = f["TALISMAN_ENRICHMENT_WALK_SPEED"]
+            # ENRICHMENT_ATTACK_SPEED = f["TALISMAN_ENRICHMENT_ATTACK_SPEED"]
+            # ENRICHMENT_HEALTH = f["TALISMAN_ENRICHMENT_HEALTH"]
             # ENRICHMENT_INTELLIGENCE = f["TALISMAN_ENRICHMENT_INTELLIGENCE"]
-            ENRICHMENT_SEA_CREATURE_CHANCE = f[
-                "TALISMAN_ENRICHMENT_SEA_CREATURE_CHANCE"
-            ]
-            ENRICHMENT_STRENGTH = f["TALISMAN_ENRICHMENT_STRENGTH"]
+            # ENRICHMENT_SEA_CREATURE_CHANCE = f[
+            #     "TALISMAN_ENRICHMENT_SEA_CREATURE_CHANCE"
+            # ]
+            # ENRICHMENT_STRENGTH = f["TALISMAN_ENRICHMENT_STRENGTH"]
 
         god_potion = round(GOD_POTION / bits.god_potion)
         kat_flower = round(KAT_FLOWER / bits.kat_flower)
@@ -307,41 +307,41 @@ class Calc(commands.Cog):
         enrichment_swapper = round(
             ENRICHMENT_SWAPPER / bits.talisman_enrichment_swapper
         )
-        enrichment_defense = round(ENRICHMENT_DEFENSE / bits.enrichments)
-        enrichment_magic_find = round(ENRICHMENT_MAGIC_FIND / bits.enrichments)
-        enrichment_ferocity = round(ENRICHMENT_FEROCITY / bits.enrichments)
-        enrichment_critical_damage = round(
-            ENRICHMENT_CRITICAL_DAMAGE / bits.enrichments
-        )
-        enrichment_critical_chance = round(
-            ENRICHMENT_CRITICAL_CHANCE / bits.enrichments
-        )
-        enrichment_walk_speed = round(ENRICHMENT_WALK_SPEED / bits.enrichments)
-        enrichment_attack_speed = round(ENRICHMENT_ATTACK_SPEED / bits.enrichments)
-        enrichment_health = round(ENRICHMENT_HEALTH / bits.enrichments)
-        # enrichment_intelligence = round(ENRICHMENT_INTELLIGENCE / bits.enrichments)
-        enrichment_sea_creature_chance = round(
-            ENRICHMENT_SEA_CREATURE_CHANCE / bits.enrichments
-        )
-        enrichment_strength = round(ENRICHMENT_STRENGTH / bits.enrichments)
+        # enrichment_defense = round(ENRICHMENT_DEFENSE / bits.enrichments)
+        # enrichment_magic_find = round(ENRICHMENT_MAGIC_FIND / bits.enrichments)
+        # enrichment_ferocity = round(ENRICHMENT_FEROCITY / bits.enrichments)
+        # enrichment_critical_damage = round(
+        #     ENRICHMENT_CRITICAL_DAMAGE / bits.enrichments
+        # )
+        # enrichment_critical_chance = round(
+        #     ENRICHMENT_CRITICAL_CHANCE / bits.enrichments
+        # )
+        # enrichment_walk_speed = round(ENRICHMENT_WALK_SPEED / bits.enrichments)
+        # enrichment_attack_speed = round(ENRICHMENT_ATTACK_SPEED / bits.enrichments)
+        # enrichment_health = round(ENRICHMENT_HEALTH / bits.enrichments)
+        # # enrichment_intelligence = round(ENRICHMENT_INTELLIGENCE / bits.enrichments)
+        # enrichment_sea_creature_chance = round(
+        #     ENRICHMENT_SEA_CREATURE_CHANCE / bits.enrichments
+        # )
+        # enrichment_strength = round(ENRICHMENT_STRENGTH / bits.enrichments)
 
-        enrichment_average = round(
-            mean(
-                [
-                    enrichment_defense,
-                    enrichment_magic_find,
-                    enrichment_ferocity,
-                    enrichment_critical_damage,
-                    enrichment_critical_chance,
-                    enrichment_walk_speed,
-                    enrichment_attack_speed,
-                    enrichment_health,
-                    # enrichment_intelligence,
-                    enrichment_sea_creature_chance,
-                    enrichment_strength,
-                ]
-            )
-        )
+        # enrichment_average = round(
+        #     mean(
+        #         [
+        #             enrichment_defense,
+        #             enrichment_magic_find,
+        #             enrichment_ferocity,
+        #             enrichment_critical_damage,
+        #             enrichment_critical_chance,
+        #             enrichment_walk_speed,
+        #             enrichment_attack_speed,
+        #             enrichment_health,
+        #             # enrichment_intelligence,
+        #             enrichment_sea_creature_chance,
+        #             enrichment_strength,
+        #         ]
+        #     )
+        # )
 
         embed.add_field(name="God Potion", value=f"{god_potion} coins per bit")
         embed.add_field(name="Kat Flower", value=f"{kat_flower} coins per bit")
@@ -377,11 +377,16 @@ class Calc(commands.Cog):
         embed.add_field(
             name="Enrichment Swapper", value=f"{enrichment_swapper} coins per bit"
         )
-        embed.add_field(
-            name="All enrichments (average)",
-            value=f"{enrichment_average} coins per bit",
-        )
-
+        try:
+            embed.add_field(
+                name="All enrichments (average)",
+                value=f"{enrichment_average} coins per bit",
+            )
+        except:
+            embed.add_field(
+                name="All enrichments (average)",
+                value=f"?",
+            )
         embed.set_footer(**lbin_footer_text)
 
         await ctx.reply(embed=embed)

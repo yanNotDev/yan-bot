@@ -47,6 +47,7 @@ bot = commands.Bot(
 )
 slash = SlashCommand(bot, sync_commands=True, sync_on_cog_reload=True)
 
+
 async def create_db_pool():
     bot.db = await asyncpg.create_pool(
         dsn=f"postgres://{username}:{password}@{host}:{port}/{db_name}"
@@ -119,12 +120,10 @@ async def blacklist(ctx):
     if ctx.author.id == 270141848000004097:
         return True
 
-    blacklisted_channel = await bot.db.fetch(
-        "SELECT exists (SELECT id FROM channels WHERE id = $1)",
-        ctx.channel.id,
-    )
     if not ctx.author.guild_permissions.manage_channels:
-        return not blacklisted_channel[0].get("exists")
+        return not await bot.db.fetchval(
+            "SELECT exists (SELECT id FROM channels WHERE id = $1)", ctx.channel.id
+        )
     else:
         return True
 

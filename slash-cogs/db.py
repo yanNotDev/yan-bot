@@ -1,10 +1,10 @@
 from bot import slash_blacklist
+from commands.channel import get_channels
 from discord.ext import commands
 from discord_slash import cog_ext
 from discord_slash.utils.manage_commands import create_option
-from util.channel import *
 from util.config import default_prefix
-from util.uuid import uuid
+from commands.uuid import uuid
 
 
 class Database(commands.Cog):

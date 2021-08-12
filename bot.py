@@ -90,7 +90,7 @@ async def on_command_error(ctx, error):
         await ctx.reply("Only my owner can use this command!")
     elif isinstance(error, commands.ChannelNotFound):
         await ctx.reply("Invalid channel!")
-    elif isinstance(error, commands.CheckFailure):
+    elif isinstance(error, TypeError) or isinstance(error, commands.CheckFailure):
         return
     else:
         print(error)

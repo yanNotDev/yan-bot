@@ -1,7 +1,7 @@
+from commands.channel import get_channels
 from discord.ext import commands
-from util.channel import get_channels
 from util.config import default_prefix
-from util.uuid import uuid
+from commands.uuid import uuid
 
 
 class Database(commands.Cog):

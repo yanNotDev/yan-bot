@@ -4,7 +4,7 @@ from discord import Embed
 from discord.ext import commands
 from discord_slash import cog_ext
 from discord_slash.utils.manage_commands import create_option
-from util.config import footer_text, guilds
+from util.config import footer_text
 from commands.uuid import uuid
 
 
@@ -14,7 +14,7 @@ class Stats(commands.Cog):
 
     @cog_ext.cog_slash(
         description="Shows a player's general skyblock stats.",
-        guild_ids=guilds,
+        # guild_ids=guilds,
         options=[
             create_option("ign", "IGN", 3, False),
             create_option("profile", "Profile", 3, False),

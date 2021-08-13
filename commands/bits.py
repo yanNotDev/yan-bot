@@ -30,7 +30,7 @@ def bits(ctx):
     with open("util/lbin/lowestbin.json", "r") as f:
         f = json.load(f)
 
-        GOD_POTION = f.get("GOD_POTION", 0)
+        GOD_POTION = f.get("GOD_POTION_2", 0)
         KAT_FLOWER = f.get("KAT_FLOWER", 0)
         HEAT_CORE = f.get("HEAT_CORE", 0)
         HYPER_CATALYST_UPGRADE = f.get("HYPER_CATALYST_UPGRADE", 0)
@@ -45,9 +45,9 @@ def bits(ctx):
         AUTOPET_RULES_2 = f.get("AUTOPET_RULES_2", 0)
         KISMET_FEATHER = f.get("KISMET_FEATHER", 0)
 
-        EXPERTISE = f.get("ENCHANTED_BOOK-EXPERTISE1", 0)
-        COMPACT = f.get("ENCHANTED_BOOK-COMPACT1", 0)
-        CULTIVATING = f.get("ENCHANTED_BOOK-CULTIVATING1", 0)
+        EXPERTISE = f.get("EXPERTISE;1", 0)
+        COMPACT = f.get("COMPACT;1", 0)
+        CULTIVATING = f.get("CULTIVATING;1", 0)
 
         ENRICHMENT_SWAPPER = f.get("TALISMAN_ENRICHMENT_SWAPPER", 0)
         ENRICHMENT_DEFENSE = f.get("TALISMAN_ENRICHMENT_DEFENSE", 0)
@@ -160,10 +160,6 @@ def bits(ctx):
         name="All enrichments (average)",
         value=f"{enrichment_average} coins per bit",
     )
-    embed.add_field(
-        name="All enrichments (average)",
-        value=f"?",
-        )
     embed.set_footer(**lbin_footer_text)
 
     return embed

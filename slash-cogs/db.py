@@ -126,7 +126,7 @@ class Database(commands.Cog):
 
     @cog_ext.cog_slash(
         description="Sets up a channel where anyone who talks will be insta-banned. Useful for catching hacked accounts.",
-        guild_ids=guilds,
+        # guild_ids=guilds,
     )
     async def banchannel(self, ctx):
         hidden = await slash_blacklist(ctx)

@@ -76,12 +76,55 @@ btw u can change prefix `y!help prefix`, commands are very cool (i have slash co
             )
 
             await channel.send(embed=embed)
-        break
+            break
 
 
 @bot.event
 async def on_guild_remove(guild):
     await bot.db.execute("DELETE FROM guilds WHERE guild_id = $1", guild.id)
+
+
+@bot.event
+async def on_guild_channel_delete(channel):
+    if await bot.db.fetchval(
+        "SELECT EXISTS (SELECT id FROM channels WHERE id = $1)", channel.id
+    ):
+        await bot.db.execute("DELETE FROM channels WHERE id = $1", channel.id)
+
+    if await bot.db.fetchval(
+        "SELECT EXISTS (SELECT id FROM banchannels WHERE id = $1)", channel.id
+    ):
+        await bot.db.execute("DELETE FROM banchannels WHERE id = $1", channel.id)
+
+
+@bot.event
+async def on_typing(channel, user, when):
+    if await bot.db.fetchval(
+        "SELECT EXISTS (SELECT id FROM banchannels WHERE id = $1)", channel.id
+    ):
+        await channel.send(
+            f"I see that {user.mention} is typing. This is __not__ a joke, so **do not send a message or you will be banned.**",
+            delete_after=5,
+        )
+
+
+@bot.listen("on_message")
+async def ban(message):
+    if await bot.db.fetchval(
+        "SELECT EXISTS (SELECT id FROM banchannels WHERE id = $1)", message.channel.id
+    ):
+        if message.guild.me.guild_permissions.ban_members:
+            await message.author.send(
+                f"You have been banned from {message.guild} for typing in {message.channel}."
+            )
+            await message.guild.ban(
+                message.author,
+                reason=f"Sent a message in {message.channel.mention}",
+                delete_message_days=1,
+            )
+            await message.author.send(
+                f"You have been banned from {message.guild} for typing in #{message.channel}."
+            )
 
 
 @bot.event

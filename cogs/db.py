@@ -1,7 +1,8 @@
+from commands import banchannel
 from commands.channel import get_channels
+from commands.uuid import uuid
 from discord.ext import commands
 from util.config import default_prefix
-from commands.uuid import uuid
 
 
 class Database(commands.Cog):
@@ -107,6 +108,10 @@ class Database(commands.Cog):
                 mcuuid,
             )
             await ctx.reply(f"Linked {ctx.author.mention} to {ign}")
+
+    @commands.command()
+    async def banchannel(self, ctx):
+        await ctx.send(await banchannel.banchannel(self.bot, ctx))
 
 
 def setup(bot):

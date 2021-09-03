@@ -1,10 +1,11 @@
 from bot import slash_blacklist
+from commands import banchannel
 from commands.channel import get_channels
+from commands.uuid import uuid
 from discord.ext import commands
 from discord_slash import cog_ext
 from discord_slash.utils.manage_commands import create_option
-from util.config import default_prefix
-from commands.uuid import uuid
+from util.config import default_prefix, guilds
 
 
 class Database(commands.Cog):
@@ -38,7 +39,9 @@ class Database(commands.Cog):
             )
             hidden = await slash_blacklist(ctx)
             if prefix == default_prefix:
-                await ctx.send(f"Changed prefix back to the default `{prefix}`", hidden=hidden)
+                await ctx.send(
+                    f"Changed prefix back to the default `{prefix}`", hidden=hidden
+                )
             else:
                 await ctx.send(f"Prefix changed to `{prefix}`", hidden=hidden)
 
@@ -120,6 +123,15 @@ class Database(commands.Cog):
 
             hidden = await slash_blacklist(ctx)
             await ctx.send(f"Linked {ctx.author.mention} to {ign}", hidden=hidden)
+
+    @cog_ext.cog_slash(
+        description="Sets up a channel where anyone who talks will be insta-banned. Useful for catching hacked accounts.",
+        guild_ids=guilds,
+    )
+    async def banchannel(self, ctx):
+        hidden = await slash_blacklist(ctx)
+        content = await banchannel.banchannel(self.bot, ctx)
+        await ctx.send(content, hidden=hidden)
 
 
 def setup(bot):

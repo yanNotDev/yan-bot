@@ -17,7 +17,9 @@ def help(ctx, command):
             inline=False,
         )
         embed.add_field(name="Minecraft", value="`mcuuid`, `link`", inline=False)
-        embed.add_field(name="Admin", value="`prefix`, `blacklist`", inline=False)
+        embed.add_field(
+            name="Admin", value="`prefix`, `blacklist`, `banchannel`", inline=False
+        )
         embed.add_field(name="Miscellaneous", value="`help`, `info`", inline=False)
         embed.set_footer(
             text=f'Use "{ctx.prefix}help <command>" for more help on that command • Arguments with <> are mandatory, [] are optional'
@@ -169,6 +171,14 @@ def help(ctx, command):
         embed.add_field(
             name="Aliases", value="`bl`, `blc`, `blacklist`, `blacklistchannel`"
         )
+
+    elif command == "banchannel":
+        embed = Embed(
+            title="Ban channel",
+            description="Creates a channel in which anyone who speaks will be banned instantly. Useful for catching botted accounts who bomb every channel with phishing links.",
+            colour=ctx.guild.me.color,
+        )
+        embed.add_field(name="Usage", value=f"{ctx.prefix}banchannel")
 
     elif command == "help":
         embed = Embed(

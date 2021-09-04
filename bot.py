@@ -115,15 +115,12 @@ async def ban(message):
     ):
         if message.guild.me.guild_permissions.ban_members:
             await message.author.send(
-                f"You have been banned from {message.guild} for typing in {message.channel}."
+                f"You have been banned from {message.guild} for typing in #{message.channel}."
             )
             await message.guild.ban(
                 message.author,
                 reason=f"Sent a message in {message.channel.mention}",
                 delete_message_days=1,
-            )
-            await message.author.send(
-                f"You have been banned from {message.guild} for typing in #{message.channel}."
             )
 
 

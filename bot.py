@@ -72,9 +72,12 @@ btw u can change prefix `y!help prefix`, commands are very cool (i have slash co
             )
             embed.add_field(
                 name="_ _",
-                value="remember that you can do y!bl #channel and only mods can run commands in that channel then, do the command again to revert it",
+                value="remember that you can do y!bl #channel and only mods can run commands in that channel then (do the command again to revert it)",
             )
-
+            embed.add_field(
+                name="_ _",
+                value="there is also 1 moderation command (y!help banchannel)",
+            )
             await channel.send(embed=embed)
             break
 
@@ -109,7 +112,7 @@ async def on_typing(channel, user, when):
 
 
 @bot.listen("on_message")
-async def ban(message):
+async def on_msg(message: discord.message.Message):
     if await bot.db.fetchval(
         "SELECT EXISTS (SELECT id FROM banchannels WHERE id = $1)", message.channel.id
     ):
@@ -122,6 +125,9 @@ async def ban(message):
                 reason=f"Sent a message in {message.channel.mention}",
                 delete_message_days=1,
             )
+
+    if message.channel.id == 884465530969423912:
+        await message.add_reaction("🤍")
 
 
 @bot.event

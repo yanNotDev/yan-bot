@@ -111,6 +111,29 @@ async def on_typing(channel, user, when):
         )
 
 
+@bot.event
+async def on_guild_role_delete(role):
+    if await bot.db.fetchval(
+        "SELECT EXISTS (SELECT role FROM vcroles WHERE role = $1)", role.id
+    ):
+        await bot.db.execute("DELETE FROM vcroles WHERE role = $1", role.id)
+
+
+@bot.event
+async def on_voice_state_update(member, before, after):
+
+    role = member.guild.get_role(
+        await bot.db.fetchval(
+            "SELECT role FROM vcroles WHERE guild = $1", member.guild.id
+        )
+    )
+
+    if before.channel is None and after.channel is not None:
+        await member.add_roles(*[role])
+    elif before.channel is not None and after.channel is None:
+        await member.remove_roles(*[role])
+
+
 @bot.listen("on_message")
 async def on_msg(message: discord.message.Message):
     if await bot.db.fetchval(
@@ -136,6 +159,8 @@ async def on_command_error(ctx, error):
         await ctx.reply("Only my owner can use this command!")
     elif isinstance(error, commands.ChannelNotFound):
         await ctx.reply("Invalid channel!")
+    elif isinstance(error, commands.RoleNotFound):
+        await ctx.reply("Invalid role!")
     elif isinstance(error, TypeError) or isinstance(error, commands.CheckFailure):
         return
     else:

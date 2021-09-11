@@ -1,4 +1,4 @@
-from commands import banchannel
+from commands import banchannel, vcrole
 from commands.channel import get_channels
 from commands.uuid import uuid
 from discord.ext import commands
@@ -112,6 +112,13 @@ class Database(commands.Cog):
     @commands.command()
     async def banchannel(self, ctx):
         await ctx.send(await banchannel.banchannel(self.bot, ctx))
+
+    @commands.command(aliases=["vc", "vcr"])
+    async def vcrole(self, ctx, role=None):
+        if role is None:
+            await ctx.reply("You must specify a role!")
+        else:
+            await ctx.reply(await vcrole.vcrole(self.bot, ctx, role))
 
 
 def setup(bot):

@@ -13,12 +13,14 @@ def help(ctx, command):
     if command is None:
         embed.add_field(
             name="Skyblock",
-            value="`rates`, `manrates`, `stats`, `calcskill`, `calccata`, `calcslayer`, `fragloot`, `bits`",
+            value="`rates`, `manrates`, `stats`, `calcskill`, `calccata`, `calcslayer`, `fragrun`, `bits`",
             inline=False,
         )
         embed.add_field(name="Minecraft", value="`mcuuid`, `link`", inline=False)
         embed.add_field(
-            name="Admin", value="`prefix`, `blacklist`, `banchannel`", inline=False
+            name="Admin",
+            value="`prefix`, `blacklist`, `banchannel`, `vcrole`",
+            inline=False,
         )
         embed.add_field(name="Miscellaneous", value="`help`, `info`", inline=False)
         embed.set_footer(
@@ -28,7 +30,7 @@ def help(ctx, command):
             create_button(
                 style=ButtonStyle.URL,
                 label="Bot invite",
-                url="https://discord.com/oauth2/authorize?client_id=862232441044860938&permissions=278528&scope=bot%20applications.commands",
+                url="https://discord.com/oauth2/authorize?client_id=862232441044860938&permissions=268714000&scope=bot%20applications.commands",
             ),
             create_button(
                 style=ButtonStyle.URL,
@@ -105,7 +107,7 @@ def help(ctx, command):
 
     elif command in ["fragloot", "fl", "fragrun", "fr"]:
         embed = Embed(
-            title="FragLoot",
+            title="FragRun",
             description="Calculates average profit from fragrunning. Defaults to 1 if number of runs isn't specified. You can optionally supply the time you finish 1 run in.",
             colour=ctx.guild.me.color,
         )
@@ -180,6 +182,15 @@ def help(ctx, command):
         )
         embed.add_field(name="Usage", value=f"{ctx.prefix}banchannel")
 
+    elif command in ["vcrole", "vcr", "vc"]:
+        embed = Embed(
+            title="VCrole",
+            description="Lets you choose a role that gets assigned to someone when they join a VC, and removed when they leave it.",
+            colour=ctx.guild.me.color,
+        )
+        embed.add_field(name="Usage", value=f"{ctx.prefix}vcrole <role>")
+        embed.add_field(name="Aliases", value="`vcrole`, `vcr`, `vc`")
+
     elif command == "help":
         embed = Embed(
             title="Help",
@@ -223,7 +234,7 @@ def info(bot, ctx):
     )
     embed.add_field(
         name="links",
-        value="[**Bot Invite**](https://discord.com/oauth2/authorize?client_id=862232441044860938&permissions=278528&scope=bot%20applications.commands)\n\
+        value="[**Bot Invite**](https://discord.com/oauth2/authorize?client_id=862232441044860938&permissions=268714000&scope=bot%20applications.commands)\n\
 [**Server**](https://discord.gg/hcazeVMrSN)\n\
 [**Source Code**](https://github.com/yanNotDev/yan-bot)",
     )

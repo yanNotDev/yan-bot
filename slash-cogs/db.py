@@ -1,5 +1,6 @@
+from discord.ext.commands import converter
 from bot import slash_blacklist
-from commands import banchannel
+from commands import banchannel, vcrole
 from commands.channel import get_channels
 from commands.uuid import uuid
 from discord.ext import commands
@@ -131,6 +132,16 @@ class Database(commands.Cog):
     async def banchannel(self, ctx):
         hidden = await slash_blacklist(ctx)
         content = await banchannel.banchannel(self.bot, ctx)
+        await ctx.send(content, hidden=hidden)
+
+    @cog_ext.cog_slash(
+        description="Select a role that gets assigned to someone when they join a VC, and removed when they leave it.",
+        guild_ids=guilds,
+        options=[create_option("role", "Role", 8, True)],
+    )
+    async def vcrole(self, ctx, role):
+        hidden = await slash_blacklist(ctx)
+        content = await vcrole.vcrole(self.bot, ctx, role)
         await ctx.send(content, hidden=hidden)
 
 

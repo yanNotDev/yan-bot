@@ -33,6 +33,7 @@ class Misc(commands.Cog):
                     create_choice("Prefix", "Prefix"),
                     create_choice("Blacklist", "Blacklist"),
                     create_choice("Ban channel", "Ban channel"),
+                    create_choice("VCrole", "VCrole"),
                     create_choice("Help", "Help"),
                     create_choice("Info", "Info"),
                 ],

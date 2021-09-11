@@ -136,7 +136,7 @@ class Database(commands.Cog):
 
     @cog_ext.cog_slash(
         description="Select a role that gets assigned to someone when they join a VC, and removed when they leave it.",
-        guild_ids=guilds,
+        # guild_ids=guilds,
         options=[create_option("role", "Role", 8, True)],
     )
     async def vcrole(self, ctx, role):

@@ -1,7 +1,4 @@
-from discord.ext.commands.converter import RoleConverter
-
-
-async def vcrole(bot, ctx, role: RoleConverter = None):
+async def vcrole(bot, ctx, role=None):
     if not ctx.author.guild_permissions.manage_roles:
         await ctx.reply("Missing manage roles permission!")
     elif not ctx.guild.me.guild_permissions.manage_roles:

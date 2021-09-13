@@ -2,6 +2,7 @@ from commands import banchannel, vcrole
 from commands.channel import get_channels
 from commands.uuid import uuid
 from discord.ext import commands
+from discord.ext.commands.converter import RoleConverter
 from util.config import default_prefix
 
 
@@ -114,7 +115,7 @@ class Database(commands.Cog):
         await ctx.send(await banchannel.banchannel(self.bot, ctx))
 
     @commands.command(aliases=["vc", "vcr"])
-    async def vcrole(self, ctx, role=None):
+    async def vcrole(self, ctx, role: RoleConverter = None):
         if role is None:
             await ctx.reply("You must specify a role!")
         else:

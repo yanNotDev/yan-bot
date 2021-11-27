@@ -16,6 +16,7 @@ def help(ctx, command):
             value="`rates`, `manrates`, `stats`, `calcskill`, `calccata`, `calcslayer`, `fragrun`, `bits`",
             inline=False,
         )
+        embed.add_field(name="Hypixel", value="`gexp`", inline=False)
         embed.add_field(name="Minecraft", value="`mcuuid`, `link`", inline=False)
         embed.add_field(
             name="Admin",
@@ -116,10 +117,7 @@ def help(ctx, command):
             value=f"{ctx.prefix}fl <number of runs> [time in minutes for 1 run]",
         )
         embed.add_field(name="Aliases", value="`fragloot`, `fl`, `fragrun`, `fr`")
-        embed.set_footer(
-            text="Made by yan#0069",
-            icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
-        )
+        embed.set_footer(**footer_text)
 
     elif command in ["bits", "bit", "b"]:
         embed = Embed(
@@ -132,10 +130,16 @@ def help(ctx, command):
             value=f"{ctx.prefix}bits",
         )
         embed.add_field(name="Aliases", value="`bits`, `bit`, `b`")
-        embed.set_footer(
-            text="Made by yan#0069",
-            icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
+        embed.set_footer(**footer_text)
+
+    elif command == "gexp":
+        embed = Embed(
+            title="Guild XP",
+            description="Gets the Guild XP for the past 7 days.",
+            colour=ctx.guild.me.color,
         )
+        embed.add_field(name="Usage", value=f"{ctx.prefix}gexp [ign]")
+        embed.set_footer(**footer_text)
 
     elif command in ["mcuuid", "uuid"]:
         embed = Embed(
@@ -198,10 +202,7 @@ def help(ctx, command):
             colour=ctx.guild.me.color,
         )
         embed.add_field(name="Usage", value=f"{ctx.prefix}rates help [command]")
-        embed.set_footer(
-            text="Made by yan#0069",
-            icon_url="https://cdn.discordapp.com/avatars/270141848000004097/a_6022d1ac0f1f2b9f9506f0eb06f6eaf0.gif",
-        )
+        embed.set_footer(**footer_text)
 
     elif command == "info":
         embed = Embed(

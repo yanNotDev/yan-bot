@@ -28,6 +28,7 @@ class Misc(commands.Cog):
                     create_choice("Calc Slayer", "Calc Slayer"),
                     create_choice("Fragrun", "Fragrun"),
                     create_choice("Bits", "Bits"),
+                    create_choice("GEXP", "GEXP"),
                     create_choice("MCuuid", "MCuuid"),
                     create_choice("Link", "Link"),
                     create_choice("Prefix", "Prefix"),

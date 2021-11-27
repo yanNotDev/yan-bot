@@ -1,8 +1,8 @@
-from commands import stats
+from commands import gexp, stats
+from commands.uuid import uuid
 from discord import Embed
 from discord.ext import commands
 from util.config import footer_text
-from commands.uuid import uuid
 
 
 class Stats(commands.Cog):
@@ -11,15 +11,14 @@ class Stats(commands.Cog):
 
     @commands.command(aliases=["s"])
     async def stats(self, ctx, ign=None, profile=None):
-        if ign is None:
-            return await ctx.reply(
-                f"You must enter an ign (and optionally, a profile)!\neg `{ctx.prefix}s minikloon banana`\n\
-If you're too lazy to do that, do `{ctx.prefix}help bind`"
-            )
-
         mcuuid = await uuid(self.bot, ctx.author.id, ign)
         if mcuuid == 204:
             await ctx.reply("Invalid IGN!")
+        elif mcuuid == KeyError:
+            await ctx.reply(
+                f"You must enter an ign!\neg `{ctx.prefix}uuid minikloon`\n\
+If you're too lazy to do that, do `{ctx.prefix}help link`"
+            )
         else:
             embed = Embed(
                 description="If this message doesn't update within a few seconds, sorry :cry:",
@@ -36,20 +35,45 @@ If you're too lazy to do that, do `{ctx.prefix}help bind`"
 
     @commands.command(aliases=["uuid"])
     async def mcuuid(self, ctx, ign=None):
-        id = await uuid(self.bot, ctx.author.id, ign)
-        if id == 204:
+        mcuuid = await uuid(self.bot, ctx.author.id, ign)
+        if mcuuid == 204:
             await ctx.reply("Invalid IGN!")
-        elif id == KeyError:
+        elif mcuuid == KeyError:
             await ctx.reply(
                 f"You must enter an ign!\neg `{ctx.prefix}uuid minikloon`\n\
 If you're too lazy to do that, do `{ctx.prefix}help link`"
             )
         else:
             if ign is None:
-                msg = f"You have the UUID `{id}`"
+                msg = f"You have the UUID `{mcuuid}`"
             else:
-                msg = f"{ign} has the UUID `{id}`"
+                msg = f"{ign} has the UUID `{mcuuid}`"
             await ctx.reply(msg)
+
+    @commands.command()
+    async def gexp(self, ctx, ign=None):
+        mcuuid = await uuid(self.bot, ctx.author.id, ign)
+        if mcuuid == 204:
+            await ctx.reply("Invalid IGN!")
+        elif mcuuid == KeyError:
+            await ctx.reply(
+                f"You must enter an ign!\neg `{ctx.prefix}gexp minikloon`\n\
+If you're too lazy to do that, do `{ctx.prefix}help link`"
+            )
+        else:
+            embed = Embed(
+                description="If this message doesn't update within a few seconds, sorry :cry:",
+                colour=ctx.guild.me.color,
+            )
+            embed.add_field(
+                name="HYPIXEL WHY are you so sLOW", value="_ _", inline=False
+            )
+            embed.set_footer(**footer_text)
+            msg = await ctx.reply(embed=embed)
+
+            embed = gexp.gexp(ctx, ign, mcuuid)
+            await msg.edit(embed=embed)
+
 
 
 def setup(bot: commands.Bot):

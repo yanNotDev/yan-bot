@@ -3,4 +3,4 @@ jishaku
 requests
 NBT
 asyncpg
-discord_py_slash_command
+discord-py-interactions

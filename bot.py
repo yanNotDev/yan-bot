@@ -1,6 +1,7 @@
 import datetime
 import traceback
 from os import listdir
+from re import search
 
 import asyncpg
 import discord
@@ -32,7 +33,7 @@ async def get_prefix(bot, message):
     return commands.when_mentioned_or(prefix)(bot, message)
 
 
-activity = discord.Activity(name="y!help", type=discord.ActivityType.watching)
+activity = discord.Activity(name=f"{default_prefix}help", type=discord.ActivityType.watching)
 
 bot = commands.Bot(
     command_prefix=get_prefix,
@@ -151,6 +152,10 @@ async def on_msg(message: discord.message.Message):
 
     if message.channel.id == 884465530969423912:
         await message.add_reaction("🤍")
+    elif message.channel.id == 884465530969423912 and search("9|10|11|12|nine|ten|eleven|twelve", message.content):
+        channel = bot.get_channel(891612610389229619)
+
+        await channel.send(message.jump_url)
 
 
 @bot.event
@@ -161,6 +166,8 @@ async def on_command_error(ctx, error):
         await ctx.reply("Invalid channel!")
     elif isinstance(error, commands.RoleNotFound):
         await ctx.reply("Invalid role!")
+    elif isinstance(error, commands.MemberNotFound):
+        await ctx.reply("Invalid member!")
     elif isinstance(error, TypeError) or isinstance(error, commands.CheckFailure):
         return
     else:

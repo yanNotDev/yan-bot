@@ -27,6 +27,6 @@ def gexp(ctx, ign, mcuuid):
                 )
             else:
                 embed.add_field(
-                    name=f"{ign} have {gexp} Guild EXP.", value="_ _", inline=False
+                    name=f"{ign} has {gexp} Guild EXP.", value="_ _", inline=False
                 )
             return embed

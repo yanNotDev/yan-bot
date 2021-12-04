@@ -1,7 +1,6 @@
 import datetime
 import traceback
 from os import listdir
-from re import search
 
 import asyncpg
 import discord
@@ -33,7 +32,9 @@ async def get_prefix(bot, message):
     return commands.when_mentioned_or(prefix)(bot, message)
 
 
-activity = discord.Activity(name=f"{default_prefix}help", type=discord.ActivityType.watching)
+activity = discord.Activity(
+    name=f"{default_prefix}help", type=discord.ActivityType.watching
+)
 
 bot = commands.Bot(
     command_prefix=get_prefix,
@@ -141,21 +142,18 @@ async def on_msg(message: discord.message.Message):
         "SELECT EXISTS (SELECT id FROM banchannels WHERE id = $1)", message.channel.id
     ):
         if message.guild.me.guild_permissions.ban_members:
-            await message.author.send(
-                f"You have been banned from {message.guild} for typing in #{message.channel}."
-            )
-            await message.guild.ban(
-                message.author,
-                reason=f"Sent a message in {message.channel.mention}",
-                delete_message_days=1,
-            )
-
-    if message.channel.id == 884465530969423912:
-        await message.add_reaction("🤍")
-    elif message.channel.id == 884465530969423912 and search("9|10|11|12|nine|ten|eleven|twelve", message.content):
-        channel = bot.get_channel(891612610389229619)
-
-        await channel.send(message.jump_url)
+            try:
+                await message.author.send(
+                    f"You have been banned from {message.guild} for typing in #{message.channel}."
+                )
+            except discord.errors.Forbidden:
+                pass
+            finally:
+                await message.guild.ban(
+                    message.author,
+                    reason=f"Sent a message in {message.channel.mention}",
+                    delete_message_days=1,
+                )
 
 
 @bot.event

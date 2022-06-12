@@ -499,7 +499,7 @@ def calcpowder(ctx, perk, startlevel, endinglevel):
                 return "The maximum level for this perk is 20"
 
         elif perk == "powder_buff":
-            if startlevel and endinglevel < 50:
+            if startlevel and endinglevel <= 50:
                 powder = powderBuff(startlevel, endinglevel)
 
             else:
@@ -513,7 +513,7 @@ def calcpowder(ctx, perk, startlevel, endinglevel):
                 return "The maximum level for this perk is 50"
 
         elif perk == "mining_fortune_two":
-            if startlevel and endinglevel < 50:
+            if startlevel and endinglevel <= 50:
                 powder = miningFortunetwo(startlevel, endinglevel)
 
             else:

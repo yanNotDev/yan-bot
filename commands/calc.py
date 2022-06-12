@@ -5,7 +5,59 @@ from util.config import footer_text
 
 
 def catadiff(start, end):
-    table = [ 0, 50, 125, 235, 395, 625, 955, 1425, 2095, 3045, 4385, 6275, 8940, 12700, 17960, 25340, 35640, 50040, 70040, 97640, 135640, 188140, 259640, 356640, 488640, 668640, 911640, 1239640, 1684640, 2284640, 3084640, 4149640, 5559640, 7459640, 9959640, 13259640, 17559640, 23159640, 30359640, 39559640, 51559640, 66559640, 85559640, 109559640, 139559640, 177559640, 225559640, 285559640, 360559640, 453559640, 569809640, ]
+    table = [
+        0,
+        50,
+        125,
+        235,
+        395,
+        625,
+        955,
+        1425,
+        2095,
+        3045,
+        4385,
+        6275,
+        8940,
+        12700,
+        17960,
+        25340,
+        35640,
+        50040,
+        70040,
+        97640,
+        135640,
+        188140,
+        259640,
+        356640,
+        488640,
+        668640,
+        911640,
+        1239640,
+        1684640,
+        2284640,
+        3084640,
+        4149640,
+        5559640,
+        7459640,
+        9959640,
+        13259640,
+        17559640,
+        23159640,
+        30359640,
+        39559640,
+        51559640,
+        66559640,
+        85559640,
+        109559640,
+        139559640,
+        177559640,
+        225559640,
+        285559640,
+        360559640,
+        453559640,
+        569809640,
+    ]
     begin = table[int(start)]
     finish = table[int(end)]
     return finish - begin
@@ -31,7 +83,69 @@ def calccata(ctx, start, end, xp):
 
 
 def lvdiff(start, end):
-    table = [ 0, 50, 175, 375, 675, 1175, 1925, 2925, 4425, 6425, 9925, 14925, 22425, 32425, 47425, 67425, 97425, 147425, 222425, 322425, 522425, 822425, 1222425, 1722425, 2322425, 3022425, 3822425, 4722425, 5722425, 6822425, 8022425, 9322425, 10722425, 12222425, 13822425, 15522425, 17322425, 19222425, 21222425, 23322425, 25522425, 27822425, 30222425, 32722425, 35322425, 38072425, 40972425, 44072425, 47472425, 51172425, 55172425, 59472425, 64072425, 68972425, 74172425, 79672425, 85472425, 91572425, 97972425, 104672425, 111672425, ]
+    table = [
+        0,
+        50,
+        175,
+        375,
+        675,
+        1175,
+        1925,
+        2925,
+        4425,
+        6425,
+        9925,
+        14925,
+        22425,
+        32425,
+        47425,
+        67425,
+        97425,
+        147425,
+        222425,
+        322425,
+        522425,
+        822425,
+        1222425,
+        1722425,
+        2322425,
+        3022425,
+        3822425,
+        4722425,
+        5722425,
+        6822425,
+        8022425,
+        9322425,
+        10722425,
+        12222425,
+        13822425,
+        15522425,
+        17322425,
+        19222425,
+        21222425,
+        23322425,
+        25522425,
+        27822425,
+        30222425,
+        32722425,
+        35322425,
+        38072425,
+        40972425,
+        44072425,
+        47472425,
+        51172425,
+        55172425,
+        59472425,
+        64072425,
+        68972425,
+        74172425,
+        79672425,
+        85472425,
+        91572425,
+        97972425,
+        104672425,
+        111672425,
+    ]
     begin = table[int(start)]
     finish = table[int(end)]
     return finish - begin
@@ -128,3 +242,287 @@ def calcslayer(ctx, start, end, type, aatrox):
     embed.set_footer(**footer_text)
 
     return embed
+
+
+def miningSpeed(start, end):
+    totalPowder = 0
+    for i in range(start, end + 1):
+        totalPowder = totalPowder + (start + 1) ** 3
+        start = start + 1
+    return "{:,.0f}".format(totalPowder)
+
+
+def miningFortune(start, end):
+    totalPowder = 0
+    for i in range(start, end + 1):
+        totalPowder = totalPowder + (start + 1) ** 3.05
+        start = start + 1
+    return "{:,.0f}".format(totalPowder)
+
+
+def quickForge(start, end):
+    totalPowder = 0
+    for i in range(start, end + 1):
+        totalPowder = totalPowder + (start + 1) ** 4
+        start = start + 1
+    return "{:,.0f}".format(totalPowder)
+
+
+def titaniumInsanium(start, end):
+    totalPowder = 0
+    for i in range(start, end + 1):
+        totalPowder = totalPowder + (start + 1) ** 3.1
+        start = start + 1
+    return "{:,.0f}".format(totalPowder)
+
+
+def dailyPowder(start, end):
+    totalPowder = 0
+    for i in range(start, end + 1):
+        totalPowder = totalPowder + 200 + ((start - 1) * 18)
+        start = start + 1
+    return "{:,.0f}".format(totalPowder)
+
+
+def luckofTheCave(start, end):
+    totalPowder = 0
+    for i in range(start, end + 1):
+        totalPowder = totalPowder + (start + 1) ** 3.07
+        start = start + 1
+    return "{:,.0f}".format(totalPowder)
+
+
+def crystallized(start, end):
+    totalPowder = 0
+    for i in range(start, end + 1):
+        totalPowder = totalPowder + (start + 1) ** 3.4
+        start = start + 1
+    return "{:,.0f}".format(totalPowder)
+
+
+def effecientMiner(start, end):
+    totalPowder = 0
+    for i in range(start, end + 1):
+        totalPowder = totalPowder + (start + 1) ** 2.6
+        start = start + 1
+    return "{:,.0f}".format(totalPowder)
+
+
+def orbiter(start, end):
+    totalPowder = 0
+    for i in range(start, end + 1):
+        totalPowder = totalPowder + start * 70
+        start = start + 1
+    return "{:,.0f}".format(totalPowder)
+
+
+def seasonedMineman(start, end):
+    totalPowder = 0
+    for i in range(start, end + 1):
+        totalPowder = totalPowder + (start + 1) ** 2.3
+        start = start + 1
+    return "{:,.0f}".format(totalPowder)
+
+
+def mole(start, end):
+    totalPowder = 0
+    for i in range(start, end + 1):
+        totalPowder = totalPowder + (start + 1) ** 2.2
+        start = start + 1
+    return "{:,.0f}".format(totalPowder)
+
+
+def professional(start, end):
+    totalPowder = 0
+    for i in range(start, end + 1):
+        totalPowder = totalPowder + (start + 1) ** 2.3
+        start = start + 1
+    return "{:,.0f}".format(totalPowder)
+
+
+def LonesomeMiner(start, end):
+    totalPowder = 0
+    for i in range(start, end + 1):
+        totalPowder = totalPowder + (start + 1) ** 3.07
+        start = start + 1
+    return "{:,.0f}".format(totalPowder)
+
+
+def greatExplorer(start, end):
+    totalPowder = 0
+    for i in range(start, end + 1):
+        totalPowder = totalPowder + (start + 1) ** 4
+        start = start + 1
+    return "{:,.0f}".format(totalPowder)
+
+
+def fortunate(start, end):
+    totalPowder = 0
+    for i in range(start, end + 1):
+        totalPowder = totalPowder + (start + 1) ** 3.05
+        start = start + 1
+    return "{:,.0f}".format(totalPowder)
+
+
+def powderBuff(start, end):
+    totalPowder = 0
+    for i in range(start, end + 1):
+        totalPowder = totalPowder + (start + 1) ** 3.2
+        start = start + 1
+    return "{:,.0f}".format(totalPowder)
+
+
+def miningSpeedtwo(start, end):
+    totalPowder = 0
+    for i in range(start, end + 1):
+        totalPowder = totalPowder + (start + 1) ** 3.2
+        start = start + 1
+    return "{:,.0f}".format(totalPowder)
+
+
+def miningFortunetwo(start, end):
+    totalPowder = 0
+    for i in range(start, end + 1):
+        totalPowder = totalPowder + (start + 1) ** 3.2
+        start = start + 1
+    return "{:,.0f}".format(totalPowder)
+
+
+def calcpowder(ctx, perk, startlevel, endinglevel):
+    powder = 0
+    if startlevel == endinglevel:
+        return "You can't start from the same level as you end at."
+    else:
+        if perk == "mining_speed":
+            if startlevel and endinglevel <= 50:
+                powder = miningSpeed(startlevel, endinglevel)
+
+            else:
+
+                return "The maximum level for this perk is 50."
+        elif perk == "mining_fortune":
+            if startlevel and endinglevel <= 50:
+
+                powder = miningFortune(startlevel, endinglevel)
+            else:
+
+                return "The maximum level for this perk is 50"
+        elif perk == "quick_forge":
+            if startlevel and endinglevel <= 20:
+
+                powder = quickForge(startlevel, endinglevel)
+            else:
+                return "The maximum level for this perk is 20"
+
+        elif perk == "titamium_insanium":
+            if startlevel and endinglevel <= 50:
+
+                powder = titaniumInsanium(startlevel, endinglevel)
+            else:
+                return "The maximum level for this perk is 50"
+
+        elif perk == "daily_powder":
+            if startlevel and endinglevel <= 100:
+                powder = dailyPowder(startlevel, endinglevel)
+
+            else:
+                return "The maximum level for this perk is 100"
+
+        elif perk == "luck_of_the_cave":
+            if startlevel and endinglevel <= 45:
+                powder = luckofTheCave(startlevel, endinglevel)
+
+            else:
+                return "The maximum level for this perk is 45"
+
+        elif perk == "crystallized":
+            if startlevel and endinglevel <= 30:
+                powder = crystallized(startlevel, endinglevel)
+
+            else:
+                return "The maximum level for this perk is 30"
+
+        elif perk == "effecient_miner":
+            if startlevel and endinglevel <= 100:
+                powder = effecientMiner(startlevel, endinglevel)
+
+            else:
+                return "The maximum level for this perk is 100"
+
+        elif perk == "orbiter":
+            if startlevel and endinglevel <= 80:
+                powder = orbiter(startlevel, endinglevel)
+
+            else:
+                return "The maximum level for this perk is 80"
+
+        elif perk == "seasoned_mineman":
+            if startlevel and endinglevel <= 100:
+                powder = seasonedMineman(startlevel, endinglevel)
+
+            else:
+                return "The maximum level for this perk is 100"
+
+        elif perk == "mole":
+            if startlevel and endinglevel <= 190:
+                powder = mole(startlevel, endinglevel)
+
+            else:
+                return "The maximum level for this perk is 190"
+
+        elif perk == "professional":
+            if startlevel and endinglevel <= 140:
+                powder = professional(startlevel, endinglevel)
+
+            else:
+                return "The maximum level for this perk is 140"
+
+        elif perk == "lonesome_miner":
+            if startlevel and endinglevel <= 45:
+                powder = LonesomeMiner(startlevel, endinglevel)
+
+            else:
+                return "The maximum level for this perk is 45"
+
+        elif perk == "great_explorer":
+            if startlevel and endinglevel <= 20:
+                powder = greatExplorer(startlevel, endinglevel)
+
+            else:
+                return "The maximum level for this perk is 20"
+
+        elif perk == "fortunate":
+            if startlevel and endinglevel <= 20:
+                powder = fortunate(startlevel, endinglevel)
+
+            else:
+                return "The maximum level for this perk is 20"
+
+        elif perk == "powder_buff":
+            if startlevel and endinglevel < 50:
+                powder = powderBuff(startlevel, endinglevel)
+
+            else:
+                return "The maximum level for this perk is 50"
+
+        elif perk == "mining_speed_two":
+            if startlevel and endinglevel <= 50:
+                powder = miningSpeedtwo(startlevel, endinglevel)
+
+            else:
+                return "The maximum level for this perk is 50"
+
+        elif perk == "mining_fortune_two":
+            if startlevel and endinglevel < 50:
+                powder = miningFortunetwo(startlevel, endinglevel)
+
+            else:
+                return "The maximum level for this perk is 50"
+
+        embed = Embed(
+            description=f"{powder} powder required from level {startlevel} to level {endinglevel}.",
+            colour=ctx.guild.me.color,
+        )
+        embed.set_footer(**footer_text)
+
+        return embed

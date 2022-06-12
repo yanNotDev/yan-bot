@@ -92,6 +92,50 @@ class SlashCalc(commands.Cog):
 
         hidden = await slash_blacklist(ctx)
         await ctx.send(embed=embed, hidden=hidden)
+    
+    @cog_ext.cog_slash(
+        description="Calculates the amount of powder needed from a start level to an end level.",
+        # guild_ids=guilds,
+        options=[
+            create_option(
+                "perk",
+                "HOTM Perk",
+                3,
+                True,
+            choices=[
+                create_choice("mining speed", "mining_speed"),
+                create_choice("mining fortune", "mining_fortune"),
+                create_choice("quick forge", "quick_forge"),
+                create_choice(
+                    "titanium insanium", "titanium_insanium"
+                ),
+                create_choice("daily powder", "daily_powder"),
+                create_choice("luck of the cave", "luck_of_the_cave"),
+                create_choice("crystallized", "crystallized"),
+                create_choice("effecient miner", "effecient_miner"),
+                create_choice("orbiter", "orbiter"),
+                create_choice("seasoned mineman", "seasoned_mineman"),
+                create_choice("mole", "mole"),
+                create_choice("professional", "professional"),
+                create_choice("lonesome miner", "lonesome_miner"),
+                create_choice("great explorer", "great_explorer"),
+                create_choice("fortunate", "fortunate"),
+                create_choice("powder buff", "powder_buff"),
+                create_choice("mining speed two", "mining_speed_two"),
+                create_choice(
+                    "mining fortune two", "mining_fortune_two"
+                ),
+            ],
+            ),
+            create_option("startlevel", "Starting level", 4, True),
+            create_option("endinglevel", "Ending level", 4, True),
+        ],
+    )
+    async def calcpowder(self, ctx, perk, startlevel, endinglevel):
+        embed = calc.calcpowder(ctx, perk, startlevel, endinglevel)
+        hidden = await slash_blacklist(ctx)
+
+        await ctx.send(embed=embed, hidden=hidden)
 
 
 def setup(bot: commands.Bot):

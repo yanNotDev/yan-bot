@@ -13,7 +13,7 @@ def help(ctx, command):
     if command is None:
         embed.add_field(
             name="Skyblock",
-            value="`rates`, `manrates`, `stats`, `calcskill`, `calccata`, `calcslayer`, `fragrun`, `bits`",
+            value="`rates`, `manrates`, `stats`, `calcskill`, `calccata`, `calcslayer`, `calcpowder`, `fragrun`, `bits`",
             inline=False,
         )
         embed.add_field(name="Hypixel", value="`gexp`", inline=False)
@@ -105,6 +105,17 @@ def help(ctx, command):
             name="Usage", value=f"{ctx.prefix}cc <lv1> <lv2> <slayer type> [aatrox]"
         )
         embed.add_field(name="Aliases", value="`calcslayer`, `csl`")
+
+    elif command in ["calcpowder", "cp", "powder"]:
+        embed = Embed(
+            title="CalcPowder",
+            description="Calculates the amount of powder needed from a start level to an end level.",
+            colour=ctx.guild.me.color,
+        )
+        embed.add_field(
+            name="Usage", value=f"{ctx.prefix}cp <perk> <startLevel> <endLevel>"
+        )
+        embed.add_field(name="Aliases", value="`calcpowder`, `cp`, `powder`")
 
     elif command in ["fragloot", "fl", "fragrun", "fr"]:
         embed = Embed(

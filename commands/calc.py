@@ -246,6 +246,7 @@ def calcslayer(ctx, start, end, type, aatrox):
 
 def miningSpeed(start, end):
     totalPowder = 0
+    start += 1
     for i in range(start, end + 1):
         totalPowder = totalPowder + (start + 1) ** 3
         start = start + 1
@@ -254,6 +255,7 @@ def miningSpeed(start, end):
 
 def miningFortune(start, end):
     totalPowder = 0
+    start += 1
     for i in range(start, end + 1):
         totalPowder = totalPowder + (start + 1) ** 3.05
         start = start + 1
@@ -262,6 +264,7 @@ def miningFortune(start, end):
 
 def quickForge(start, end):
     totalPowder = 0
+    start += 1
     for i in range(start, end + 1):
         totalPowder = totalPowder + (start + 1) ** 4
         start = start + 1
@@ -270,6 +273,7 @@ def quickForge(start, end):
 
 def titaniumInsanium(start, end):
     totalPowder = 0
+    start += 1
     for i in range(start, end + 1):
         totalPowder = totalPowder + (start + 1) ** 3.1
         start = start + 1
@@ -278,6 +282,7 @@ def titaniumInsanium(start, end):
 
 def dailyPowder(start, end):
     totalPowder = 0
+    start += 1
     for i in range(start, end + 1):
         totalPowder = totalPowder + 200 + ((start - 1) * 18)
         start = start + 1
@@ -286,6 +291,7 @@ def dailyPowder(start, end):
 
 def luckofTheCave(start, end):
     totalPowder = 0
+    start += 1
     for i in range(start, end + 1):
         totalPowder = totalPowder + (start + 1) ** 3.07
         start = start + 1
@@ -294,6 +300,7 @@ def luckofTheCave(start, end):
 
 def crystallized(start, end):
     totalPowder = 0
+    start += 1
     for i in range(start, end + 1):
         totalPowder = totalPowder + (start + 1) ** 3.4
         start = start + 1
@@ -302,6 +309,7 @@ def crystallized(start, end):
 
 def effecientMiner(start, end):
     totalPowder = 0
+    start += 1
     for i in range(start, end + 1):
         totalPowder = totalPowder + (start + 1) ** 2.6
         start = start + 1
@@ -310,6 +318,7 @@ def effecientMiner(start, end):
 
 def orbiter(start, end):
     totalPowder = 0
+    start += 1
     for i in range(start, end + 1):
         totalPowder = totalPowder + start * 70
         start = start + 1
@@ -318,6 +327,7 @@ def orbiter(start, end):
 
 def seasonedMineman(start, end):
     totalPowder = 0
+    start += 1
     for i in range(start, end + 1):
         totalPowder = totalPowder + (start + 1) ** 2.3
         start = start + 1
@@ -326,6 +336,7 @@ def seasonedMineman(start, end):
 
 def mole(start, end):
     totalPowder = 0
+    start += 1
     for i in range(start, end + 1):
         totalPowder = totalPowder + (start + 1) ** 2.2
         start = start + 1
@@ -334,6 +345,7 @@ def mole(start, end):
 
 def professional(start, end):
     totalPowder = 0
+    start += 1
     for i in range(start, end + 1):
         totalPowder = totalPowder + (start + 1) ** 2.3
         start = start + 1
@@ -342,6 +354,7 @@ def professional(start, end):
 
 def LonesomeMiner(start, end):
     totalPowder = 0
+    start += 1
     for i in range(start, end + 1):
         totalPowder = totalPowder + (start + 1) ** 3.07
         start = start + 1
@@ -350,6 +363,7 @@ def LonesomeMiner(start, end):
 
 def greatExplorer(start, end):
     totalPowder = 0
+    start += 1
     for i in range(start, end + 1):
         totalPowder = totalPowder + (start + 1) ** 4
         start = start + 1
@@ -358,6 +372,7 @@ def greatExplorer(start, end):
 
 def fortunate(start, end):
     totalPowder = 0
+    start += 1
     for i in range(start, end + 1):
         totalPowder = totalPowder + (start + 1) ** 3.05
         start = start + 1
@@ -366,6 +381,7 @@ def fortunate(start, end):
 
 def powderBuff(start, end):
     totalPowder = 0
+    start += 1
     for i in range(start, end + 1):
         totalPowder = totalPowder + (start + 1) ** 3.2
         start = start + 1
@@ -374,6 +390,7 @@ def powderBuff(start, end):
 
 def miningSpeedtwo(start, end):
     totalPowder = 0
+    start += 1
     for i in range(start, end + 1):
         totalPowder = totalPowder + (start + 1) ** 3.2
         start = start + 1
@@ -382,6 +399,7 @@ def miningSpeedtwo(start, end):
 
 def miningFortunetwo(start, end):
     totalPowder = 0
+    start += 1
     for i in range(start, end + 1):
         totalPowder = totalPowder + (start + 1) ** 3.2
         start = start + 1

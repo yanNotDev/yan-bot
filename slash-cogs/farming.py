@@ -1,62 +1,52 @@
-from bot import slash_blacklist
+from util.blacklist import slash_blacklist
 from commands import rates
-from discord import Embed
-from discord.ext import commands
-from discord_slash import cog_ext
-from discord_slash.utils.manage_commands import create_option
-from util.config import footer_text
 from commands.uuid import uuid
+from discord import Embed, app_commands
+from discord.ext import commands
+from util.config import footer_text
 
 
 class Farming(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @cog_ext.cog_slash(
+    @app_commands.command(
         description="Calculate coins per hour from farming.",
-        # guild_ids=guilds,
-        options=[
-            create_option("ign", "IGN", 3, False),
-            create_option("profile", "IGN", 3, False),
-        ],
     )
-    async def rates(self, ctx, ign=None, profile=None):
-        mcuuid = await uuid(self.bot, ctx.author.id, ign)
+    @app_commands.describe(ign="IGN", profile="Profile")
+    async def rates(self, interaction, ign: str | None, profile: str | None):
+        mcuuid = await uuid(self.bot, interaction.user.id, ign)
         if mcuuid == 204:
-            await ctx.send("Invalid IGN!", hidden=True)
+            await interaction.response.send_message("Invalid IGN!")
             return
         elif mcuuid == KeyError:
-            await ctx.send(
+            await interaction.response.send_message(
                 "Looks like you didn't specify an IGN! If you don't want to specify an IGN, check out the link command or `/link`",
-                hidden=True,
             )
         else:
             embed = Embed(
                 description="If this message doesn't update within a few seconds, make sure all your API is on and your hoe is in your first hotbar slot.",
-                colour=ctx.guild.me.color,
+                colour=interaction.guild.me.color,
             )
             embed.add_field(name="loading aaaa", value="_ _", inline=False)
             embed.set_footer(**footer_text)
-            hidden = await slash_blacklist(ctx)
-            msg = await ctx.send(embed=embed, hidden=hidden)
+            ephemeral = await slash_blacklist(self.bot, interaction)
+            await interaction.response.send_message(embed=embed, ephemeral=ephemeral)
 
-            embed = rates.rates(ctx, mcuuid, profile)
-            await msg.edit(embed=embed)
+            embed = rates.rates(interaction, mcuuid, profile)
+            await interaction.edit_original_message(embed=embed)
 
-    @cog_ext.cog_slash(
+    @app_commands.command(
         description="Calculate coins per hour from farming.",
-        # guild_ids=guilds,
-        options=[
-            create_option("ff", "Farming Fortune", 4, True),
-        ],
     )
-    async def manualrates(self, ctx, ff):
-        hidden = await slash_blacklist(ctx)
+    @app_commands.describe(ff="Farming Fortune")
+    async def manualrates(self, interaction, ff: int):
+        ephemeral = await slash_blacklist(self.bot, interaction)
 
-        embed = rates.manualrates(ctx, ff)
+        embed = rates.manualrates(interaction, ff)
 
-        await ctx.send(embed=embed, hidden=hidden)
+        await interaction.response.send_message(embed=embed, ephemeral=ephemeral)
 
 
-def setup(bot):
-    bot.add_cog(Farming(bot))
+async def setup(bot):
+    await bot.add_cog(Farming(bot))

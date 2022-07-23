@@ -1,3 +1,4 @@
+import asyncio
 import datetime
 import traceback
 from os import listdir
@@ -5,12 +6,22 @@ from os import listdir
 import asyncpg
 import discord
 from discord.ext import commands
-from discord_slash import SlashCommand
+
+# from hypercorn.asyncio import serve
+# from hypercorn.config import Config
+# from quart import Quart, request
 
 from util.config import *
 
+assert discord.__version__.startswith("2"), "RUN THE SOURCE COMMAND FFS"
+
+# app = Quart(__name__)
+# config = Config()
+# config.bind = ['0.0.0.0:8000']
+
 intents = discord.Intents.default()
 intents.members = True
+intents.message_content = True
 
 
 async def get_prefix(bot, message):
@@ -33,33 +44,39 @@ async def get_prefix(bot, message):
 
 
 activity = discord.Activity(
-    name=f"{default_prefix}help", type=discord.ActivityType.watching
+    name=f"use slash commands", type=discord.ActivityType.watching
 )
 
-bot = commands.Bot(
-    command_prefix=get_prefix,
-    allowed_mentions=discord.AllowedMentions(
-        users=True,
-        everyone=False,
-        roles=False,
-        replied_user=False,
-    ),
-    intents=intents,
-    activity=activity,
-)
-slash = SlashCommand(bot, sync_commands=True, sync_on_cog_reload=True)
+
+class SlashBot(commands.Bot):
+    def __init__(self) -> None:
+        super().__init__(
+            command_prefix=get_prefix,
+            allowed_mentions=discord.AllowedMentions(
+                users=True,
+                everyone=False,
+                roles=False,
+                replied_user=False,
+            ),
+            intents=intents,
+            activity=activity,
+        )
+
+    async def setup_hook(self):
+        await self.load_extension("jishaku")
+        for filename in listdir("./slash-cogs"):
+            if filename.endswith(".py"):
+                await self.load_extension(f"slash-cogs.{filename[:-3]}")
+        await self.tree.sync()
 
 
-async def create_db_pool():
-    bot.db = await asyncpg.create_pool(
-        dsn=f"postgres://{username}:{password}@{host}:{port}/{db_name}"
-    )
-    print(f"Successfully connected to PostGreSQL database ({db_name}).")
+bot = SlashBot()
 
 
 @bot.event
 async def on_ready():
     print("yan-bot is ready aaaaa")
+    # await serve(app, config)
 
 
 @bot.event
@@ -69,7 +86,7 @@ async def on_guild_join(guild):
             embed = discord.Embed(
                 title="hi i am yan bot",
                 description="`y!help`, `y!help command_name` for help on that command\n\
-btw u can change prefix `y!help prefix`, commands are very cool (i have slash commands too) please check them out and pls dont kick 😢",
+btw u can change prefix `y!help prefix`, commands are very cool (i have slash commands too so use them actually) please check them out and pls dont kick 😢",
                 color=guild.me.colour,
             )
             embed.add_field(
@@ -143,14 +160,14 @@ async def on_msg(message: discord.message.Message):
     ):
         if message.guild.me.guild_permissions.ban_members:
             try:
-                await message.author.send(
+                await message.user.send(
                     f"You have been banned from {message.guild} for typing in #{message.channel}."
                 )
             except discord.errors.Forbidden:
                 pass
             finally:
                 await message.guild.ban(
-                    message.author,
+                    message.user,
                     reason=f"Sent a message in {message.channel.mention}",
                     delete_message_days=1,
                 )
@@ -166,8 +183,8 @@ async def on_command_error(ctx, error):
         await ctx.reply("Invalid role!")
     elif isinstance(error, commands.MemberNotFound):
         await ctx.reply("Invalid member!")
-    elif isinstance(error, TypeError) or isinstance(error, commands.CheckFailure):
-        return
+    # elif isinstance(error, TypeError) or isinstance(error, commands.CheckFailure):
+    #     return
     else:
         print(error)
         embed = discord.Embed(title="Command Error", colour=ctx.guild.me.color)
@@ -191,39 +208,23 @@ async def on_command_error(ctx, error):
         await channel.send(embed=embed)
 
 
-@bot.check
-async def blacklist(ctx):
-    if (
-        ctx.author.id == 270141848000004097
-        or ctx.author.guild_permissions.manage_channels
-    ):
-        return True
-    else:
-        return not await bot.db.fetchval(
-            "SELECT exists (SELECT id FROM channels WHERE id = $1)", ctx.channel.id
-        )
+# @app.route("/", methods=["POST"])
+# async def hello():
+#     body = await request.get_json()
+#     command = bot.get_command('flask')
+#     member = bot.get_guild(802883640286773269).get_member(int(body['id']))
+#     await command.__call__(member)
+#     return 'Success'
 
 
-async def slash_blacklist(ctx):
-    if (
-        ctx.author.id == 270141848000004097
-        or ctx.author.guild_permissions.manage_channels
-    ):
-        return False
-    else:
-        return await bot.db.fetchval(
-            "SELECT exists (SELECT id FROM channels WHERE id = $1)", ctx.channel.id
-        )
+async def main():
+    async with asyncpg.create_pool(
+        dsn=f"postgres://{username}:{password}@{host}:{port}/{db_name}"
+    ) as pool:
+
+        async with bot:
+            bot.db = pool
+            await bot.start(token)
 
 
-bot.load_extension("jishaku")
-for filename in listdir("./cogs"):
-    if filename.endswith(".py"):
-        bot.load_extension(f"cogs.{filename[:-3]}")
-for filename in listdir("./slash-cogs"):
-    if filename.endswith(".py"):
-        bot.load_extension(f"slash-cogs.{filename[:-3]}")
-
-
-bot.loop.run_until_complete(create_db_pool())
-bot.run(token)
+asyncio.run(main())

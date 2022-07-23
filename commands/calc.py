@@ -167,15 +167,13 @@ def calcskill(ctx, start, end):
 
 
 def slayerdiff(start, end, slayer):
-    slayer = slayer.lower()
-    if slayer in ["zombie", "revenant", "rev", "r"]:
+    table = []
+    if slayer == "Revenant":
         table = [0, 5, 15, 200, 1000]
-    elif slayer in ["spider", "tarantula", "tara", "t"]:
+    elif slayer == "Tarantula":
         table = [0, 5, 25, 200, 1000]
-    elif slayer in ["wolf", "sven", "s", "enderman", "eman", "e", "voidgloom", "v"]:
+    elif slayer == "Other":
         table = [0, 10, 30, 250, 1500]
-    else:
-        return "SlayerError"
     table.extend([5000, 20000, 100000, 400000, 1000000])
     begin = table[int(start)]
     finish = table[int(end)]
@@ -184,35 +182,24 @@ def slayerdiff(start, end, slayer):
 
 def calcslayer(ctx, start, end, type, aatrox):
     try:
-        required = slayerdiff(start, end, type.lower())
+        required = slayerdiff(start, end, type)
     except IndexError:
         return IndexError
-    if required == "SlayerError":
-        return "SlayerError"
 
     required_str = "{:,}".format(required)
 
-    if type in ["zombie", "revenant", "rev", "r"]:
-        type = "Revenant"
-    elif type in ["spider", "tarantula", "tara", "t"]:
-        type = "Tarantula"
-    elif type in ["wolf", "sven", "s", "enderman", "eman", "e", "voidgloom", "v"]:
-        type = "Sven/Enderman"
-
-    if aatrox is None or str(aatrox).lower() in ["false", "f", "no", "n"]:
+    if not aatrox:
         t1_xp, t1_cost = 5, 2000
         t2_xp, t2_cost = 25, 7500
         t3_xp, t3_cost = 100, 20000
         t4_xp, t4_cost = 500, 50000
         t5_xp, t5_cost = 1500, 100000
-    elif str(aatrox).lower() in ["true", "t", "yes", "y", "aatrox", "a"]:
+    else:
         t1_xp, t1_cost = 6.25, 1000
         t2_xp, t2_cost = 31.25, 3750
         t3_xp, t3_cost = 125, 10000
         t4_xp, t4_cost = 625, 25000
         t5_xp, t5_cost = 1875, 50000
-    else:
-        return "AatroxError"
 
     embed = Embed(
         description=f"{required_str} xp is required to get from {type} {start} to {end}.",
@@ -411,132 +398,97 @@ def calcpowder(ctx, perk, startlevel, endinglevel):
     if startlevel == endinglevel:
         return "You can't start from the same level as you end at."
     else:
-        if perk == "mining_speed":
+        perk = perk.lower()
+        if perk == "mining speed":
             if startlevel and endinglevel <= 50:
                 powder = miningSpeed(startlevel, endinglevel)
-
             else:
-
                 return "The maximum level for this perk is 50."
-        elif perk == "mining_fortune":
+        elif perk == "mining fortune":
             if startlevel and endinglevel <= 50:
-
                 powder = miningFortune(startlevel, endinglevel)
             else:
-
                 return "The maximum level for this perk is 50"
-        elif perk == "quick_forge":
+        elif perk == "quick forge":
             if startlevel and endinglevel <= 20:
-
                 powder = quickForge(startlevel, endinglevel)
             else:
                 return "The maximum level for this perk is 20"
-
-        elif perk == "titamium_insanium":
+        elif perk == "titamium insanium":
             if startlevel and endinglevel <= 50:
-
                 powder = titaniumInsanium(startlevel, endinglevel)
             else:
                 return "The maximum level for this perk is 50"
-
-        elif perk == "daily_powder":
+        elif perk == "daily powder":
             if startlevel and endinglevel <= 100:
                 powder = dailyPowder(startlevel, endinglevel)
-
             else:
                 return "The maximum level for this perk is 100"
-
-        elif perk == "luck_of_the_cave":
+        elif perk == "luck of the cave":
             if startlevel and endinglevel <= 45:
                 powder = luckofTheCave(startlevel, endinglevel)
-
             else:
                 return "The maximum level for this perk is 45"
-
         elif perk == "crystallized":
             if startlevel and endinglevel <= 30:
                 powder = crystallized(startlevel, endinglevel)
-
             else:
                 return "The maximum level for this perk is 30"
-
-        elif perk == "effecient_miner":
+        elif perk == "effecient miner":
             if startlevel and endinglevel <= 100:
                 powder = effecientMiner(startlevel, endinglevel)
-
             else:
                 return "The maximum level for this perk is 100"
-
         elif perk == "orbiter":
             if startlevel and endinglevel <= 80:
                 powder = orbiter(startlevel, endinglevel)
-
             else:
                 return "The maximum level for this perk is 80"
-
-        elif perk == "seasoned_mineman":
+        elif perk == "seasoned mineman":
             if startlevel and endinglevel <= 100:
                 powder = seasonedMineman(startlevel, endinglevel)
-
             else:
                 return "The maximum level for this perk is 100"
-
         elif perk == "mole":
             if startlevel and endinglevel <= 190:
                 powder = mole(startlevel, endinglevel)
-
             else:
                 return "The maximum level for this perk is 190"
-
         elif perk == "professional":
             if startlevel and endinglevel <= 140:
                 powder = professional(startlevel, endinglevel)
-
             else:
                 return "The maximum level for this perk is 140"
-
-        elif perk == "lonesome_miner":
+        elif perk == "lonesome miner":
             if startlevel and endinglevel <= 45:
                 powder = LonesomeMiner(startlevel, endinglevel)
-
             else:
                 return "The maximum level for this perk is 45"
-
-        elif perk == "great_explorer":
+        elif perk == "great explorer":
             if startlevel and endinglevel <= 20:
                 powder = greatExplorer(startlevel, endinglevel)
-
             else:
                 return "The maximum level for this perk is 20"
-
         elif perk == "fortunate":
             if startlevel and endinglevel <= 20:
                 powder = fortunate(startlevel, endinglevel)
-
             else:
                 return "The maximum level for this perk is 20"
-
-        elif perk == "powder_buff":
+        elif perk == "powder buff":
             if startlevel and endinglevel <= 50:
                 powder = powderBuff(startlevel, endinglevel)
-
             else:
                 return "The maximum level for this perk is 50"
-
-        elif perk == "mining_speed_two":
+        elif perk == "mining speed two":
             if startlevel and endinglevel <= 50:
                 powder = miningSpeedtwo(startlevel, endinglevel)
-
             else:
                 return "The maximum level for this perk is 50"
-
-        elif perk == "mining_fortune_two":
+        elif perk == "mining fortune two":
             if startlevel and endinglevel <= 50:
                 powder = miningFortunetwo(startlevel, endinglevel)
-
             else:
                 return "The maximum level for this perk is 50"
-
         embed = Embed(
             description=f"{powder} powder required from level {startlevel} to level {endinglevel}.",
             colour=ctx.guild.me.color,

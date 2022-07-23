@@ -2,7 +2,7 @@ import discord
 
 
 async def banchannel(bot, ctx):
-    if ctx.author.id != ctx.guild.owner.id:
+    if ctx.user.id != ctx.guild.owner.id:
         return "Due to how dangerous this command is, only the server owner can run this command."
     elif not ctx.guild.me.guild_permissions.ban_members:
         return "I don't have ban permissions!"

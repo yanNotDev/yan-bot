@@ -1,149 +1,117 @@
-from discord.ext.commands import converter
-from bot import slash_blacklist
+import discord
 from commands import banchannel, vcrole
-from commands.channel import get_channels
 from commands.uuid import uuid
+from discord import app_commands
 from discord.ext import commands
-from discord_slash import cog_ext
-from discord_slash.utils.manage_commands import create_option
-from util.config import default_prefix, guilds
+from util.blacklist import slash_blacklist
+from util.config import default_prefix
 
 
 class Database(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @cog_ext.cog_slash(
+    @app_commands.command(
         description='Prefix becomes y! if no prefix is given. Surround prefix in "" if it has spaces.',
-        # guild_ids=guilds,
-        options=[create_option("prefix", "Prefix", 3, False)],
     )
-    async def prefix(self, ctx, prefix=default_prefix):
+    @app_commands.describe(prefix="Prefix")
+    async def prefix(self, interaction, prefix: str | None):
+        prefix = prefix or default_prefix
         if (
-            ctx.author.guild_permissions.manage_guild
-            or ctx.author.id == 270141848000004097
+            interaction.user.guild_permissions.manage_guild
+            or interaction.user.id == 270141848000004097
         ):
 
             prefix = prefix.replace('"', "")
 
             if prefix == "":
-                await ctx.send(
+                await interaction.response.send_message(
                     'Prefix cannot be blank (remember that your prefix cannot only have ")',
-                    hidden=True,
+                    ephemeral=True,
                 )
                 return
 
             await self.bot.db.execute(
                 'UPDATE guilds SET prefix = $1 WHERE "guild_id" = $2',
                 prefix,
-                ctx.guild.id,
+                interaction.guild.id,
             )
-            hidden = await slash_blacklist(ctx)
+            ephemeral = await slash_blacklist(self.bot, interaction)
             if prefix == default_prefix:
-                await ctx.send(
-                    f"Changed prefix back to the default `{prefix}`", hidden=hidden
+                await interaction.response.send_message(
+                    f"Changed prefix back to the default `{prefix}`", ephemeral=ephemeral
                 )
             else:
-                await ctx.send(f"Prefix changed to `{prefix}`", hidden=hidden)
+                await interaction.response.send_message(f"Prefix changed to `{prefix}`", ephemeral=ephemeral)
 
         else:
-            await ctx.send("Missing manage server permissions!", hidden=True)
+            await interaction.response.send_message("Missing manage server permissions!", ephemeral=True)
 
-    @cog_ext.cog_slash(
+    @app_commands.command(
         description="Toggle blacklist on current channel. Only people with manage channels perm can run commands here.",
-        # guild_ids=guilds,
-        options=[create_option("channel", "Channel", 7, True)],
     )
-    async def blacklist(self, ctx, channel):
+    @app_commands.describe(channel="Channel")
+    async def blacklist(self, interaction, channel: discord.TextChannel):
         if (
-            ctx.author.guild_permissions.manage_channels
-            or ctx.author.id == 270141848000004097
+            interaction.user.guild_permissions.manage_channels
+            or interaction.user.id == 270141848000004097
         ):
-
-            channel = await get_channels(ctx, channel.mention)
-
-            if channel is None:
-                await ctx.send("Invalid channel!", hidden=True)
-                return
-            elif len(channel) == 0:
-                await ctx.send(
-                    "Why are you trying to blacklist a voice channel?", hidden=True
-                )
-                return
-
-            mentionList = []
-            for i in channel:
-                blacklisted = await self.bot.db.fetchval(
-                    "SELECT id FROM channels WHERE id = $1",
-                    i.id,
-                )
-                if blacklisted:
-                    await self.bot.db.execute(
-                        "DELETE FROM channels WHERE id = $1", i.id
-                    )
-                    if len(channel) == 1:
-                        return await ctx.send(
-                            f"Non-moderators can now run commands in {i.mention} again."
-                        )
-                    else:
-                        mentionList.append(i.mention)
-                else:
-                    await self.bot.db.execute(
-                        "INSERT INTO channels(id) VALUES ($1)", i.id
-                    )
-                    if len(channel) == 1:
-                        return await ctx.send(
-                            f"Only moderators can run commands in {i.mention} now."
-                        )
-                    else:
-                        mentionList.append(i.mention)
-
-            await ctx.send(
-                f"Non-moderators can now run commands in {(', ').join(mentionList)} again."
-            ) if blacklisted else await ctx.send(
-                f"Only moderators can run commands in {(', ').join(mentionList)} now."
+            blacklisted = await self.bot.db.fetchval(
+                "SELECT id FROM channels WHERE id = $1",
+                channel.id,
             )
+            if blacklisted:
+                await self.bot.db.execute(
+                    "DELETE FROM channels WHERE id = $1", channel.id
+                )
+                return await interaction.response.send_message(
+                    f"Non-moderators can now run commands in {channel.mention} again."
+                )
+            else:
+                await self.bot.db.execute(
+                    "INSERT INTO channels(id) VALUES ($1)", channel.id
+                )
+                return await interaction.response.send_message(
+                    f"Only moderators can run commands in {channel.mention} now."
+                )
         else:
-            await ctx.send("Missing manage channel permissions!", hidden=True)
+            await interaction.response.send_message("Missing manage channel permissions!", ephemeral=True)
 
-    @cog_ext.cog_slash(
+    @app_commands.command(
         description="Links your Discord to a Minecraft IGN. Next time you don't specify an IGN, it will default to this.",
-        # guild_ids=guilds,
-        options=[create_option("ign", "IGN", 3, True)],
     )
-    async def link(self, ctx, ign):
-        mcuuid = await uuid(self.bot, ctx.author.id, ign.lower())
+    @app_commands.describe(ign="IGN")
+    async def link(self, interaction, ign: str):
+        mcuuid = await uuid(self.bot, interaction.user.id, ign.lower())
         if mcuuid == 204:
-            await ctx.send("That's not a valid IGN!", hidden=True)
+            await interaction.response.send_message("That's not a valid IGN!", ephemeral=True)
         else:
             await self.bot.db.execute(
                 "INSERT INTO users(id, uuid) VALUES($1, $2) ON CONFLICT (id) DO UPDATE SET uuid = $2",
-                ctx.author.id,
+                interaction.user.id,
                 mcuuid,
             )
 
-            hidden = await slash_blacklist(ctx)
-            await ctx.send(f"Linked {ctx.author.mention} to {ign}", hidden=hidden)
+            ephemeral = await slash_blacklist(self.bot, interaction)
+            await interaction.response.send_message(f"Linked {interaction.user.mention} to {ign}", ephemeral=ephemeral)
 
-    @cog_ext.cog_slash(
+    @app_commands.command(
         description="Sets up a channel where anyone who talks will be insta-banned. Useful for catching hacked accounts.",
-        # guild_ids=guilds,
     )
-    async def banchannel(self, ctx):
-        hidden = await slash_blacklist(ctx)
-        content = await banchannel.banchannel(self.bot, ctx)
-        await ctx.send(content, hidden=hidden)
+    async def banchannel(self, interaction):
+        ephemeral = await slash_blacklist(self.bot, interaction)
+        content = await banchannel.banchannel(self.bot, interaction)
+        await interaction.response.send_message(content, ephemeral=ephemeral)
 
-    @cog_ext.cog_slash(
+    @app_commands.command(
         description="Select a role that gets assigned to someone when they join a VC, and removed when they leave it.",
-        # guild_ids=guilds,
-        options=[create_option("role", "Role", 8, True)],
     )
-    async def vcrole(self, ctx, role):
-        hidden = await slash_blacklist(ctx)
-        content = await vcrole.vcrole(self.bot, ctx, role)
-        await ctx.send(content, hidden=hidden)
+    @app_commands.describe(role="Role")
+    async def vcrole(self, interaction, role: discord.Role):
+        ephemeral = await slash_blacklist(self.bot, interaction)
+        content = await vcrole.vcrole(self.bot, interaction, role)
+        await interaction.response.send_message(content, ephemeral=ephemeral)
 
 
-def setup(bot):
-    bot.add_cog(Database(bot))
+async def setup(bot):
+    await bot.add_cog(Database(bot))

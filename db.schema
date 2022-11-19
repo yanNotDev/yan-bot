@@ -1,0 +1,127 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 13.4
+-- Dumped by pg_dump version 13.4
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: banchannels; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.banchannels (
+    id bigint NOT NULL
+);
+
+--
+-- Name: channels; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.channels (
+    id bigint NOT NULL
+);
+
+--
+-- Name: guilds; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.guilds (
+    guild_id bigint NOT NULL,
+    prefix text NOT NULL
+);
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.users (
+    id bigint NOT NULL,
+    uuid character varying(32) NOT NULL
+);
+
+--
+-- Name: uuids; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.uuids (
+    ign character varying(16) NOT NULL,
+    uuid character(32) NOT NULL
+);
+
+
+--
+-- Name: vcroles; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.vcroles (
+    guild bigint NOT NULL,
+    role bigint NOT NULL
+);
+
+--
+-- Name: banchannels banchannels_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.banchannels
+    ADD CONSTRAINT banchannels_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: channels channels_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.channels
+    ADD CONSTRAINT channels_id_key UNIQUE (id);
+
+
+--
+-- Name: guilds guilds_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.guilds
+    ADD CONSTRAINT guilds_pkey PRIMARY KEY (guild_id);
+
+
+--
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: uuids uuids_uuid_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.uuids
+    ADD CONSTRAINT uuids_uuid_key UNIQUE (uuid);
+
+
+--
+-- Name: vcroles vcroles_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.vcroles
+    ADD CONSTRAINT vcroles_pkey PRIMARY KEY (guild);
+
+
+--
+-- PostgreSQL database dump complete
+--
+
